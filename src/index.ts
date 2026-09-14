@@ -1,13 +1,14 @@
 import { argon2, randomBytes, timingSafeEqual } from "node:crypto";
+import type { Argon2Limits, Argon2Parameters, Argon2PhcParts, ParsedArgon2Hash } from "./models/models.js";
 
-const ARGON2_OPTIONS = {
+const ARGON2_OPTIONS: Argon2Parameters = {
 	parallelism: 1,
 	tagLength: 32,
 	memory: 19456,
 	passes: 2,
 };
 
-const ARGON2_LIMITS = {
+const ARGON2_LIMITS: Argon2Limits = {
 	minMemory: 8192,
 	maxMemory: 131072,
 	minPasses: 1,
@@ -16,11 +17,11 @@ const ARGON2_LIMITS = {
 	maxParallelism: 4,
 };
 
-function encodePhcBase64(buffer) {
+function encodePhcBase64(buffer: Buffer): string {
 	return buffer.toString("base64").replace(/=+$/, "");
 }
 
-function decodePhcBase64(value) {
+function decodePhcBase64(value: string): Buffer | null {
 	if (!/^[A-Za-z0-9+/]+$/.test(value)) {
 		return null;
 	}
@@ -34,7 +35,7 @@ function decodePhcBase64(value) {
 	return buffer;
 }
 
-function parseArgon2Hash(encodedHash) {
+function parseArgon2Hash(encodedHash: string): ParsedArgon2Hash | null {
 	if (typeof encodedHash !== "string") {
 		return null;
 	}
@@ -45,7 +46,7 @@ function parseArgon2Hash(encodedHash) {
 		return null;
 	}
 
-	const [empty, algorithm, version, parameterString, saltBase64, hashBase64] = parts;
+	const [empty, algorithm, version, parameterString, saltBase64, hashBase64] = parts as Argon2PhcParts;
 
 	if (empty !== "" || algorithm !== "argon2id" || version !== "v=19") {
 		return null;
@@ -81,7 +82,7 @@ function parseArgon2Hash(encodedHash) {
 	};
 }
 
-function hashPassword(password) {
+function hashPassword(password: string): Promise<string> {
 	return new Promise((resolve, reject) => {
 		const nonce = randomBytes(16);
 
@@ -113,7 +114,7 @@ function hashPassword(password) {
 	});
 }
 
-function verifyPassword(password, encodedHash) {
+function verifyPassword(password: string, encodedHash: string): Promise<boolean> {
 	return new Promise((resolve, reject) => {
 		const parsed = parseArgon2Hash(encodedHash);
 
@@ -167,7 +168,7 @@ function verifyPassword(password, encodedHash) {
 	});
 }
 
-function needsRehash(encodedHash) {
+function needsRehash(encodedHash: string): boolean {
 	const parsed = parseArgon2Hash(encodedHash);
 
 	if (!parsed) {
