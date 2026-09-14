@@ -1,5 +1,5 @@
 import { argon2, randomBytes, timingSafeEqual } from "node:crypto";
-import type { Argon2Limits, Argon2Parameters, Argon2PhcParts, ParsedArgon2Hash } from "./models/models.js";
+import type { Argon2Limits, Argon2Parameters, Argon2PhcParts, ParsedArgon2Hash } from "./models.js";
 
 const ARGON2_OPTIONS: Argon2Parameters = {
 	parallelism: 1,

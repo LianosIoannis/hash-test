@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "tsx src/test/bench.ts",
+		"test": "tsx src/argon2/test/bench.ts",
 		"build": "tsc",
 		"format": "biome check --write"
 	},
