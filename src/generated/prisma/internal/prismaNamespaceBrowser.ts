@@ -99,7 +99,9 @@ export const TenantApplicationScalarFieldEnum = {
   id: 'id',
   key: 'key',
   tenantId: 'tenantId',
-  applicationId: 'applicationId'
+  applicationId: 'applicationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type TenantApplicationScalarFieldEnum = (typeof TenantApplicationScalarFieldEnum)[keyof typeof TenantApplicationScalarFieldEnum]

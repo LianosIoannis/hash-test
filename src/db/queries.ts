@@ -44,3 +44,25 @@ export async function findTenantApplicationUser(userId: number, tenantApplicatio
 		},
 	});
 }
+
+export async function findSessionByTokenHash(tokenHash: string) {
+	return prisma.session.findUnique({
+		where: { tokenHash },
+	});
+}
+
+export async function findTenantUsers(tenantId: number) {
+	return prisma.user.findMany({
+		where: { tenantId },
+	});
+}
+
+export async function findTenantApplications(tenantId: number) {
+	return prisma.tenantApplication.findMany({
+		where: { tenantId },
+	});
+}
+
+export async function findTenants() {
+	return prisma.tenant.findMany();
+}

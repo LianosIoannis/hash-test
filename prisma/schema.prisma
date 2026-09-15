@@ -44,6 +44,9 @@ model TenantApplication {
     applicationId Int
     application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
     users TenantApplicationUser[]
 
     @@unique([tenantId, applicationId])

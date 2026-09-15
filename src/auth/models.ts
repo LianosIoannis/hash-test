@@ -14,15 +14,26 @@ export const authenticateWithUsernameSchema = v.object({
 
 export const signUpSchema = v.pipe(
 	v.object({
-		email: v.pipe(v.string(), v.email()),
+		email: v.pipe(
+			v.string(),
+			v.transform((email) => email.trim().toLowerCase()),
+			v.email(),
+		),
 
-		username: v.optional(v.string()),
+		username: v.optional(
+			v.pipe(
+				v.string(),
+				v.transform((username) => username.trim()),
+			),
+		),
 
 		password: v.pipe(v.string(), v.minLength(8), v.maxLength(100)),
-
-		tenantId: v.number(),
+		tenantId: v.pipe(v.number(), v.integer(), v.minValue(1)),
 	}),
-	v.transform((input) => ({ ...input, username: input.username?.trim() || input.email })),
+	v.transform((input) => ({
+		...input,
+		username: input.username || input.email,
+	})),
 );
 
 export const signInWithEmailSchema = v.object({

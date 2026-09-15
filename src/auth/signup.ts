@@ -1,6 +1,7 @@
 import * as v from "valibot";
 import { hashPassword } from "../argon2/index.js";
-import { createUser } from "../db/actions.js";
+import { createTenantApplicationUser, createUser } from "../db/actions.js";
+import { findTenantApplicationByKey } from "../db/queries.js";
 import { type SignUpInput, signUpSchema } from "./models.js";
 
 export async function signUpWithEmail(signUpInput: SignUpInput) {
@@ -11,4 +12,14 @@ export async function signUpWithEmail(signUpInput: SignUpInput) {
 	const user = await createUser(email, username, passwordHash, tenantId);
 
 	return user;
+}
+
+export async function registerUserToApp(userId: number, tenantApplicationKey: string) {
+	const tenantApplication = await findTenantApplicationByKey(tenantApplicationKey);
+
+	if (!tenantApplication) {
+		throw new Error("Tenant Application not found");
+	}
+
+	return createTenantApplicationUser(userId, tenantApplication.id);
 }
