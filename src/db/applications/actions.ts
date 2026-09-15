@@ -1,9 +1,9 @@
 import prisma from "../prisma.js";
 
 export type UpdateApplicationInput = {
-	code?: string;
-	name?: string;
-	description?: string | null;
+	code?: string | undefined;
+	name?: string | undefined;
+	description?: string | null | undefined;
 };
 
 export async function createApplication(code: string, name: string, description?: string) {
@@ -19,7 +19,11 @@ export async function createApplication(code: string, name: string, description?
 export async function updateApplication(id: number, input: UpdateApplicationInput) {
 	return prisma.application.update({
 		where: { id },
-		data: input,
+		data: {
+			...(input.code === undefined ? {} : { code: input.code }),
+			...(input.name === undefined ? {} : { name: input.name }),
+			...(input.description === undefined ? {} : { description: input.description }),
+		},
 	});
 }
 

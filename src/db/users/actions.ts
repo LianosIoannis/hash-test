@@ -1,9 +1,9 @@
 import prisma from "../prisma.js";
 
 export type UpdateUserInput = {
-	email?: string;
-	username?: string;
-	tenantId?: number;
+	email?: string | undefined;
+	username?: string | undefined;
+	tenantId?: number | undefined;
 };
 
 export async function createUser(email: string, username: string, passwordHash: string, tenantId: number) {
@@ -23,7 +23,11 @@ export async function createUser(email: string, username: string, passwordHash: 
 export async function updateUser(id: number, input: UpdateUserInput) {
 	return prisma.user.update({
 		where: { id },
-		data: input,
+		data: {
+			...(input.email === undefined ? {} : { email: input.email }),
+			...(input.username === undefined ? {} : { username: input.username }),
+			...(input.tenantId === undefined ? {} : { tenantId: input.tenantId }),
+		},
 		omit: { passwordHash: true },
 	});
 }

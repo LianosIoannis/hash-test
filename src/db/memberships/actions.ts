@@ -1,3 +1,4 @@
+import { DatabaseRecordNotFoundError, DatabaseRelationError } from "../errors.js";
 import prisma from "../prisma.js";
 
 export async function createMembership(userId: number, tenantApplicationId: number) {
@@ -14,15 +15,15 @@ export async function createMembership(userId: number, tenantApplicationId: numb
 		]);
 
 		if (!user) {
-			throw new Error("User not found");
+			throw new DatabaseRecordNotFoundError("User");
 		}
 
 		if (!tenantApplication) {
-			throw new Error("Tenant application not found");
+			throw new DatabaseRecordNotFoundError("Tenant application");
 		}
 
 		if (user.tenantId !== tenantApplication.tenantId) {
-			throw new Error("User and tenant application belong to different tenants");
+			throw new DatabaseRelationError("User and tenant application belong to different tenants");
 		}
 
 		return tx.tenantApplicationUser.create({
