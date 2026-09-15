@@ -7,7 +7,14 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!node_modules", "!dist", "!src/generated"]
+		"includes": [
+			"**",
+			"!node_modules",
+			"!dist",
+			"!.vite",
+			"!client/dist",
+			"!src/generated"
+		]
 	},
 	"formatter": {
 		"enabled": true,
