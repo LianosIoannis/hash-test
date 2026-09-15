@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "tsx src/argon2/test/bench.ts",
 		"build": "tsc",
-		"format": "biome check --write"
+		"format": "biome check --write",
+		"migrate": "prisma migrate dev --name init && prisma generate"
 	},
 	"keywords": [],
 	"type": "module",
@@ -28,6 +29,10 @@
 		"@prisma/adapter-better-sqlite3": "^7.10.0",
 		"@prisma/client": "^7.10.0",
 		"better-sqlite3": "^13.0.3",
-		"dotenv": "^17.4.2"
+		"date-fns": "^4.4.0",
+		"dotenv": "^17.4.2",
+		"jose": "^6.2.12",
+		"nanoid": "^6.0.1",
+		"valibot": "^1.5.0"
 	}
 }

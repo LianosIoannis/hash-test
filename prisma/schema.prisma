@@ -36,6 +36,8 @@ model Application {
 model TenantApplication {
     id Int @id @default(autoincrement())
 
+    key String @unique
+
     tenantId Int
     tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
@@ -80,6 +82,23 @@ model TenantApplicationUser {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    sessions Session[]
+
     @@unique([userId, tenantApplicationId])
     @@index([tenantApplicationId])
+}
+
+model Session {
+    id Int @id @default(autoincrement())
+
+    tokenHash String @unique
+
+    tenantApplicationUserId Int
+    tenantApplicationUser   TenantApplicationUser @relation(fields: [tenantApplicationUserId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+
+    @@index([tenantApplicationUserId])
+    @@index([expiresAt])
 }
