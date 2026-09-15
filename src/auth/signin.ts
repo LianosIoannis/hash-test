@@ -1,11 +1,8 @@
 import * as v from "valibot";
 import { verifyPassword } from "../argon2/index.js";
-import {
-	findTenantApplicationByKey,
-	findTenantApplicationUser,
-	findUserByEmail,
-	findUserByUsername,
-} from "../db/queries.js";
+import { findTenantApplicationUser } from "../db/memberships/queries.js";
+import { findTenantApplicationByKey } from "../db/tenant-applications/queries.js";
+import { findUserByEmail, findUserByUsername } from "../db/users/queries.js";
 import {
 	type AuthenticateWithEmailInput,
 	type AuthenticateWithUsernameInput,

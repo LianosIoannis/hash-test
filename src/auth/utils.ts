@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { addHours } from "date-fns";
 import { SignJWT } from "jose";
 import { nanoid } from "nanoid";
-import { createSession } from "../db/actions.js";
+import { createSession } from "../db/sessions/actions.js";
 
 function hashSessionToken(token: string) {
 	return createHash("sha256").update(token).digest("hex");
