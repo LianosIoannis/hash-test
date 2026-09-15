@@ -7,22 +7,79 @@ generator client {
     output   = "../src/generated/prisma"
 }
 
-model Client {
+model Tenant {
     id Int @id @default(autoincrement())
 
-    name        String
+    name        String  @unique
     description String?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    tenantApplications TenantApplication[]
+    users              User[]
+}
+
+model Application {
+    id Int @id @default(autoincrement())
+
+    code        String  @unique
+    name        String  @unique
+    description String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    tenantApplications TenantApplication[]
+}
+
+model TenantApplication {
+    id Int @id @default(autoincrement())
+
+    tenantId Int
+    tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+    applicationId Int
+    application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+    users TenantApplicationUser[]
+
+    @@unique([tenantId, applicationId])
+    @@index([applicationId])
 }
 
 model User {
     id Int @id @default(autoincrement())
 
-    email        String @unique
+    email        String
+    username     String
     passwordHash String
+
+    tenantId Int
+    tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    applications TenantApplicationUser[]
+
+    @@unique([tenantId, email])
+    @@unique([tenantId, username])
+    @@index([tenantId])
+}
+
+model TenantApplicationUser {
+    id Int @id @default(autoincrement())
+
+    userId Int
+    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    tenantApplicationId Int
+    tenantApplication   TenantApplication @relation(fields: [tenantApplicationId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([userId, tenantApplicationId])
+    @@index([tenantApplicationId])
 }
