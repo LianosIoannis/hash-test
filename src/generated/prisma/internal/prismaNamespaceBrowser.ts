@@ -122,6 +122,7 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const TenantApplicationUserScalarFieldEnum = {
   id: 'id',
+  tenantId: 'tenantId',
   userId: 'userId',
   tenantApplicationId: 'tenantApplicationId',
   createdAt: 'createdAt',

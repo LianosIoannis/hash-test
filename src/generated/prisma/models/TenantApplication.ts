@@ -252,6 +252,7 @@ export type TenantApplicationOrderByWithRelationInput = {
 export type TenantApplicationWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   key?: string
+  id_tenantId?: Prisma.TenantApplicationIdTenantIdCompoundUniqueInput
   tenantId_applicationId?: Prisma.TenantApplicationTenantIdApplicationIdCompoundUniqueInput
   AND?: Prisma.TenantApplicationWhereInput | Prisma.TenantApplicationWhereInput[]
   OR?: Prisma.TenantApplicationWhereInput[]
@@ -263,7 +264,7 @@ export type TenantApplicationWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   users?: Prisma.TenantApplicationUserListRelationFilter
-}, "id" | "key" | "tenantId_applicationId">
+}, "id" | "key" | "id_tenantId" | "tenantId_applicationId">
 
 export type TenantApplicationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -361,6 +362,11 @@ export type TenantApplicationListRelationFilter = {
 
 export type TenantApplicationOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type TenantApplicationIdTenantIdCompoundUniqueInput = {
+  id: number
+  tenantId: number
 }
 
 export type TenantApplicationTenantIdApplicationIdCompoundUniqueInput = {

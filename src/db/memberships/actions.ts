@@ -30,6 +30,7 @@ export async function createMembership(userId: number, tenantApplicationId: numb
 			data: {
 				userId,
 				tenantApplicationId,
+				tenantId: user.tenantId,
 			},
 		});
 	});

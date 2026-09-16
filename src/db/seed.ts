@@ -148,13 +148,13 @@ async function seed() {
 		});
 
 		const memberships = [
-			[acmeAdmin.id, acmeAccounting.id],
-			[acmeAdmin.id, acmeReporting.id],
-			[acmeAnalyst.id, acmeReporting.id],
-			[globexAdmin.id, globexAccounting.id],
+			[acmeAdmin.id, acmeAccounting.id, acme.id],
+			[acmeAdmin.id, acmeReporting.id, acme.id],
+			[acmeAnalyst.id, acmeReporting.id, acme.id],
+			[globexAdmin.id, globexAccounting.id, globex.id],
 		] as const;
 
-		for (const [userId, tenantApplicationId] of memberships) {
+		for (const [userId, tenantApplicationId, tenantId] of memberships) {
 			await tx.tenantApplicationUser.upsert({
 				where: {
 					userId_tenantApplicationId: {
@@ -162,10 +162,11 @@ async function seed() {
 						tenantApplicationId,
 					},
 				},
-				update: {},
+				update: { tenantId },
 				create: {
 					userId,
 					tenantApplicationId,
+					tenantId,
 				},
 			});
 		}

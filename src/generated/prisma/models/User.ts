@@ -254,6 +254,7 @@ export type UserOrderByWithRelationInput = {
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  id_tenantId?: Prisma.UserIdTenantIdCompoundUniqueInput
   tenantId_email?: Prisma.UserTenantIdEmailCompoundUniqueInput
   tenantId_username?: Prisma.UserTenantIdUsernameCompoundUniqueInput
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -267,7 +268,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   applications?: Prisma.TenantApplicationUserListRelationFilter
-}, "id" | "tenantId_email" | "tenantId_username">
+}, "id" | "id_tenantId" | "tenantId_email" | "tenantId_username">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -375,6 +376,11 @@ export type UserListRelationFilter = {
 
 export type UserOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type UserIdTenantIdCompoundUniqueInput = {
+  id: number
+  tenantId: number
 }
 
 export type UserTenantIdEmailCompoundUniqueInput = {
