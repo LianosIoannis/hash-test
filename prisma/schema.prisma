@@ -49,6 +49,7 @@ model TenantApplication {
 
     users TenantApplicationUser[]
 
+    @@unique([id, tenantId])
     @@unique([tenantId, applicationId])
     @@index([applicationId])
 }
@@ -68,6 +69,7 @@ model User {
 
     applications TenantApplicationUser[]
 
+    @@unique([id, tenantId])
     @@unique([tenantId, email])
     @@unique([tenantId, username])
     @@index([tenantId])
@@ -76,11 +78,13 @@ model User {
 model TenantApplicationUser {
     id Int @id @default(autoincrement())
 
+    tenantId Int
+
     userId Int
-    user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user   User @relation(fields: [userId, tenantId], references: [id, tenantId], onDelete: Cascade)
 
     tenantApplicationId Int
-    tenantApplication   TenantApplication @relation(fields: [tenantApplicationId], references: [id], onDelete: Cascade)
+    tenantApplication   TenantApplication @relation(fields: [tenantApplicationId, tenantId], references: [id, tenantId], onDelete: Cascade)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
