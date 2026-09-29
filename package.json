@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "tsx src/argon2/test/bench.ts",
+		"test:admin": "node --import tsx --test test/admin.test.mjs",
 		"build": "tsc",
 		"dev": "tsx watch src/server/server.ts",
 		"start": "node dist/server/server.js",

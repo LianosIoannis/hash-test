@@ -43,6 +43,10 @@ export type User = {
 	id: number;
 	email: string;
 	username: string;
+	phoneNumber: string | null;
+	emailVerified: boolean;
+	phoneVerified: boolean;
+	totpAuthenticator?: { id: number; label: string | null; verified: boolean } | null;
 	tenantId: number;
 	createdAt: string;
 	updatedAt: string;
@@ -52,6 +56,7 @@ export type User = {
 
 export type Membership = {
 	id: number;
+	tenantId: number;
 	userId: number;
 	tenantApplicationId: number;
 	createdAt: string;

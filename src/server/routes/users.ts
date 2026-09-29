@@ -23,7 +23,7 @@ usersRouter.get("/:id", async (request, response) => {
 usersRouter.post("/", async (request, response) => {
 	const input = v.parse(createUserSchema, request.body);
 	const passwordHash = await hashPassword(input.password);
-	const user = await createUser(input.email, input.username, passwordHash, input.tenantId);
+	const user = await createUser(input.email, input.username, passwordHash, input.tenantId, input);
 	response.status(201).json(user);
 });
 

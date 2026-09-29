@@ -1,16 +1,25 @@
 import "./styles.css";
 import { ApiError, get, patch, post, put, remove } from "./api/client.js";
+import { openAzureForm, openStrategies } from "./sso.js";
+import type { AzureConfig } from "./sso-types.js";
 import type { Application, Membership, Overview, Session, Tenant, TenantApplication, User } from "./types.js";
 
-type ResourceName = "tenants" | "applications" | "tenant-applications" | "users" | "memberships" | "sessions";
-type RecordValue = Tenant | Application | TenantApplication | User | Membership | Session;
-type FormValue = string | number | null;
+type ResourceName =
+	| "tenants"
+	| "applications"
+	| "tenant-applications"
+	| "users"
+	| "memberships"
+	| "sessions"
+	| "azure-sso-configs";
+type RecordValue = Tenant | Application | TenantApplication | User | Membership | Session | AzureConfig;
+type FormValue = string | number | boolean | null;
 
 type Option = { label: string; value: number | string };
 type Field = {
 	name: string;
 	label: string;
-	type?: "text" | "email" | "password" | "textarea" | "select";
+	type?: "text" | "email" | "password" | "textarea" | "select" | "checkbox";
 	required?: boolean;
 	nullable?: boolean;
 	options?: () => Promise<Option[]>;
@@ -47,6 +56,7 @@ const appRoot = requiredElement<HTMLDivElement>("#app");
 
 const icon = (name: string) => {
 	const icons: Record<string, string> = {
+		"azure-sso-configs": '<path d="m12 3 9 5v8l-9 5-9-5V8zM12 8v8M8 12h8"/>',
 		overview: '<path d="M4 4h6v6H4zM14 4h6v10h-6zM4 14h6v6H4zM14 18h6v2h-6z"/>',
 		tenants: '<path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h2m2 0h2m-6 4h2m2 0h2m-6 4h6"/>',
 		applications: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/>',
@@ -75,6 +85,7 @@ appRoot.innerHTML = `
 			<nav aria-label="Main navigation">
 				<button class="nav-item active" data-view="overview">${icon("overview")}<span>Overview</span></button>
 				<p class="nav-label">Database</p>
+				<button class="nav-item" data-view="azure-sso-configs" aria-label="Azure SSO configurations">${icon("azure-sso-configs")}<span>Azure SSO configs</span></button>
 				<button class="nav-item" data-view="tenants">${icon("tenants")}<span>Tenants</span></button>
 				<button class="nav-item" data-view="applications">${icon("applications")}<span>Applications</span></button>
 				<button class="nav-item" data-view="tenant-applications">${icon("tenant-applications")}<span>Tenant apps</span></button>
@@ -154,6 +165,32 @@ async function tenantApplicationOptions(): Promise<Option[]> {
 }
 
 const resources: Record<ResourceName, ResourceConfig> = {
+	"azure-sso-configs": {
+		label: "Azure SSO configurations",
+		singular: "Azure configuration",
+		description: "Microsoft login settings per tenant application and strategy. Client secrets are never displayed.",
+		columns: [
+			{ label: "Name", value: (record: AzureConfig) => record.name, className: "primary-cell" },
+			{
+				label: "Tenant / App",
+				value: (record: AzureConfig) =>
+					record.tenantApplicationStrategy
+						? record.tenantApplicationStrategy.tenantApplication.tenant.name +
+							" / " +
+							record.tenantApplicationStrategy.tenantApplication.application.name
+						: "—",
+			},
+			{ label: "Strategy", value: (record: AzureConfig) => record.tenantApplicationStrategy?.strategy ?? "—" },
+			{
+				label: "State",
+				value: (record: AzureConfig) => (record.tenantApplicationStrategy?.enabled ? "Enabled" : "Disabled"),
+			},
+			{ label: "Directory ID", value: (record: AzureConfig) => record.directoryTenantId },
+			{ label: "Secret", value: (record: AzureConfig) => (record.hasClientSecret ? "Configured" : "Not set") },
+		] as Column[],
+		createFields: [],
+		editFields: [],
+	},
 	tenants: {
 		label: "Tenants",
 		singular: "tenant",
@@ -238,6 +275,14 @@ const resources: Record<ResourceName, ResourceConfig> = {
 		columns: [
 			{ label: "Email", value: (record: User) => record.email, className: "primary-cell" },
 			{ label: "Username", value: (record: User) => record.username },
+			{ label: "Phone", value: (record: User) => record.phoneNumber ?? "—" },
+			{ label: "Email verified", value: (record: User) => (record.emailVerified ? "Yes" : "No") },
+			{ label: "Phone verified", value: (record: User) => (record.phoneVerified ? "Yes" : "No") },
+			{
+				label: "TOTP",
+				value: (record: User) =>
+					record.totpAuthenticator?.verified ? "Enrolled" : record.totpAuthenticator ? "Pending" : "Not enrolled",
+			},
 			{ label: "Tenant", value: (record: User) => record.tenant?.name ?? record.tenantId },
 			{ label: "Apps", value: (record: User) => record._count?.applications ?? 0 },
 			{ label: "Created", value: (record: User) => formatDate(record.createdAt) },
@@ -247,12 +292,24 @@ const resources: Record<ResourceName, ResourceConfig> = {
 			{ name: "email", label: "Email", type: "email", required: true },
 			{ name: "username", label: "Username (defaults to email)" },
 			{ name: "password", label: "Password", type: "password", required: true },
+			{ name: "phoneNumber", label: "Phone (international format, e.g. +306912345678)", nullable: true },
+			{ name: "emailVerified", label: "Email verified (admin override)", type: "checkbox" },
+			{ name: "phoneVerified", label: "Phone verified (admin override)", type: "checkbox" },
 		],
 		editFields: [
 			{ name: "email", label: "Email", type: "email", required: true },
 			{ name: "username", label: "Username", required: true },
+			{ name: "phoneNumber", label: "Phone (international format)", nullable: true },
+			{ name: "emailVerified", label: "Email verified (reset when email changes)", type: "checkbox" },
+			{ name: "phoneVerified", label: "Phone verified (reset when phone changes)", type: "checkbox" },
 		],
-		toEditValues: (record: User) => ({ email: record.email, username: record.username }),
+		toEditValues: (record: User) => ({
+			email: record.email,
+			username: record.username,
+			phoneNumber: record.phoneNumber,
+			emailVerified: record.emailVerified,
+			phoneVerified: record.phoneVerified,
+		}),
 		canChangePassword: true,
 	},
 	memberships: {
@@ -417,6 +474,15 @@ async function loadResource(name: ResourceName, sequence: number) {
 
 		const actions = document.createElement("td");
 		actions.className = "row-actions";
+		if (name === "tenant-applications") {
+			actions.append(
+				actionButton("Manage strategies", "key", () => {
+					void openStrategies(record as TenantApplication, loadCurrentView).catch((error) =>
+						showToast(errorMessage(error), "error"),
+					);
+				}),
+			);
+		}
 		if (config.editFields) {
 			actions.append(actionButton("Edit", "edit", () => openForm(name, "edit", record)));
 		}
@@ -444,6 +510,14 @@ function actionButton(label: string, iconName: string, callback: () => void) {
 }
 
 async function openForm(name: ResourceName, mode: "create" | "edit", record?: RecordValue) {
+	if (name === "azure-sso-configs") {
+		try {
+			await openAzureForm(mode === "edit" ? (record as AzureConfig) : undefined, loadCurrentView);
+		} catch (error) {
+			showToast(errorMessage(error), "error");
+		}
+		return;
+	}
 	const config = resources[name];
 	const fields = mode === "create" ? config.createFields : config.editFields;
 	if (!fields) return;
@@ -489,6 +563,7 @@ async function openForm(name: ResourceName, mode: "create" | "edit", record?: Re
 		control.required = field.required ?? false;
 		const initial = initialValues[field.name];
 		control.value = initial === null || initial === undefined ? "" : String(initial);
+		if (control instanceof HTMLInputElement && field.type === "checkbox") control.checked = initial === true;
 		label.append(control);
 		fieldsContainer.append(label);
 	}
@@ -527,7 +602,9 @@ function readForm(fields: Field[]) {
 
 	for (const field of fields) {
 		const value = String(data.get(field.name) ?? "");
-		if (field.type === "select") {
+		if (field.type === "checkbox") {
+			payload[field.name] = data.has(field.name);
+		} else if (field.type === "select") {
 			payload[field.name] = Number(value);
 		} else if (field.nullable && value === "") {
 			payload[field.name] = null;
@@ -561,7 +638,11 @@ async function openPasswordForm(user: User) {
 
 async function deleteRecord(name: ResourceName, record: RecordValue) {
 	const config = resources[name];
-	if (!window.confirm(`Delete this ${config.singular}? Related records may also be deleted.`)) return;
+	const confirmation =
+		name === "azure-sso-configs"
+			? "Delete this Azure configuration? Its strategy will be disabled and kept for reconfiguration."
+			: `Delete this ${config.singular}? Related records may also be deleted.`;
+	if (!window.confirm(confirmation)) return;
 
 	try {
 		await remove(`/${name}/${record.id}`);

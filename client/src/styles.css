@@ -570,6 +570,33 @@ dialog::backdrop {
 	backdrop-filter: blur(3px);
 }
 
+.sso-fields {
+	display: grid;
+	gap: 15px;
+}
+
+.form-field input[type="checkbox"] {
+	width: 20px;
+	height: 20px;
+	accent-color: #1c6b43;
+}
+
+.form-error {
+	color: #9d3838;
+	margin: 0 25px 15px;
+	font-size: 13px;
+}
+
+.form-error:empty {
+	display: none;
+}
+
+.form-help {
+	color: #738078;
+	font-size: 12px;
+	margin: 0;
+}
+
 .dialog-heading {
 	display: flex;
 	align-items: flex-start;

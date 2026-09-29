@@ -402,7 +402,10 @@ export const ModelName = {
   TenantApplication: 'TenantApplication',
   User: 'User',
   TenantApplicationUser: 'TenantApplicationUser',
-  Session: 'Session'
+  Session: 'Session',
+  TenantApplicationAuthenticationStrategy: 'TenantApplicationAuthenticationStrategy',
+  TotpAuthenticator: 'TotpAuthenticator',
+  AzureSsoConfig: 'AzureSsoConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenant" | "application" | "tenantApplication" | "user" | "tenantApplicationUser" | "session"
+    modelProps: "tenant" | "application" | "tenantApplication" | "user" | "tenantApplicationUser" | "session" | "tenantApplicationAuthenticationStrategy" | "totpAuthenticator" | "azureSsoConfig"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -866,6 +869,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TenantApplicationAuthenticationStrategy: {
+      payload: Prisma.$TenantApplicationAuthenticationStrategyPayload<ExtArgs>
+      fields: Prisma.TenantApplicationAuthenticationStrategyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TenantApplicationAuthenticationStrategyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TenantApplicationAuthenticationStrategyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>
+        }
+        findFirst: {
+          args: Prisma.TenantApplicationAuthenticationStrategyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TenantApplicationAuthenticationStrategyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>
+        }
+        findMany: {
+          args: Prisma.TenantApplicationAuthenticationStrategyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>[]
+        }
+        create: {
+          args: Prisma.TenantApplicationAuthenticationStrategyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>
+        }
+        createMany: {
+          args: Prisma.TenantApplicationAuthenticationStrategyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TenantApplicationAuthenticationStrategyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>[]
+        }
+        delete: {
+          args: Prisma.TenantApplicationAuthenticationStrategyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>
+        }
+        update: {
+          args: Prisma.TenantApplicationAuthenticationStrategyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>
+        }
+        deleteMany: {
+          args: Prisma.TenantApplicationAuthenticationStrategyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TenantApplicationAuthenticationStrategyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TenantApplicationAuthenticationStrategyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>[]
+        }
+        upsert: {
+          args: Prisma.TenantApplicationAuthenticationStrategyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TenantApplicationAuthenticationStrategyPayload>
+        }
+        aggregate: {
+          args: Prisma.TenantApplicationAuthenticationStrategyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTenantApplicationAuthenticationStrategy>
+        }
+        groupBy: {
+          args: Prisma.TenantApplicationAuthenticationStrategyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantApplicationAuthenticationStrategyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TenantApplicationAuthenticationStrategyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TenantApplicationAuthenticationStrategyCountAggregateOutputType> | number
+        }
+      }
+    }
+    TotpAuthenticator: {
+      payload: Prisma.$TotpAuthenticatorPayload<ExtArgs>
+      fields: Prisma.TotpAuthenticatorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TotpAuthenticatorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TotpAuthenticatorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>
+        }
+        findFirst: {
+          args: Prisma.TotpAuthenticatorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TotpAuthenticatorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>
+        }
+        findMany: {
+          args: Prisma.TotpAuthenticatorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>[]
+        }
+        create: {
+          args: Prisma.TotpAuthenticatorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>
+        }
+        createMany: {
+          args: Prisma.TotpAuthenticatorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TotpAuthenticatorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>[]
+        }
+        delete: {
+          args: Prisma.TotpAuthenticatorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>
+        }
+        update: {
+          args: Prisma.TotpAuthenticatorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>
+        }
+        deleteMany: {
+          args: Prisma.TotpAuthenticatorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TotpAuthenticatorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TotpAuthenticatorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>[]
+        }
+        upsert: {
+          args: Prisma.TotpAuthenticatorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TotpAuthenticatorPayload>
+        }
+        aggregate: {
+          args: Prisma.TotpAuthenticatorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTotpAuthenticator>
+        }
+        groupBy: {
+          args: Prisma.TotpAuthenticatorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TotpAuthenticatorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TotpAuthenticatorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TotpAuthenticatorCountAggregateOutputType> | number
+        }
+      }
+    }
+    AzureSsoConfig: {
+      payload: Prisma.$AzureSsoConfigPayload<ExtArgs>
+      fields: Prisma.AzureSsoConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AzureSsoConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AzureSsoConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.AzureSsoConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AzureSsoConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>
+        }
+        findMany: {
+          args: Prisma.AzureSsoConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>[]
+        }
+        create: {
+          args: Prisma.AzureSsoConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>
+        }
+        createMany: {
+          args: Prisma.AzureSsoConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AzureSsoConfigCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>[]
+        }
+        delete: {
+          args: Prisma.AzureSsoConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>
+        }
+        update: {
+          args: Prisma.AzureSsoConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.AzureSsoConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AzureSsoConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AzureSsoConfigUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>[]
+        }
+        upsert: {
+          args: Prisma.AzureSsoConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AzureSsoConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.AzureSsoConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAzureSsoConfig>
+        }
+        groupBy: {
+          args: Prisma.AzureSsoConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AzureSsoConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AzureSsoConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AzureSsoConfigCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -940,8 +1165,11 @@ export type TenantApplicationScalarFieldEnum = (typeof TenantApplicationScalarFi
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  phoneNumber: 'phoneNumber',
   username: 'username',
   passwordHash: 'passwordHash',
+  emailVerified: 'emailVerified',
+  phoneVerified: 'phoneVerified',
   tenantId: 'tenantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -971,6 +1199,49 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const TenantApplicationAuthenticationStrategyScalarFieldEnum = {
+  id: 'id',
+  tenantApplicationId: 'tenantApplicationId',
+  strategy: 'strategy',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantApplicationAuthenticationStrategyScalarFieldEnum = (typeof TenantApplicationAuthenticationStrategyScalarFieldEnum)[keyof typeof TenantApplicationAuthenticationStrategyScalarFieldEnum]
+
+
+export const TotpAuthenticatorScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  label: 'label',
+  encryptedSecret: 'encryptedSecret',
+  verified: 'verified',
+  lastUsedTimeStep: 'lastUsedTimeStep',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TotpAuthenticatorScalarFieldEnum = (typeof TotpAuthenticatorScalarFieldEnum)[keyof typeof TotpAuthenticatorScalarFieldEnum]
+
+
+export const AzureSsoConfigScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  tenantApplicationStrategyId: 'tenantApplicationStrategyId',
+  directoryTenantId: 'directoryTenantId',
+  clientId: 'clientId',
+  clientSecret: 'clientSecret',
+  redirectUri: 'redirectUri',
+  scopes: 'scopes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AzureSsoConfigScalarFieldEnum = (typeof AzureSsoConfigScalarFieldEnum)[keyof typeof AzureSsoConfigScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1013,6 +1284,27 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'AuthenticationStrategy'
+ */
+export type EnumAuthenticationStrategyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthenticationStrategy'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
     
 
 
@@ -1179,6 +1471,9 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   tenantApplicationUser?: Prisma.TenantApplicationUserOmit
   session?: Prisma.SessionOmit
+  tenantApplicationAuthenticationStrategy?: Prisma.TenantApplicationAuthenticationStrategyOmit
+  totpAuthenticator?: Prisma.TotpAuthenticatorOmit
+  azureSsoConfig?: Prisma.AzureSsoConfigOmit
 }
 
 /* Types for Logging */

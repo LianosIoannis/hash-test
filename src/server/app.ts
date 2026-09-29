@@ -2,6 +2,7 @@ import express from "express";
 import { getDatabaseOverview } from "../db/overview.js";
 import { errorHandler } from "./errors.js";
 import { applicationsRouter } from "./routes/applications.js";
+import { applicationStrategiesRouter, authStrategiesRouter, azureConfigsRouter } from "./routes/auth-strategies.js";
 import { membershipsRouter } from "./routes/memberships.js";
 import { sessionsRouter } from "./routes/sessions.js";
 import { tenantApplicationsRouter } from "./routes/tenant-applications.js";
@@ -43,6 +44,9 @@ export function createApp() {
 	app.use("/api/tenants", tenantsRouter);
 	app.use("/api/applications", applicationsRouter);
 	app.use("/api/tenant-applications", tenantApplicationsRouter);
+	app.use("/api/tenant-applications/:id/strategies", applicationStrategiesRouter);
+	app.use("/api/authentication-strategies", authStrategiesRouter);
+	app.use("/api/azure-sso-configs", azureConfigsRouter);
 	app.use("/api/users", usersRouter);
 	app.use("/api/memberships", membershipsRouter);
 	app.use("/api/sessions", sessionsRouter);

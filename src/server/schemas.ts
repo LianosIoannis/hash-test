@@ -19,6 +19,9 @@ const normalizedEmail = v.pipe(
 	v.transform((value) => value.trim().toLowerCase()),
 	v.email(),
 );
+const phoneNumber = v.nullable(
+	v.pipe(v.string(), v.trim(), v.regex(/^\+[1-9]\d{1,14}$/, "Use an international phone number such as +306912345678")),
+);
 
 export const createTenantSchema = v.object({
 	name: requiredText,
@@ -62,6 +65,9 @@ export const createUserSchema = v.pipe(
 			),
 		),
 		password: v.pipe(v.string(), v.minLength(8), v.maxLength(100)),
+		phoneNumber: v.optional(phoneNumber),
+		emailVerified: v.optional(v.boolean(), false),
+		phoneVerified: v.optional(v.boolean(), false),
 	}),
 	v.transform((input) => ({
 		...input,
@@ -73,6 +79,9 @@ export const updateUserSchema = v.pipe(
 	v.object({
 		email: v.optional(normalizedEmail),
 		username: v.optional(requiredText),
+		phoneNumber: v.optional(phoneNumber),
+		emailVerified: v.optional(v.boolean()),
+		phoneVerified: v.optional(v.boolean()),
 	}),
 	v.check((input) => Object.values(input).some((value) => value !== undefined), "At least one field is required"),
 );

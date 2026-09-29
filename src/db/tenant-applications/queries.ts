@@ -17,6 +17,7 @@ const tenantApplicationDetails = {
 	_count: {
 		select: { users: true },
 	},
+	authenticationStrategies: { select: { id: true, strategy: true, enabled: true } },
 } as const;
 
 export async function findTenantApplicationById(id: number) {

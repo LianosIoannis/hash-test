@@ -47,3 +47,18 @@ export type TenantApplicationUser = Prisma.TenantApplicationUserModel
  * 
  */
 export type Session = Prisma.SessionModel
+/**
+ * Model TenantApplicationAuthenticationStrategy
+ * 
+ */
+export type TenantApplicationAuthenticationStrategy = Prisma.TenantApplicationAuthenticationStrategyModel
+/**
+ * Model TotpAuthenticator
+ * 
+ */
+export type TotpAuthenticator = Prisma.TotpAuthenticatorModel
+/**
+ * Model AzureSsoConfig
+ * 
+ */
+export type AzureSsoConfig = Prisma.AzureSsoConfigModel

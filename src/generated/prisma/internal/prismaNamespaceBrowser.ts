@@ -56,7 +56,10 @@ export const ModelName = {
   TenantApplication: 'TenantApplication',
   User: 'User',
   TenantApplicationUser: 'TenantApplicationUser',
-  Session: 'Session'
+  Session: 'Session',
+  TenantApplicationAuthenticationStrategy: 'TenantApplicationAuthenticationStrategy',
+  TotpAuthenticator: 'TotpAuthenticator',
+  AzureSsoConfig: 'AzureSsoConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -110,8 +113,11 @@ export type TenantApplicationScalarFieldEnum = (typeof TenantApplicationScalarFi
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
+  phoneNumber: 'phoneNumber',
   username: 'username',
   passwordHash: 'passwordHash',
+  emailVerified: 'emailVerified',
+  phoneVerified: 'phoneVerified',
   tenantId: 'tenantId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -141,6 +147,49 @@ export const SessionScalarFieldEnum = {
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
+export const TenantApplicationAuthenticationStrategyScalarFieldEnum = {
+  id: 'id',
+  tenantApplicationId: 'tenantApplicationId',
+  strategy: 'strategy',
+  enabled: 'enabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TenantApplicationAuthenticationStrategyScalarFieldEnum = (typeof TenantApplicationAuthenticationStrategyScalarFieldEnum)[keyof typeof TenantApplicationAuthenticationStrategyScalarFieldEnum]
+
+
+export const TotpAuthenticatorScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  label: 'label',
+  encryptedSecret: 'encryptedSecret',
+  verified: 'verified',
+  lastUsedTimeStep: 'lastUsedTimeStep',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TotpAuthenticatorScalarFieldEnum = (typeof TotpAuthenticatorScalarFieldEnum)[keyof typeof TotpAuthenticatorScalarFieldEnum]
+
+
+export const AzureSsoConfigScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  tenantApplicationStrategyId: 'tenantApplicationStrategyId',
+  directoryTenantId: 'directoryTenantId',
+  clientId: 'clientId',
+  clientSecret: 'clientSecret',
+  redirectUri: 'redirectUri',
+  scopes: 'scopes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AzureSsoConfigScalarFieldEnum = (typeof AzureSsoConfigScalarFieldEnum)[keyof typeof AzureSsoConfigScalarFieldEnum]
 
 
 export const SortOrder = {

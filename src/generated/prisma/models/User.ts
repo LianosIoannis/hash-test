@@ -39,8 +39,11 @@ export type UserSumAggregateOutputType = {
 export type UserMinAggregateOutputType = {
   id: number | null
   email: string | null
+  phoneNumber: string | null
   username: string | null
   passwordHash: string | null
+  emailVerified: boolean | null
+  phoneVerified: boolean | null
   tenantId: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -49,8 +52,11 @@ export type UserMinAggregateOutputType = {
 export type UserMaxAggregateOutputType = {
   id: number | null
   email: string | null
+  phoneNumber: string | null
   username: string | null
   passwordHash: string | null
+  emailVerified: boolean | null
+  phoneVerified: boolean | null
   tenantId: number | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -59,8 +65,11 @@ export type UserMaxAggregateOutputType = {
 export type UserCountAggregateOutputType = {
   id: number
   email: number
+  phoneNumber: number
   username: number
   passwordHash: number
+  emailVerified: number
+  phoneVerified: number
   tenantId: number
   createdAt: number
   updatedAt: number
@@ -81,8 +90,11 @@ export type UserSumAggregateInputType = {
 export type UserMinAggregateInputType = {
   id?: true
   email?: true
+  phoneNumber?: true
   username?: true
   passwordHash?: true
+  emailVerified?: true
+  phoneVerified?: true
   tenantId?: true
   createdAt?: true
   updatedAt?: true
@@ -91,8 +103,11 @@ export type UserMinAggregateInputType = {
 export type UserMaxAggregateInputType = {
   id?: true
   email?: true
+  phoneNumber?: true
   username?: true
   passwordHash?: true
+  emailVerified?: true
+  phoneVerified?: true
   tenantId?: true
   createdAt?: true
   updatedAt?: true
@@ -101,8 +116,11 @@ export type UserMaxAggregateInputType = {
 export type UserCountAggregateInputType = {
   id?: true
   email?: true
+  phoneNumber?: true
   username?: true
   passwordHash?: true
+  emailVerified?: true
+  phoneVerified?: true
   tenantId?: true
   createdAt?: true
   updatedAt?: true
@@ -198,8 +216,11 @@ export type UserGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type UserGroupByOutputType = {
   id: number
   email: string
+  phoneNumber: string | null
   username: string
   passwordHash: string
+  emailVerified: boolean
+  phoneVerified: boolean
   tenantId: number
   createdAt: Date
   updatedAt: Date
@@ -231,25 +252,33 @@ export type UserWhereInput = {
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   id?: Prisma.IntFilter<"User"> | number
   email?: Prisma.StringFilter<"User"> | string
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   username?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  phoneVerified?: Prisma.BoolFilter<"User"> | boolean
   tenantId?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   applications?: Prisma.TenantApplicationUserListRelationFilter
+  totpAuthenticator?: Prisma.XOR<Prisma.TotpAuthenticatorNullableScalarRelationFilter, Prisma.TotpAuthenticatorWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tenant?: Prisma.TenantOrderByWithRelationInput
   applications?: Prisma.TenantApplicationUserOrderByRelationAggregateInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorOrderByWithRelationInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -257,24 +286,32 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   id_tenantId?: Prisma.UserIdTenantIdCompoundUniqueInput
   tenantId_email?: Prisma.UserTenantIdEmailCompoundUniqueInput
   tenantId_username?: Prisma.UserTenantIdUsernameCompoundUniqueInput
+  tenantId_phoneNumber?: Prisma.UserTenantIdPhoneNumberCompoundUniqueInput
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   email?: Prisma.StringFilter<"User"> | string
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   username?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  phoneVerified?: Prisma.BoolFilter<"User"> | boolean
   tenantId?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   applications?: Prisma.TenantApplicationUserListRelationFilter
-}, "id" | "id_tenantId" | "tenantId_email" | "tenantId_username">
+  totpAuthenticator?: Prisma.XOR<Prisma.TotpAuthenticatorNullableScalarRelationFilter, Prisma.TotpAuthenticatorWhereInput> | null
+}, "id" | "id_tenantId" | "tenantId_email" | "tenantId_username" | "tenantId_phoneNumber">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -291,8 +328,11 @@ export type UserScalarWhereWithAggregatesInput = {
   NOT?: Prisma.UserScalarWhereWithAggregatesInput | Prisma.UserScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"User"> | number
   email?: Prisma.StringWithAggregatesFilter<"User"> | string
+  phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   username?: Prisma.StringWithAggregatesFilter<"User"> | string
   passwordHash?: Prisma.StringWithAggregatesFilter<"User"> | string
+  emailVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  phoneVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   tenantId?: Prisma.IntWithAggregatesFilter<"User"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -300,51 +340,70 @@ export type UserScalarWhereWithAggregatesInput = {
 
 export type UserCreateInput = {
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutUsersInput
   applications?: Prisma.TenantApplicationUserCreateNestedManyWithoutUserInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
   id?: number
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId: number
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutUserInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutUsersNestedInput
   applications?: Prisma.TenantApplicationUserUpdateManyWithoutUserNestedInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutUserNestedInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
   id?: number
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -352,8 +411,11 @@ export type UserCreateManyInput = {
 
 export type UserUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -361,8 +423,11 @@ export type UserUpdateManyMutationInput = {
 export type UserUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -393,11 +458,19 @@ export type UserTenantIdUsernameCompoundUniqueInput = {
   username: string
 }
 
+export type UserTenantIdPhoneNumberCompoundUniqueInput = {
+  tenantId: number
+  phoneNumber: string
+}
+
 export type UserCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -411,8 +484,11 @@ export type UserAvgOrderByAggregateInput = {
 export type UserMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -421,8 +497,11 @@ export type UserMaxOrderByAggregateInput = {
 export type UserMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phoneNumber?: Prisma.SortOrder
   username?: Prisma.SortOrder
   passwordHash?: Prisma.SortOrder
+  emailVerified?: Prisma.SortOrder
+  phoneVerified?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -480,6 +559,10 @@ export type UserUncheckedUpdateManyWithoutTenantNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type UserCreateNestedOneWithoutApplicationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutApplicationsInput, Prisma.UserUncheckedCreateWithoutApplicationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutApplicationsInput
@@ -494,23 +577,45 @@ export type UserUpdateOneRequiredWithoutApplicationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutApplicationsInput, Prisma.UserUpdateWithoutApplicationsInput>, Prisma.UserUncheckedUpdateWithoutApplicationsInput>
 }
 
+export type UserCreateNestedOneWithoutTotpAuthenticatorInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTotpAuthenticatorInput, Prisma.UserUncheckedCreateWithoutTotpAuthenticatorInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTotpAuthenticatorInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTotpAuthenticatorNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTotpAuthenticatorInput, Prisma.UserUncheckedCreateWithoutTotpAuthenticatorInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTotpAuthenticatorInput
+  upsert?: Prisma.UserUpsertWithoutTotpAuthenticatorInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTotpAuthenticatorInput, Prisma.UserUpdateWithoutTotpAuthenticatorInput>, Prisma.UserUncheckedUpdateWithoutTotpAuthenticatorInput>
+}
+
 export type UserCreateWithoutTenantInput = {
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.TenantApplicationUserCreateNestedManyWithoutUserInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutTenantInput = {
   id?: number
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   applications?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutUserInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutTenantInput = {
@@ -544,8 +649,11 @@ export type UserScalarWhereInput = {
   NOT?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
   id?: Prisma.IntFilter<"User"> | number
   email?: Prisma.StringFilter<"User"> | string
+  phoneNumber?: Prisma.StringNullableFilter<"User"> | string | null
   username?: Prisma.StringFilter<"User"> | string
   passwordHash?: Prisma.StringFilter<"User"> | string
+  emailVerified?: Prisma.BoolFilter<"User"> | boolean
+  phoneVerified?: Prisma.BoolFilter<"User"> | boolean
   tenantId?: Prisma.IntFilter<"User"> | number
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
@@ -553,21 +661,29 @@ export type UserScalarWhereInput = {
 
 export type UserCreateWithoutApplicationsInput = {
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutUsersInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutApplicationsInput = {
   id?: number
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  totpAuthenticator?: Prisma.TotpAuthenticatorUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutApplicationsInput = {
@@ -588,56 +704,148 @@ export type UserUpdateToOneWithWhereWithoutApplicationsInput = {
 
 export type UserUpdateWithoutApplicationsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutUsersNestedInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutApplicationsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  totpAuthenticator?: Prisma.TotpAuthenticatorUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTotpAuthenticatorInput = {
+  email: string
+  phoneNumber?: string | null
+  username: string
+  passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutUsersInput
+  applications?: Prisma.TenantApplicationUserCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTotpAuthenticatorInput = {
+  id?: number
+  email: string
+  phoneNumber?: string | null
+  username: string
+  passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
+  tenantId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  applications?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTotpAuthenticatorInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTotpAuthenticatorInput, Prisma.UserUncheckedCreateWithoutTotpAuthenticatorInput>
+}
+
+export type UserUpsertWithoutTotpAuthenticatorInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTotpAuthenticatorInput, Prisma.UserUncheckedUpdateWithoutTotpAuthenticatorInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTotpAuthenticatorInput, Prisma.UserUncheckedCreateWithoutTotpAuthenticatorInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTotpAuthenticatorInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTotpAuthenticatorInput, Prisma.UserUncheckedUpdateWithoutTotpAuthenticatorInput>
+}
+
+export type UserUpdateWithoutTotpAuthenticatorInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutUsersNestedInput
+  applications?: Prisma.TenantApplicationUserUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTotpAuthenticatorInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  tenantId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  applications?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyTenantInput = {
   id?: number
   email: string
+  phoneNumber?: string | null
   username: string
   passwordHash: string
+  emailVerified?: boolean
+  phoneVerified?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type UserUpdateWithoutTenantInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.TenantApplicationUserUpdateManyWithoutUserNestedInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   applications?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutUserNestedInput
+  totpAuthenticator?: Prisma.TotpAuthenticatorUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   username?: Prisma.StringFieldUpdateOperationsInput | string
   passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  phoneVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -676,21 +884,28 @@ export type UserCountOutputTypeCountApplicationsArgs<ExtArgs extends runtime.Typ
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  phoneNumber?: boolean
   username?: boolean
   passwordHash?: boolean
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
+  totpAuthenticator?: boolean | Prisma.User$totpAuthenticatorArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  phoneNumber?: boolean
   username?: boolean
   passwordHash?: boolean
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -700,8 +915,11 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   email?: boolean
+  phoneNumber?: boolean
   username?: boolean
   passwordHash?: boolean
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -711,17 +929,21 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
 export type UserSelectScalar = {
   id?: boolean
   email?: boolean
+  phoneNumber?: boolean
   username?: boolean
   passwordHash?: boolean
+  emailVerified?: boolean
+  phoneVerified?: boolean
   tenantId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "username" | "passwordHash" | "tenantId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "phoneNumber" | "username" | "passwordHash" | "emailVerified" | "phoneVerified" | "tenantId" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   applications?: boolean | Prisma.User$applicationsArgs<ExtArgs>
+  totpAuthenticator?: boolean | Prisma.User$totpAuthenticatorArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -736,12 +958,16 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     tenant: Prisma.$TenantPayload<ExtArgs>
     applications: Prisma.$TenantApplicationUserPayload<ExtArgs>[]
+    totpAuthenticator: Prisma.$TotpAuthenticatorPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     email: string
+    phoneNumber: string | null
     username: string
     passwordHash: string
+    emailVerified: boolean
+    phoneVerified: boolean
     tenantId: number
     createdAt: Date
     updatedAt: Date
@@ -1141,6 +1367,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   applications<T extends Prisma.User$applicationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$applicationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantApplicationUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  totpAuthenticator<T extends Prisma.User$totpAuthenticatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$totpAuthenticatorArgs<ExtArgs>>): Prisma.Prisma__TotpAuthenticatorClient<runtime.Types.Result.GetResult<Prisma.$TotpAuthenticatorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1172,8 +1399,11 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface UserFieldRefs {
   readonly id: Prisma.FieldRef<"User", 'Int'>
   readonly email: Prisma.FieldRef<"User", 'String'>
+  readonly phoneNumber: Prisma.FieldRef<"User", 'String'>
   readonly username: Prisma.FieldRef<"User", 'String'>
   readonly passwordHash: Prisma.FieldRef<"User", 'String'>
+  readonly emailVerified: Prisma.FieldRef<"User", 'Boolean'>
+  readonly phoneVerified: Prisma.FieldRef<"User", 'Boolean'>
   readonly tenantId: Prisma.FieldRef<"User", 'Int'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
@@ -1597,6 +1827,25 @@ export type User$applicationsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.TenantApplicationUserScalarFieldEnum | Prisma.TenantApplicationUserScalarFieldEnum[]
+}
+
+/**
+ * User.totpAuthenticator
+ */
+export type User$totpAuthenticatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TotpAuthenticator
+   */
+  select?: Prisma.TotpAuthenticatorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TotpAuthenticator
+   */
+  omit?: Prisma.TotpAuthenticatorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TotpAuthenticatorInclude<ExtArgs> | null
+  where?: Prisma.TotpAuthenticatorWhereInput
 }
 
 /**

@@ -235,6 +235,7 @@ export type TenantApplicationWhereInput = {
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   users?: Prisma.TenantApplicationUserListRelationFilter
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyListRelationFilter
 }
 
 export type TenantApplicationOrderByWithRelationInput = {
@@ -247,6 +248,7 @@ export type TenantApplicationOrderByWithRelationInput = {
   tenant?: Prisma.TenantOrderByWithRelationInput
   application?: Prisma.ApplicationOrderByWithRelationInput
   users?: Prisma.TenantApplicationUserOrderByRelationAggregateInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyOrderByRelationAggregateInput
 }
 
 export type TenantApplicationWhereUniqueInput = Prisma.AtLeast<{
@@ -264,6 +266,7 @@ export type TenantApplicationWhereUniqueInput = Prisma.AtLeast<{
   tenant?: Prisma.XOR<Prisma.TenantScalarRelationFilter, Prisma.TenantWhereInput>
   application?: Prisma.XOR<Prisma.ApplicationScalarRelationFilter, Prisma.ApplicationWhereInput>
   users?: Prisma.TenantApplicationUserListRelationFilter
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyListRelationFilter
 }, "id" | "key" | "id_tenantId" | "tenantId_applicationId">
 
 export type TenantApplicationOrderByWithAggregationInput = {
@@ -299,6 +302,7 @@ export type TenantApplicationCreateInput = {
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
   application: Prisma.ApplicationCreateNestedOneWithoutTenantApplicationsInput
   users?: Prisma.TenantApplicationUserCreateNestedManyWithoutTenantApplicationInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationUncheckedCreateInput = {
@@ -309,6 +313,7 @@ export type TenantApplicationUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutTenantApplicationInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationUpdateInput = {
@@ -318,6 +323,7 @@ export type TenantApplicationUpdateInput = {
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutTenantApplicationsNestedInput
   users?: Prisma.TenantApplicationUserUpdateManyWithoutTenantApplicationNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationUncheckedUpdateInput = {
@@ -328,6 +334,7 @@ export type TenantApplicationUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutTenantApplicationNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationCreateManyInput = {
@@ -516,12 +523,27 @@ export type TenantApplicationUpdateOneRequiredWithoutUsersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantApplicationUpdateToOneWithWhereWithoutUsersInput, Prisma.TenantApplicationUpdateWithoutUsersInput>, Prisma.TenantApplicationUncheckedUpdateWithoutUsersInput>
 }
 
+export type TenantApplicationCreateNestedOneWithoutAuthenticationStrategiesInput = {
+  create?: Prisma.XOR<Prisma.TenantApplicationCreateWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUncheckedCreateWithoutAuthenticationStrategiesInput>
+  connectOrCreate?: Prisma.TenantApplicationCreateOrConnectWithoutAuthenticationStrategiesInput
+  connect?: Prisma.TenantApplicationWhereUniqueInput
+}
+
+export type TenantApplicationUpdateOneRequiredWithoutAuthenticationStrategiesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantApplicationCreateWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUncheckedCreateWithoutAuthenticationStrategiesInput>
+  connectOrCreate?: Prisma.TenantApplicationCreateOrConnectWithoutAuthenticationStrategiesInput
+  upsert?: Prisma.TenantApplicationUpsertWithoutAuthenticationStrategiesInput
+  connect?: Prisma.TenantApplicationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantApplicationUpdateToOneWithWhereWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUpdateWithoutAuthenticationStrategiesInput>, Prisma.TenantApplicationUncheckedUpdateWithoutAuthenticationStrategiesInput>
+}
+
 export type TenantApplicationCreateWithoutTenantInput = {
   key: string
   createdAt?: Date | string
   updatedAt?: Date | string
   application: Prisma.ApplicationCreateNestedOneWithoutTenantApplicationsInput
   users?: Prisma.TenantApplicationUserCreateNestedManyWithoutTenantApplicationInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationUncheckedCreateWithoutTenantInput = {
@@ -531,6 +553,7 @@ export type TenantApplicationUncheckedCreateWithoutTenantInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutTenantApplicationInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationCreateOrConnectWithoutTenantInput = {
@@ -576,6 +599,7 @@ export type TenantApplicationCreateWithoutApplicationInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
   users?: Prisma.TenantApplicationUserCreateNestedManyWithoutTenantApplicationInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationUncheckedCreateWithoutApplicationInput = {
@@ -585,6 +609,7 @@ export type TenantApplicationUncheckedCreateWithoutApplicationInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutTenantApplicationInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationCreateOrConnectWithoutApplicationInput = {
@@ -618,6 +643,7 @@ export type TenantApplicationCreateWithoutUsersInput = {
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
   application: Prisma.ApplicationCreateNestedOneWithoutTenantApplicationsInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationUncheckedCreateWithoutUsersInput = {
@@ -627,6 +653,7 @@ export type TenantApplicationUncheckedCreateWithoutUsersInput = {
   applicationId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedCreateNestedManyWithoutTenantApplicationInput
 }
 
 export type TenantApplicationCreateOrConnectWithoutUsersInput = {
@@ -651,6 +678,7 @@ export type TenantApplicationUpdateWithoutUsersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
   application?: Prisma.ApplicationUpdateOneRequiredWithoutTenantApplicationsNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationUncheckedUpdateWithoutUsersInput = {
@@ -660,6 +688,61 @@ export type TenantApplicationUncheckedUpdateWithoutUsersInput = {
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedUpdateManyWithoutTenantApplicationNestedInput
+}
+
+export type TenantApplicationCreateWithoutAuthenticationStrategiesInput = {
+  key: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
+  application: Prisma.ApplicationCreateNestedOneWithoutTenantApplicationsInput
+  users?: Prisma.TenantApplicationUserCreateNestedManyWithoutTenantApplicationInput
+}
+
+export type TenantApplicationUncheckedCreateWithoutAuthenticationStrategiesInput = {
+  id?: number
+  key: string
+  tenantId: number
+  applicationId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.TenantApplicationUserUncheckedCreateNestedManyWithoutTenantApplicationInput
+}
+
+export type TenantApplicationCreateOrConnectWithoutAuthenticationStrategiesInput = {
+  where: Prisma.TenantApplicationWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantApplicationCreateWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUncheckedCreateWithoutAuthenticationStrategiesInput>
+}
+
+export type TenantApplicationUpsertWithoutAuthenticationStrategiesInput = {
+  update: Prisma.XOR<Prisma.TenantApplicationUpdateWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUncheckedUpdateWithoutAuthenticationStrategiesInput>
+  create: Prisma.XOR<Prisma.TenantApplicationCreateWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUncheckedCreateWithoutAuthenticationStrategiesInput>
+  where?: Prisma.TenantApplicationWhereInput
+}
+
+export type TenantApplicationUpdateToOneWithWhereWithoutAuthenticationStrategiesInput = {
+  where?: Prisma.TenantApplicationWhereInput
+  data: Prisma.XOR<Prisma.TenantApplicationUpdateWithoutAuthenticationStrategiesInput, Prisma.TenantApplicationUncheckedUpdateWithoutAuthenticationStrategiesInput>
+}
+
+export type TenantApplicationUpdateWithoutAuthenticationStrategiesInput = {
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
+  application?: Prisma.ApplicationUpdateOneRequiredWithoutTenantApplicationsNestedInput
+  users?: Prisma.TenantApplicationUserUpdateManyWithoutTenantApplicationNestedInput
+}
+
+export type TenantApplicationUncheckedUpdateWithoutAuthenticationStrategiesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  tenantId?: Prisma.IntFieldUpdateOperationsInput | number
+  applicationId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationCreateManyTenantInput = {
@@ -676,6 +759,7 @@ export type TenantApplicationUpdateWithoutTenantInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   application?: Prisma.ApplicationUpdateOneRequiredWithoutTenantApplicationsNestedInput
   users?: Prisma.TenantApplicationUserUpdateManyWithoutTenantApplicationNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationUncheckedUpdateWithoutTenantInput = {
@@ -685,6 +769,7 @@ export type TenantApplicationUncheckedUpdateWithoutTenantInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutTenantApplicationNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationUncheckedUpdateManyWithoutTenantInput = {
@@ -709,6 +794,7 @@ export type TenantApplicationUpdateWithoutApplicationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
   users?: Prisma.TenantApplicationUserUpdateManyWithoutTenantApplicationNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationUncheckedUpdateWithoutApplicationInput = {
@@ -718,6 +804,7 @@ export type TenantApplicationUncheckedUpdateWithoutApplicationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.TenantApplicationUserUncheckedUpdateManyWithoutTenantApplicationNestedInput
+  authenticationStrategies?: Prisma.TenantApplicationAuthenticationStrategyUncheckedUpdateManyWithoutTenantApplicationNestedInput
 }
 
 export type TenantApplicationUncheckedUpdateManyWithoutApplicationInput = {
@@ -735,10 +822,12 @@ export type TenantApplicationUncheckedUpdateManyWithoutApplicationInput = {
 
 export type TenantApplicationCountOutputType = {
   users: number
+  authenticationStrategies: number
 }
 
 export type TenantApplicationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | TenantApplicationCountOutputTypeCountUsersArgs
+  authenticationStrategies?: boolean | TenantApplicationCountOutputTypeCountAuthenticationStrategiesArgs
 }
 
 /**
@@ -758,6 +847,13 @@ export type TenantApplicationCountOutputTypeCountUsersArgs<ExtArgs extends runti
   where?: Prisma.TenantApplicationUserWhereInput
 }
 
+/**
+ * TenantApplicationCountOutputType without action
+ */
+export type TenantApplicationCountOutputTypeCountAuthenticationStrategiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TenantApplicationAuthenticationStrategyWhereInput
+}
+
 
 export type TenantApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -769,6 +865,7 @@ export type TenantApplicationSelect<ExtArgs extends runtime.Types.Extensions.Int
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   users?: boolean | Prisma.TenantApplication$usersArgs<ExtArgs>
+  authenticationStrategies?: boolean | Prisma.TenantApplication$authenticationStrategiesArgs<ExtArgs>
   _count?: boolean | Prisma.TenantApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenantApplication"]>
 
@@ -808,6 +905,7 @@ export type TenantApplicationInclude<ExtArgs extends runtime.Types.Extensions.In
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
   users?: boolean | Prisma.TenantApplication$usersArgs<ExtArgs>
+  authenticationStrategies?: boolean | Prisma.TenantApplication$authenticationStrategiesArgs<ExtArgs>
   _count?: boolean | Prisma.TenantApplicationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantApplicationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -825,6 +923,7 @@ export type $TenantApplicationPayload<ExtArgs extends runtime.Types.Extensions.I
     tenant: Prisma.$TenantPayload<ExtArgs>
     application: Prisma.$ApplicationPayload<ExtArgs>
     users: Prisma.$TenantApplicationUserPayload<ExtArgs>[]
+    authenticationStrategies: Prisma.$TenantApplicationAuthenticationStrategyPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1230,6 +1329,7 @@ export interface Prisma__TenantApplicationClient<T, Null = never, ExtArgs extend
   tenant<T extends Prisma.TenantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantDefaultArgs<ExtArgs>>): Prisma.Prisma__TenantClient<runtime.Types.Result.GetResult<Prisma.$TenantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   application<T extends Prisma.ApplicationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ApplicationDefaultArgs<ExtArgs>>): Prisma.Prisma__ApplicationClient<runtime.Types.Result.GetResult<Prisma.$ApplicationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   users<T extends Prisma.TenantApplication$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantApplication$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantApplicationUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  authenticationStrategies<T extends Prisma.TenantApplication$authenticationStrategiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TenantApplication$authenticationStrategiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TenantApplicationAuthenticationStrategyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1685,6 +1785,30 @@ export type TenantApplication$usersArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.TenantApplicationUserScalarFieldEnum | Prisma.TenantApplicationUserScalarFieldEnum[]
+}
+
+/**
+ * TenantApplication.authenticationStrategies
+ */
+export type TenantApplication$authenticationStrategiesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TenantApplicationAuthenticationStrategy
+   */
+  select?: Prisma.TenantApplicationAuthenticationStrategySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TenantApplicationAuthenticationStrategy
+   */
+  omit?: Prisma.TenantApplicationAuthenticationStrategyOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TenantApplicationAuthenticationStrategyInclude<ExtArgs> | null
+  where?: Prisma.TenantApplicationAuthenticationStrategyWhereInput
+  orderBy?: Prisma.TenantApplicationAuthenticationStrategyOrderByWithRelationInput | Prisma.TenantApplicationAuthenticationStrategyOrderByWithRelationInput[]
+  cursor?: Prisma.TenantApplicationAuthenticationStrategyWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TenantApplicationAuthenticationStrategyScalarFieldEnum | Prisma.TenantApplicationAuthenticationStrategyScalarFieldEnum[]
 }
 
 /**

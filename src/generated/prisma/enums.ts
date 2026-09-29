@@ -9,7 +9,17 @@
 * 🟢 You can import this file directly.
 */
 
+export const AuthenticationStrategy = {
+  EMAIL_PASSWORD: 'EMAIL_PASSWORD',
+  USERNAME_PASSWORD: 'USERNAME_PASSWORD',
+  EMAIL_PASSWORD_EMAIL_OTP: 'EMAIL_PASSWORD_EMAIL_OTP',
+  EMAIL_PASSWORD_PHONE_OTP: 'EMAIL_PASSWORD_PHONE_OTP',
+  EMAIL_PASSWORD_TOTP: 'EMAIL_PASSWORD_TOTP',
+  USERNAME_PASSWORD_EMAIL_OTP: 'USERNAME_PASSWORD_EMAIL_OTP',
+  USERNAME_PASSWORD_PHONE_OTP: 'USERNAME_PASSWORD_PHONE_OTP',
+  USERNAME_PASSWORD_TOTP: 'USERNAME_PASSWORD_TOTP',
+  AZURE_SSO_SERVER: 'AZURE_SSO_SERVER',
+  AZURE_SSO_CLIENT: 'AZURE_SSO_CLIENT'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type AuthenticationStrategy = (typeof AuthenticationStrategy)[keyof typeof AuthenticationStrategy]
