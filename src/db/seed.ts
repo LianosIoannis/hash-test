@@ -90,6 +90,23 @@ async function seed() {
 			},
 		});
 
+		for (const tenantApplication of [acmeAccounting, acmeReporting, globexAccounting]) {
+			await tx.tenantApplicationAuthenticationStrategy.upsert({
+				where: {
+					tenantApplicationId_strategy: {
+						tenantApplicationId: tenantApplication.id,
+						strategy: "EMAIL_PASSWORD",
+					},
+				},
+				update: { enabled: true },
+				create: {
+					tenantApplicationId: tenantApplication.id,
+					strategy: "EMAIL_PASSWORD",
+					enabled: true,
+				},
+			});
+		}
+
 		const acmeAdmin = await tx.user.upsert({
 			where: {
 				tenantId_email: {

@@ -1,5 +1,6 @@
 import * as v from "valibot";
 import { verifyPassword } from "../argon2/index.js";
+import { isStrategyEnabledForTenantApplication } from "../db/auth-strategies.js";
 import { findTenantApplicationUser } from "../db/memberships/queries.js";
 import { findTenantApplicationByKey } from "../db/tenant-applications/queries.js";
 import { findUserByEmail, findUserByUsername } from "../db/users/queries.js";
@@ -51,11 +52,18 @@ export async function authenticateWithUsername(authenticateWithUsernameInput: Au
 	return user;
 }
 
-export async function loginUserToApp(userId: number, tenantApplicationKey: string) {
+async function loginUserToApp(
+	userId: number,
+	tenantApplicationKey: string,
+	strategy: "EMAIL_PASSWORD" | "USERNAME_PASSWORD",
+) {
 	const tenantApplicationUser = await findTenantApplicationUser(userId, tenantApplicationKey);
 
 	if (!tenantApplicationUser) {
 		throw new Error("Application access denied");
+	}
+	if (!(await isStrategyEnabledForTenantApplication(tenantApplicationUser.tenantApplicationId, strategy))) {
+		throw new Error("Authentication strategy is not enabled for this application");
 	}
 
 	return issueSession(tenantApplicationUser.id);
@@ -76,7 +84,7 @@ export async function signInWithEmail(signInWithEmailInput: SignInWithEmailInput
 		tenantId: tenantApplication.tenantId,
 	});
 
-	return loginUserToApp(user.id, tenantApplicationKey);
+	return loginUserToApp(user.id, tenantApplicationKey, "EMAIL_PASSWORD");
 }
 
 export async function signInWithUsername(signInWithUsernameInput: SignInWithUsernameInput) {
@@ -94,5 +102,5 @@ export async function signInWithUsername(signInWithUsernameInput: SignInWithUser
 		tenantId: tenantApplication.tenantId,
 	});
 
-	return loginUserToApp(user.id, tenantApplicationKey);
+	return loginUserToApp(user.id, tenantApplicationKey, "USERNAME_PASSWORD");
 }

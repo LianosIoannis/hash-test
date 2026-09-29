@@ -1,6 +1,6 @@
 # Authentication administration
 
-The local admin API supports Azure SSO configuration CRUD and per-tenant-application strategy enablement. It remains local-only and unauthenticated. This change manages configuration; it does not implement Microsoft login or enforce strategies in the existing sign-in functions.
+The local admin API supports Azure SSO configuration CRUD and per-tenant-application strategy enablement. It remains local-only and unauthenticated. Email and username password sign-in each require their exact strategy to be enabled for the tenant application. Microsoft login and multi-factor sign-in are not implemented yet.
 
 ## Setup
 
@@ -8,6 +8,8 @@ The local admin API supports Azure SSO configuration CRUD and per-tenant-applica
 2. Apply the migration with: npx prisma migrate deploy
    The migration adds tables and user contact fields without removing existing records. If you already used db push, reconcile that database with migration history first; do not reset it.
 3. Run npm run dev and npm run client:dev.
+
+Tenant applications with no enabled strategies reject new sign-ins. The seed enables EMAIL_PASSWORD for each tenant application it creates. Disabling a strategy blocks new sign-ins through it; existing sessions remain valid until expiry.
 
 The AzureSsoConfig.clientSecret column stores the value exactly as entered, without application-level encryption. Back up and restrict access to the SQLite database accordingly. The API returns only hasClientSecret, never the secret value. If a configuration was previously saved in the encrypted v1.iv.tag.ciphertext format, replace its secret through the editor before using it for SSO.
 

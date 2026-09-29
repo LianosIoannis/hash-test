@@ -14,6 +14,17 @@ export function safeAzureConfig(config: AzureSsoConfig) {
 	return { ...safe, hasClientSecret: Boolean(clientSecret) };
 }
 
+export async function isStrategyEnabledForTenantApplication(
+	tenantApplicationId: number,
+	strategy: AuthenticationStrategy,
+) {
+	const record = await prisma.tenantApplicationAuthenticationStrategy.findUnique({
+		where: { tenantApplicationId_strategy: { tenantApplicationId, strategy } },
+		select: { enabled: true },
+	});
+	return record?.enabled === true;
+}
+
 export async function listStrategies(tenantApplicationId: number) {
 	const app = await prisma.tenantApplication.findUnique({ where: { id: tenantApplicationId } });
 	if (!app) throw new DatabaseRecordNotFoundError("Tenant application");

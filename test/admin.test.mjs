@@ -176,4 +176,36 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 		await request("/users/1", "PATCH", { phoneVerified: true }, 400);
 		await request("/users/1", "PATCH", { phoneNumber: "1234" }, 400);
 	});
+	await t.test("sign-in requires its exact enabled strategy; existing sessions survive disablement", async () => {
+		const { hashPassword } = await import("../src/argon2/index.ts");
+		const { signInWithEmail, signInWithUsername } = await import("../src/auth/signin.ts");
+		await prisma.user.update({
+			where: { id: 1 },
+			data: { passwordHash: await hashPassword("TestPassword123!") },
+		});
+		await request(strategyPath + "AZURE_SSO_SERVER", "PUT", { enabled: false });
+		await request(strategyPath + "AZURE_SSO_CLIENT", "PUT", { enabled: false });
+		const emailInput = {
+			email: "new@example.test",
+			password: "TestPassword123!",
+			tenantApplicationKey: "test",
+		};
+		const usernameInput = {
+			username: "user",
+			password: "TestPassword123!",
+			tenantApplicationKey: "test",
+		};
+		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
+		assert.equal(await prisma.session.count(), 1);
+		await request(strategyPath + "EMAIL_PASSWORD_EMAIL_OTP", "PUT", { enabled: true });
+		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
+		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: true });
+		const session = await signInWithEmail(emailInput);
+		assert.ok(session.session_token);
+		assert.equal(await prisma.session.count(), 2);
+		await assert.rejects(signInWithUsername(usernameInput), /strategy is not enabled/);
+		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: false });
+		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
+		assert.equal(await prisma.session.count(), 2);
+	});
 });
