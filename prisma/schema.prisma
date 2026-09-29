@@ -129,8 +129,8 @@ enum AuthenticationStrategy {
     USERNAME_PASSWORD_PHONE_OTP
     USERNAME_PASSWORD_TOTP
 
-    GOOGLE_SSO
-    AZURE_SSO
+    AZURE_SSO_SERVER
+    AZURE_SSO_CLIENT
 }
 
 model TenantApplicationAuthenticationStrategy {
@@ -160,6 +160,21 @@ model TotpAuthenticator {
     encryptedSecret  String
     verified         Boolean @default(false)
     lastUsedTimeStep BigInt?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model AzureSsoConfig {
+    id String @id @default(cuid())
+
+    tenantId     String
+    clientId     String
+    clientSecret String
+
+    redirectUri String
+
+    scopes String @default("openid profile email")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
