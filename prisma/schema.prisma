@@ -146,6 +146,8 @@ model TenantApplicationAuthenticationStrategy {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
+    azureSsoConfig AzureSsoConfig?
+
     @@unique([tenantApplicationId, strategy])
     @@index([tenantApplicationId])
 }
@@ -166,11 +168,17 @@ model TotpAuthenticator {
 }
 
 model AzureSsoConfig {
-    id String @id @default(cuid())
+    id Int @id @default(autoincrement())
 
-    tenantId     String
-    clientId     String
-    clientSecret String
+    name        String  @unique
+    description String?
+
+    tenantApplicationStrategyId Int                                     @unique
+    tenantApplicationStrategy   TenantApplicationAuthenticationStrategy @relation(fields: [tenantApplicationStrategyId], references: [id], onDelete: Cascade)
+
+    directoryTenantId String
+    clientId          String
+    clientSecret      String?
 
     redirectUri String
 
