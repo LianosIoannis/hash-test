@@ -15,7 +15,7 @@
 - [x] Real-browser checks verify cookie delivery and attributes, reload behavior, and CSRF enforcement; integration checks verify expiry, wrong-mode rejection, tenant isolation, and no credential leakage.
 - [x] JWT-mode behavior and existing administration tests remain passing.
 
-**Implementation:** Implemented on 2026-10-08; final review pending.
+**Implementation:** Completed and reviewed on 2026-10-08.
 
 ## Comments
 
@@ -30,3 +30,9 @@ verified after fixing bootstrap token rotation. See docs/cookie-integration.md.
 The application database was upgraded separately at the user's request with
 a consistent backup and record-preservation checks. Its local modification
 and ignored backup are excluded from source commits.
+
+Reviewed against `e4e73a14c2d6411d3f39003379e482c3a591a259`.
+Standards review identified duplicated persistence between modes; fixed in
+`23a9573`, with backend type checking and all 21 HTTP tests passing again.
+Final Standards review: 0 outstanding findings. Spec review: 0 findings.
+Implementation commit: `a69fb43`.
