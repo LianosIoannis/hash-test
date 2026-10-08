@@ -1,35 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import express from "express";
+import { startDemoFixture } from "./support/demo.mjs";
 import { createIntegration, seedTenantFixtures } from "./support/integration.mjs";
 
 test("logout invalidates only the current session in either mode", async (t) => {
 	const integration = await createIntegration(t);
 	const fixtures = await seedTenantFixtures(integration.base);
-	const { createDemoApp } = await import("../src/demo/app.ts");
 	const clients = [];
 	for (const [index, mode] of ["JWT", "COOKIE"].entries()) {
 		const tenant = fixtures.tenants[index];
-		await integration.prisma.tenantApplication.update({
-			where: { id: tenant.tenantApplication.id },
-			data: { sessionStrategy: mode },
-		});
-		await fetch(`${integration.base}/tenant-applications/${tenant.tenantApplication.id}/strategies/EMAIL_PASSWORD`, {
-			method: "PUT",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ enabled: true }),
-		});
-		const host = express();
-		const origin = await integration.startServer(host);
-		host.use(
-			createDemoApp({
-				centralUrl: integration.origin,
-				tenantApplicationKey: tenant.tenantApplication.key,
-				sessionMode: mode,
-				publicOrigin: origin,
-				allowInsecureCookies: true,
-			}),
-		);
+		const origin = await startDemoFixture(integration, tenant, mode);
 		let csrf = {};
 		if (mode === "COOKIE") {
 			const response = await fetch(`${origin}/auth/csrf`);
