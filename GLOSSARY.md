@@ -5,7 +5,8 @@ This context describes users and their relationships to tenant applications for 
 ## Language
 
 **Tenant**:
-A group whose users and tenant applications share the same identity boundary.
+A customer group served by the company whose users and tenant applications share the same identity boundary.
+_Avoid_: Client (when referring to a customer tenant)
 
 **Application**:
 An application that can be associated with multiple tenants.
@@ -28,3 +29,6 @@ A method of verifying a user when signing in to a tenant application.
 
 **Enabled Authentication Strategy**:
 An authentication strategy available for sign-in to a particular tenant application.
+
+**Session Strategy**:
+The mode selected for a tenant application that determines how subsequent requests prove an established sign-in.
