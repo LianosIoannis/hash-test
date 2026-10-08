@@ -19,7 +19,7 @@
 
 Approved as part of the seven-ticket v1 breakdown. Implementation remains subject to the repository's approval requirement for big changes.
 
-**Implementation:** Implemented on 2026-10-08; final review pending.
+**Implementation:** Completed and reviewed on 2026-10-08.
 
 The user explicitly approved ticket 04. Verification passed: 26 HTTP tests,
 7 real-browser tests including Secure-cookie deletion under HTTPS, backend,
@@ -28,3 +28,8 @@ and the existing Argon2 benchmark. See docs/logout.md. No migration is needed;
 the pre-existing local application database change is excluded from commits.
 
 Review baseline approved by the user: 7dbd17a9bc6ebe6454f52e814ad421eba8529d6c.
+
+Implementation commit: `60ee187`. Standards review identified duplicated
+test fixture setup; extracted it in `9faf65e`, then all 8 affected HTTP and
+browser tests passed again. Final Standards review: 0 outstanding findings.
+Spec review: 0 findings. Ticket 05 is the next unblocked implementation slice.

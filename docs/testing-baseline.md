@@ -98,6 +98,10 @@ the JWT integration suite. See [JWT integration](jwt-integration.md).
 Ticket 03 adds cookie attributes and delivery, CSRF, concurrent mutations,
 and reload coverage, including an isolated localhost HTTPS fixture. The suite
 now has 21 HTTP and 4 browser tests. See [cookie integration](cookie-integration.md).
-Future tickets add logout and mode changes. The original DOM smoke runner
-remains an admin rendering check; the interactive runner verifies actual
-sign-in and reload.
+Ticket 04 adds current-session logout, actual credential removal, replay
+denial, CSRF preservation, and fresh sign-in checks. The suite now has 26 HTTP
+and 7 browser tests. See [logout](logout.md). Its HTTP and browser tests share
+the consuming-demo setup in `test/support/demo.mjs`, while retaining separate
+public-boundary assertions. Future tickets add mode changes and complete
+failure handling. The original DOM smoke runner remains an admin rendering
+check; the interactive runner verifies actual sign-in, reload, and logout.
