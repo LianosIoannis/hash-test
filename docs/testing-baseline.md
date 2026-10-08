@@ -111,6 +111,9 @@ termination limited to the launched test process tree when graceful exit stalls.
 Ticket 06 adds connection failures, central 503 responses, stalled headers
 and bodies, blocked mutations, failed logout cleanup, recovery, and visible
 browser failure messages. The suite now has 33 HTTP and 11 browser tests.
-See [central failures](central-failures.md). The original DOM smoke runner
+See [central failures](central-failures.md). Ticket 07 adds the combined
+two-tenant demo host and navigation/reload/logout checks on its mounted paths.
+The suite now has 34 HTTP and 12 browser tests. See the
+[local setup guide](local-demo.md). The original DOM smoke runner
 remains an admin rendering check; the interactive runner verifies actual
 sign-in, reload, logout, and mode changes.

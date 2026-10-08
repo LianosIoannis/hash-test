@@ -1,7 +1,8 @@
 # Project plan
 
-Status: V1 implementation in progress — baseline and JWT integration complete;
-cookie integration is next. Later milestones remain proposed.
+Status: V1 authentication behavior is complete and reviewed through ticket 06.
+Ticket 07's runnable example and documentation are in final verification.
+Later milestones remain proposed.
 
 This document describes what the project should achieve, for whom, and how
 we intend to build it. Update it as goals and priorities become clearer.
@@ -29,8 +30,10 @@ such as a browser application; it is distinct from a customer tenant.
   used through application servers and issues application sessions after
   successful authentication.
 
-The package structure, supported runtimes, and communication contracts are
-still to be decided.
+V1 supplies repository-local TypeScript modules for Node.js/Express and a
+framework-independent browser client. See the [library reference](library-reference.md)
+and [local two-tenant setup](local-demo.md). Independent npm packaging remains
+deferred.
 
 ## Intended users and use cases
 
@@ -38,10 +41,11 @@ still to be decided.
   the central system.
 - Application servers use the backend library's authentication function to
   authenticate requests.
-- Who administers tenants, users, and tenant applications? To decide.
-- Which application will consume authentication first? To decide.
-- How do users join a tenant and receive memberships? To decide.
-- What should the first usable version let a user accomplish? To decide.
+- Local administrators create tenants, users, tenant applications, and memberships.
+- The separate Express demonstration is the first consuming application.
+- Administrators assign memberships; public registration and invitations are deferred.
+- V1 provides email/password sign-in, protected access, fixed expiry, logout,
+  mode-change invalidation, and honest failure handling in both session modes.
 
 ## Intended Azure client sign-in
 
@@ -58,14 +62,14 @@ For `AZURE_SSO_CLIENT`:
    backend library's middleware-like function.
 
 This describes the intended flow, not implemented behavior. Token validation,
-mapping an Azure identity to a tenant user and membership, and session
-strategy configuration still need explicit contracts.
+mapping an Azure identity to a tenant user and membership still need explicit
+contracts. Session-mode selection is implemented for email/password v1.
 
 ## Intended session strategies
 
 Support both JWT authentication and session-cookie authentication, with an
-explicit configuration choice of which mode to use. This is a requirement
-for the intended system; first-release coverage remains to be agreed.
+explicit configuration choice of which mode to use. Both modes are implemented
+and verified for the agreed first release.
 
 Agreed: configure the session mode per tenant application. Different tenants
 may therefore select different session modes for the same application.
@@ -134,13 +138,8 @@ sign-in. A tenant application uses only its selected mode.
 
 ## Current state
 
-Implementation progress: tickets 01 and 02 are complete and reviewed. Isolated
-HTTP/browser checks are established, and email/password JWT sign-in works
-through the browser library, demo Express server, and backend middleware.
-See [JWT integration](jwt-integration.md) for setup and legacy-session behavior.
-Cookie integration, logout, and mode administration remain with later tickets.
-
-Based on the initial code survey:
+Implementation progress: tickets 01–06 are complete and reviewed. Ticket 07
+documents the complete runnable two-tenant example. The verified behavior is:
 
 - The domain model defines tenants, applications, tenant applications,
   users, memberships, sessions, and authentication strategies.
@@ -149,12 +148,15 @@ Based on the initial code survey:
   loopback.
 - Email and username password sign-in functions check credentials,
   membership, and the exact enabled authentication strategy.
-- Session issuance creates a hashed opaque session token and a JWT.
-  Application-facing session verification and logout need a defined flow.
+- Sign-in issues only the selected JWT or COOKIE credential, backed by a
+  centrally valid session. Middleware verifies every protected request.
+- Both modes support fixed two-hour expiry, current-session logout, atomic
+  mode-change invalidation, and local credential cleanup on failed central logout.
 - Azure SSO and MFA have configuration/schema groundwork; their sign-in
   flows are unfinished.
-- Administration integration tests exist. Test and type-check execution
-  remains unverified because shell startup failed during the initial review.
+- Real HTTP and isolated browser suites cover tenant isolation, credential
+  delivery, reloads, CSRF, expiry, logout, mode changes, outages and recovery.
+  Type checks and builds are verified; temporary fixtures preserve local data.
 
 See [authentication administration](authentication-admin.md) for existing
 behavior and [the glossary](../GLOSSARY.md) for domain terminology.
@@ -209,7 +211,7 @@ Proposed:
 | Order | Milestone | Completion evidence | Status |
 | --- | --- | --- | --- |
 | 1 | Establish a verified baseline | Existing checks run; supported behavior and important coverage gaps are recorded | Complete |
-| 2 | Complete the first library integration | Through the browser TypeScript client library, an existing user signs in with email/password and accesses an Express endpoint protected by the backend library; both configurable session modes, expiry, logout, mode-change invalidation, and tenant isolation are verified | JWT journey complete; remaining tickets open |
+| 2 | Complete the first library integration | Through the browser TypeScript client library, an existing user signs in with email/password and accesses an Express endpoint protected by the backend library; both configurable session modes, expiry, logout, mode-change invalidation, and tenant isolation are verified | Behavior complete; ticket 07 documentation/example verification in progress |
 | 3 | Define and implement account lifecycle | Agreed registration or invitation, membership assignment, recovery, and verification journeys work end to end | Proposed |
 | 4 | Add Azure client sign-in | Azure client sign-in works end to end through both libraries and supports either configured session mode | Next authentication milestone; details open |
 | 5 | Prepare the agreed deployment | Administrator access, secret handling, migrations, and operational checks meet the agreed deployment requirements | Proposed |
