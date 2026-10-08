@@ -6,6 +6,8 @@
 	"scripts": {
 		"test": "tsx src/argon2/test/bench.ts",
 		"test:admin": "node --import tsx --test test/admin.test.mjs",
+		"test:integration": "node --import tsx --test test/admin.test.mjs test/baseline.test.mjs",
+		"test:browser": "npm run client:build && node --import tsx --test test/browser.test.mjs",
 		"build": "tsc",
 		"dev": "tsx watch src/server/server.ts",
 		"start": "node dist/server/server.js",

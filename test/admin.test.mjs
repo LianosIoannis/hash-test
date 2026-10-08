@@ -1,48 +1,19 @@
 import assert from "node:assert/strict";
-import { once } from "node:events";
-import { mkdtempSync, readdirSync, readFileSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
 import test from "node:test";
-import Database from "better-sqlite3";
+import { createIntegration } from "./support/integration.mjs";
 
 test("admin API preserves strategy/config invariants and hides credentials", async (t) => {
-	const prefix = join(tmpdir(), "hash-test-admin-");
-	const directory = mkdtempSync(prefix);
-	const databasePath = join(directory, "admin.db");
-	process.env.DATABASE_URL = "file:" + databasePath.replaceAll("\\", "/");
-	delete process.env.SSO_SECRET_ENCRYPTION_KEY;
-	const db = new Database(databasePath);
-	db.pragma("foreign_keys = ON");
-	const migrations = readdirSync("prisma/migrations", { withFileTypes: true })
-		.filter((entry) => entry.isDirectory())
-		.map((entry) => entry.name)
-		.sort();
-	for (const migration of migrations) {
-		db.exec(readFileSync(join("prisma/migrations", migration, "migration.sql"), "utf8"));
-		if (migration === "20260916065907_init") {
-			db.exec(
-				"INSERT INTO Tenant (id,name,updatedAt) VALUES (1,'Test tenant',CURRENT_TIMESTAMP); INSERT INTO Application (id,code,name,updatedAt) VALUES (1,'test','Test app',CURRENT_TIMESTAMP); INSERT INTO TenantApplication (id,key,tenantId,applicationId,updatedAt) VALUES (1,'test',1,1,CURRENT_TIMESTAMP); INSERT INTO User (id,email,username,passwordHash,tenantId,updatedAt) VALUES (1,'user@example.test','user','fake-password-hash',1,CURRENT_TIMESTAMP); INSERT INTO TenantApplicationUser (id,tenantId,userId,tenantApplicationId,updatedAt) VALUES (1,1,1,1,CURRENT_TIMESTAMP); INSERT INTO Session (id,tokenHash,tenantApplicationUserId,expiresAt) VALUES (1,'fake-token-hash',1,'2099-01-01');",
-			);
-		}
-	}
-	assert.equal(db.prepare("SELECT count(*) AS count FROM TenantApplicationUser").get().count, 1);
-	assert.equal(db.prepare("SELECT count(*) AS count FROM Session").get().count, 1);
-	assert.deepEqual(db.pragma("foreign_key_check"), []);
-	db.close();
-	const { createApp } = await import("../src/server/app.ts");
-	const { default: prisma } = await import("../src/db/prisma.ts");
-	const server = createApp().listen(0, "127.0.0.1");
-	await once(server, "listening");
-	t.after(async () => {
-		await new Promise((resolveClose) => server.close(resolveClose));
-		await prisma.$disconnect();
-		const resolved = resolve(directory);
-		if (!resolved.startsWith(resolve(prefix)) || resolved === resolve(tmpdir()))
-			throw new Error("Unexpected temporary test path");
-		rmSync(resolved, { recursive: true, force: true });
+	const { base, prisma } = await createIntegration(t, {
+		afterMigration(db, migration) {
+			if (migration === "20260916065907_init") {
+				db.exec(
+					"INSERT INTO Tenant (id,name,updatedAt) VALUES (1,'Test tenant',CURRENT_TIMESTAMP); INSERT INTO Application (id,code,name,updatedAt) VALUES (1,'test','Test app',CURRENT_TIMESTAMP); INSERT INTO TenantApplication (id,key,tenantId,applicationId,updatedAt) VALUES (1,'test',1,1,CURRENT_TIMESTAMP); INSERT INTO User (id,email,username,passwordHash,tenantId,updatedAt) VALUES (1,'user@example.test','user','fake-password-hash',1,CURRENT_TIMESTAMP); INSERT INTO TenantApplicationUser (id,tenantId,userId,tenantApplicationId,updatedAt) VALUES (1,1,1,1,CURRENT_TIMESTAMP); INSERT INTO Session (id,tokenHash,tenantApplicationUserId,expiresAt) VALUES (1,'fake-token-hash',1,'2099-01-01');",
+				);
+			}
+			assert.equal(db.prepare("SELECT count(*) AS count FROM TenantApplicationUser").get().count, 1);
+			assert.equal(db.prepare("SELECT count(*) AS count FROM Session").get().count, 1);
+		},
 	});
-	const base = "http://127.0.0.1:" + server.address().port + "/api";
 	async function request(path, method = "GET", body, status = 200) {
 		const response = await fetch(base + path, {
 			method,
