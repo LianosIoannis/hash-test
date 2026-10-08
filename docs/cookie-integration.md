@@ -71,21 +71,11 @@ Ticket 04 adds [logout](logout.md) under the same router protection.
 
 Create the same application in two tenants, with one user and membership per
 tenant, and enable EMAIL_PASSWORD for both. Keep the first tenant application
-in JWT mode and configure the second as COOKIE. Until ticket 05 introduces
-administrative mode editing, configure COOKIE through Prisma **only for a
-fresh disposable fixture without existing sessions**:
-
-```ts
-await prisma.tenantApplication.update({
-  where: { key: "your-disposable-cookie-key" },
-  data: { sessionStrategy: "COOKIE" },
-});
-```
-
-This direct fixture update does not implement mode-change invalidation and
-must not be used as an administrative workflow for existing sessions. Tests
-perform this setup only in temporary databases; implementation does not seed
-or change customer records in the application database.
+in JWT mode and select COOKIE for the second through the local administration
+UI or [session-mode API](session-modes.md). Mode changes invalidate all existing
+sessions for that tenant application. Use this administration workflow rather
+than direct database updates. Implementation tests use temporary databases
+and do not change customer records in the application database.
 
 Run the central server with `npm run dev`. In a separate PowerShell terminal:
 

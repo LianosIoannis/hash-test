@@ -3,8 +3,8 @@
 Ticket 02 supplies the first complete authentication journey: email/password
 sign-in, a browser JWT, and centrally verified Express requests. Ticket 03
 adds [cookie mode](cookie-integration.md); ticket 04 adds
-[logout in both modes](logout.md). Administrative mode switching remains a
-later ticket.
+[logout in both modes](logout.md), and ticket 05 adds
+[administrative mode switching](session-modes.md).
 
 ## Local setup
 

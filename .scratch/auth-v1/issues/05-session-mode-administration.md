@@ -6,15 +6,29 @@
 
 **Status:** ready-for-agent
 
-- [ ] Expose session-mode viewing and selection through local administration API and UI; accept exactly one supported mode per tenant application.
-- [ ] Changing the selected mode invalidates every existing session for that tenant application, including JWTs; new sign-ins issue only the newly selected credential.
-- [ ] Replaying old credentials fails immediately on subsequent central verification; changing back to the original mode does not restore them.
-- [ ] Sessions for other tenant applications, including another tenant associated with the same application, remain usable.
-- [ ] Coordinate session issuance and mode changes so concurrent operations cannot leave an old-mode session usable after the change completes.
-- [ ] Invalid administration requests do not change mode or invalidate sessions; saving the unchanged mode does not count as a mode change.
-- [ ] Demo and integration checks demonstrate switching in both directions, required reauthentication, unaffected tenants, and concurrency behavior.
-- [ ] Administration remains local-only; no remote administrator or application-server credential management is introduced.
+- [x] Expose session-mode viewing and selection through local administration API and UI; accept exactly one supported mode per tenant application.
+- [x] Changing the selected mode invalidates every existing session for that tenant application, including JWTs; new sign-ins issue only the newly selected credential.
+- [x] Replaying old credentials fails immediately on subsequent central verification; changing back to the original mode does not restore them.
+- [x] Sessions for other tenant applications, including another tenant associated with the same application, remain usable.
+- [x] Coordinate session issuance and mode changes so concurrent operations cannot leave an old-mode session usable after the change completes.
+- [x] Invalid administration requests do not change mode or invalidate sessions; saving the unchanged mode does not count as a mode change.
+- [x] Demo and integration checks demonstrate switching in both directions, required reauthentication, unaffected tenants, and concurrency behavior.
+- [x] Administration remains local-only; no remote administrator or application-server credential management is introduced.
 
 ## Comments
 
 Approved as part of the seven-ticket v1 breakdown. Implementation remains subject to the repository's approval requirement for big changes.
+
+**Implementation:** Implemented on 2026-10-08; final review pending.
+
+The user approved .scratch/auth-v1/ticket-05-proposal.md and the review baseline
+716c7456354545f810c4eb9adc0e2e5e18240263. Checks passed: 30 HTTP tests,
+8 real-browser tests, backend/browser-library/admin-client type checks, both
+builds, scoped Biome checks, and the existing Argon2 benchmark. The browser
+suite runs sequentially and uses bounded isolated-process cleanup after
+observed Edge startup/shutdown stalls. See docs/session-modes.md.
+
+The concurrent HTTP test reproduced wrong-mode issuance after password
+verification; requested-mode validation now occurs inside issuance's
+serializable transaction. No schema migration or customer-mode updates were
+performed. The existing local data/auth.db modification remains separate.

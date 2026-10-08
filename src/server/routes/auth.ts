@@ -20,7 +20,7 @@ authRouter.post("/signin", async (request, response) => {
 	const { tenantApplicationKey, mode } = v.parse(v.omit(verificationSchema, ["token"]), request.body);
 	const application = await prisma.tenantApplication.findUnique({ where: { key: tenantApplicationKey } });
 	if (!application || application.sessionStrategy !== mode) throw new AuthenticationError("Invalid session mode");
-	response.json(await signInWithEmail(request.body));
+	response.json(await signInWithEmail({ ...request.body, mode }));
 });
 authRouter.post("/verify", async (request, response) => {
 	const { token, tenantApplicationKey, mode } = v.parse(verificationSchema, request.body);

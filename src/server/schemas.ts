@@ -48,11 +48,16 @@ export const createTenantApplicationSchema = v.object({
 	tenantId: positiveId,
 	applicationId: positiveId,
 	key: requiredText,
+	sessionStrategy: v.optional(v.picklist(["JWT", "COOKIE"]), "JWT"),
 });
 
-export const updateTenantApplicationSchema = v.object({
-	key: requiredText,
-});
+export const updateTenantApplicationSchema = v.pipe(
+	v.object({
+		key: v.exactOptional(requiredText),
+		sessionStrategy: v.exactOptional(v.picklist(["JWT", "COOKIE"])),
+	}),
+	v.check((input) => Object.values(input).some((value) => value !== undefined), "At least one field is required"),
+);
 
 export const createUserSchema = v.pipe(
 	v.object({

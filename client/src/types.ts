@@ -30,6 +30,7 @@ export type Application = {
 export type TenantApplication = {
 	id: number;
 	key: string;
+	sessionStrategy: "JWT" | "COOKIE";
 	tenantId: number;
 	applicationId: number;
 	createdAt: string;

@@ -102,6 +102,12 @@ Ticket 04 adds current-session logout, actual credential removal, replay
 denial, CSRF preservation, and fresh sign-in checks. The suite now has 26 HTTP
 and 7 browser tests. See [logout](logout.md). Its HTTP and browser tests share
 the consuming-demo setup in `test/support/demo.mjs`, while retaining separate
-public-boundary assertions. Future tickets add mode changes and complete
-failure handling. The original DOM smoke runner remains an admin rendering
-check; the interactive runner verifies actual sign-in, reload, and logout.
+public-boundary assertions. Ticket 05 adds atomic mode changes, permanent
+invalidation, creation defaults, rollback and concurrency checks, and a real
+admin-to-demo browser journey. The suite now has 30 HTTP and 8 browser tests.
+See [session modes](session-modes.md). Browser files run sequentially to avoid
+concurrent Edge startup timeouts; isolated browser shutdown is bounded, with
+termination limited to the launched test process tree when graceful exit stalls.
+Future tickets add complete failure handling. The original DOM smoke runner
+remains an admin rendering check; the interactive runner verifies actual
+sign-in, reload, logout, and mode changes.

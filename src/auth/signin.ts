@@ -4,6 +4,7 @@ import { isStrategyEnabledForTenantApplication } from "../db/auth-strategies.js"
 import { findTenantApplicationUser } from "../db/memberships/queries.js";
 import { findTenantApplicationByKey } from "../db/tenant-applications/queries.js";
 import { findUserByEmail, findUserByUsername } from "../db/users/queries.js";
+import type { SessionMode } from "../library/contracts.js";
 import { AuthenticationError } from "./errors.js";
 import {
 	type AuthenticateWithEmailInput,
@@ -57,6 +58,7 @@ async function loginUserToApp(
 	userId: number,
 	tenantApplicationKey: string,
 	strategy: "EMAIL_PASSWORD" | "USERNAME_PASSWORD",
+	mode?: SessionMode,
 ) {
 	const tenantApplicationUser = await findTenantApplicationUser(userId, tenantApplicationKey);
 
@@ -67,11 +69,11 @@ async function loginUserToApp(
 		throw new AuthenticationError("Authentication strategy is not enabled for this application");
 	}
 
-	return issueSession(tenantApplicationUser.id);
+	return issueSession(tenantApplicationUser.id, mode);
 }
 
 export async function signInWithEmail(signInWithEmailInput: SignInWithEmailInput) {
-	const { email, password, tenantApplicationKey } = v.parse(signInWithEmailSchema, signInWithEmailInput);
+	const { email, password, tenantApplicationKey, mode } = v.parse(signInWithEmailSchema, signInWithEmailInput);
 
 	const tenantApplication = await findTenantApplicationByKey(tenantApplicationKey);
 
@@ -85,11 +87,11 @@ export async function signInWithEmail(signInWithEmailInput: SignInWithEmailInput
 		tenantId: tenantApplication.tenantId,
 	});
 
-	return loginUserToApp(user.id, tenantApplicationKey, "EMAIL_PASSWORD");
+	return loginUserToApp(user.id, tenantApplicationKey, "EMAIL_PASSWORD", mode);
 }
 
 export async function signInWithUsername(signInWithUsernameInput: SignInWithUsernameInput) {
-	const { username, password, tenantApplicationKey } = v.parse(signInWithUsernameSchema, signInWithUsernameInput);
+	const { username, password, tenantApplicationKey, mode } = v.parse(signInWithUsernameSchema, signInWithUsernameInput);
 
 	const tenantApplication = await findTenantApplicationByKey(tenantApplicationKey);
 
@@ -103,5 +105,5 @@ export async function signInWithUsername(signInWithUsernameInput: SignInWithUser
 		tenantId: tenantApplication.tenantId,
 	});
 
-	return loginUserToApp(user.id, tenantApplicationKey, "USERNAME_PASSWORD");
+	return loginUserToApp(user.id, tenantApplicationKey, "USERNAME_PASSWORD", mode);
 }

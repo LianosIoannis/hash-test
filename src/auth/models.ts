@@ -40,12 +40,14 @@ export const signInWithEmailSchema = v.object({
 	email: v.pipe(v.string(), v.email()),
 	password: v.pipe(v.string(), v.minLength(8), v.maxLength(100)),
 	tenantApplicationKey: v.pipe(v.string(), v.minLength(2)),
+	mode: v.exactOptional(v.picklist(["JWT", "COOKIE"])),
 });
 
 export const signInWithUsernameSchema = v.object({
 	username: v.pipe(v.string(), v.minLength(2), v.maxLength(100)),
 	password: v.pipe(v.string(), v.minLength(8), v.maxLength(100)),
 	tenantApplicationKey: v.pipe(v.string(), v.minLength(2)),
+	mode: v.exactOptional(v.picklist(["JWT", "COOKIE"])),
 });
 
 export type SignInWithEmailInput = v.InferInput<typeof signInWithEmailSchema>;

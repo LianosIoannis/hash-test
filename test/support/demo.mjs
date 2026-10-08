@@ -1,10 +1,12 @@
 import express from "express";
 
 export async function startDemoFixture(integration, tenant, mode) {
-	await integration.prisma.tenantApplication.update({
-		where: { id: tenant.tenantApplication.id },
-		data: { sessionStrategy: mode },
+	const selectedMode = await fetch(`${integration.base}/tenant-applications/${tenant.tenantApplication.id}`, {
+		method: "PATCH",
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({ sessionStrategy: mode }),
 	});
+	if (!selectedMode.ok) throw new Error("Demo fixture mode setup failed");
 	const strategy = await fetch(
 		`${integration.base}/tenant-applications/${tenant.tenantApplication.id}/strategies/EMAIL_PASSWORD`,
 		{

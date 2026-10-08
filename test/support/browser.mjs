@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { once } from "node:events";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
@@ -27,6 +27,25 @@ export async function launchBrowser(directory, url, { selfSignedCertificate = fa
 	let socket;
 	const exit = once(child, "exit");
 	void exit.catch(() => {});
+	async function ensureBrowserExit() {
+		const finished = () =>
+			Promise.race([
+				exit.then(
+					() => true,
+					() => true,
+				),
+				delay(2000).then(() => false),
+			]);
+		if (await finished()) return;
+		if (process.platform === "win32") {
+			await new Promise((resolve) =>
+				execFile("taskkill", ["/PID", String(child.pid), "/T", "/F"], { windowsHide: true, timeout: 5000 }, () =>
+					resolve(),
+				),
+			);
+		} else child.kill("SIGKILL");
+		if (!(await finished())) throw new Error("Isolated browser did not exit after termination");
+	}
 	try {
 		const address = await new Promise((resolve, reject) => {
 			let output = "";
@@ -113,6 +132,9 @@ export async function launchBrowser(directory, url, { selfSignedCertificate = fa
 		}
 		return {
 			evaluate,
+			async navigate(url) {
+				await command("Page.navigate", { url }, sessionId);
+			},
 			async cookies() {
 				return (await command("Network.getCookies", { urls: [url] }, sessionId)).cookies;
 			},
@@ -147,16 +169,15 @@ export async function launchBrowser(directory, url, { selfSignedCertificate = fa
 				try {
 					await command("Browser.close");
 				} catch {
-					child.kill();
+					// A failed debugging connection still needs bounded process cleanup.
 				}
 				socket.close();
-				await exit;
+				await ensureBrowserExit();
 			},
 		};
 	} catch (error) {
 		socket?.close();
-		child.kill();
-		await exit.catch(() => {});
+		await ensureBrowserExit();
 		throw error;
 	}
 }

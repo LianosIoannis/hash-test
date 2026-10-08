@@ -23,6 +23,8 @@ type Field = {
 	required?: boolean;
 	nullable?: boolean;
 	options?: () => Promise<Option[]>;
+	defaultValue?: FormValue;
+	valueType?: "number" | "string";
 };
 
 type Column = {
@@ -164,6 +166,19 @@ async function tenantApplicationOptions(): Promise<Option[]> {
 	}));
 }
 
+const sessionModeField: Field = {
+	name: "sessionStrategy",
+	label: "Session mode",
+	type: "select",
+	required: true,
+	defaultValue: "JWT",
+	valueType: "string",
+	options: async () => [
+		{ value: "JWT", label: "JWT bearer" },
+		{ value: "COOKIE", label: "Session cookie" },
+	],
+};
+
 const resources: Record<ResourceName, ResourceConfig> = {
 	"azure-sso-configs": {
 		label: "Azure SSO configurations",
@@ -251,6 +266,7 @@ const resources: Record<ResourceName, ResourceConfig> = {
 				className: "primary-cell",
 			},
 			{ label: "Key", value: (record: TenantApplication) => record.key, className: "mono" },
+			{ label: "Session mode", value: (record: TenantApplication) => record.sessionStrategy },
 			{ label: "Users", value: (record: TenantApplication) => record._count?.users ?? 0 },
 			{ label: "Created", value: (record: TenantApplication) => formatDate(record.createdAt) },
 		] as Column[],
@@ -264,9 +280,10 @@ const resources: Record<ResourceName, ResourceConfig> = {
 				options: applicationOptions,
 			},
 			{ name: "key", label: "Application key", required: true },
+			sessionModeField,
 		],
-		editFields: [{ name: "key", label: "Application key", required: true }],
-		toEditValues: (record: TenantApplication) => ({ key: record.key }),
+		editFields: [{ name: "key", label: "Application key", required: true }, sessionModeField],
+		toEditValues: (record: TenantApplication) => ({ key: record.key, sessionStrategy: record.sessionStrategy }),
 	},
 	users: {
 		label: "Users",
@@ -530,6 +547,12 @@ async function openForm(name: ResourceName, mode: "create" | "edit", record?: Re
 
 	const fieldsContainer = form.querySelector<HTMLDivElement>(".form-fields");
 	if (!fieldsContainer) return;
+	if (name === "tenant-applications" && mode === "edit") {
+		const warning = document.createElement("p");
+		warning.textContent =
+			"Changing session mode signs out all users of this tenant application. Other tenant applications stay signed in.";
+		fieldsContainer.append(warning);
+	}
 
 	for (const field of fields) {
 		const label = document.createElement("label");
@@ -561,7 +584,7 @@ async function openForm(name: ResourceName, mode: "create" | "edit", record?: Re
 
 		control.name = field.name;
 		control.required = field.required ?? false;
-		const initial = initialValues[field.name];
+		const initial = initialValues[field.name] ?? field.defaultValue;
 		control.value = initial === null || initial === undefined ? "" : String(initial);
 		if (control instanceof HTMLInputElement && field.type === "checkbox") control.checked = initial === true;
 		label.append(control);
@@ -605,7 +628,7 @@ function readForm(fields: Field[]) {
 		if (field.type === "checkbox") {
 			payload[field.name] = data.has(field.name);
 		} else if (field.type === "select") {
-			payload[field.name] = Number(value);
+			payload[field.name] = field.valueType === "string" ? value : Number(value);
 		} else if (field.nullable && value === "") {
 			payload[field.name] = null;
 		} else if (value !== "" || field.required) {

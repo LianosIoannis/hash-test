@@ -27,7 +27,12 @@ tenantApplicationsRouter.get("/:id", async (request, response) => {
 
 tenantApplicationsRouter.post("/", async (request, response) => {
 	const input = v.parse(createTenantApplicationSchema, request.body);
-	const tenantApplication = await createTenantApplication(input.tenantId, input.applicationId, input.key);
+	const tenantApplication = await createTenantApplication(
+		input.tenantId,
+		input.applicationId,
+		input.key,
+		input.sessionStrategy,
+	);
 	response.status(201).json(tenantApplication);
 });
 
