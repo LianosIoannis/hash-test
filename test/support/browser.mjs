@@ -69,8 +69,10 @@ export async function launchBrowser(directory, url) {
 		});
 		let sequence = 0;
 		const pending = new Map();
+		let onPageLoad;
 		socket.addEventListener("message", ({ data }) => {
 			const message = JSON.parse(data);
+			if (message.method === "Page.loadEventFired") onPageLoad?.(message.sessionId);
 			const request = pending.get(message.id);
 			if (!request) return;
 			pending.delete(message.id);
@@ -98,6 +100,7 @@ export async function launchBrowser(directory, url) {
 		}
 		const { targetId } = await command("Target.createTarget", { url });
 		const { sessionId } = await command("Target.attachToTarget", { targetId, flatten: true });
+		await command("Page.enable", {}, sessionId);
 		async function evaluate(expression) {
 			const result = await command(
 				"Runtime.evaluate",
@@ -118,7 +121,23 @@ export async function launchBrowser(directory, url) {
 				throw new Error(`Browser condition timed out: ${expression}`);
 			},
 			async reload() {
-				await command("Page.reload", {}, sessionId);
+				await new Promise((resolve, reject) => {
+					const timer = setTimeout(() => {
+						onPageLoad = undefined;
+						reject(new Error("Browser reload timed out"));
+					}, 15000);
+					onPageLoad = (loadedSessionId) => {
+						if (loadedSessionId !== sessionId) return;
+						clearTimeout(timer);
+						onPageLoad = undefined;
+						resolve();
+					};
+					void command("Page.reload", {}, sessionId).catch((error) => {
+						clearTimeout(timer);
+						onPageLoad = undefined;
+						reject(error);
+					});
+				});
 			},
 			async close() {
 				try {

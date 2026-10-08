@@ -141,6 +141,8 @@ test("JWT authentication through the consuming server", async (t) => {
 			where: { id: tenant.tenantApplication.id },
 			data: { sessionStrategy: "COOKIE" },
 		});
+		await integration.prisma.session.update({ where: { id: currentIdentity.sessionId }, data: { strategy: "JWT" } });
+		assert.equal((await access(current.jwt_token)).status, 401);
 		assert.equal((await signIn()).status, 401);
 		await integration.prisma.tenantApplication.update({
 			where: { id: tenant.tenantApplication.id },

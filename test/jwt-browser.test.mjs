@@ -26,7 +26,9 @@ test("browser JWT sign-in survives a real reload without renewing the session", 
 		assert.equal(identity.userId, fixture.user.id);
 		const stored = await browser.evaluate(`Object.values(sessionStorage)[0]`);
 		assert.ok(stored);
+		await browser.evaluate(`window.reloadMarker = 'old-document'`);
 		await browser.reload();
+		assert.equal(await browser.evaluate(`window.reloadMarker`), undefined);
 		await browser.waitFor(`document.querySelector('#result')?.textContent.includes('"membershipId"')`);
 		assert.deepEqual(JSON.parse(await browser.evaluate(`document.querySelector('#result').textContent`)), identity);
 		assert.equal(await browser.evaluate(`Object.values(sessionStorage)[0]`), stored);
