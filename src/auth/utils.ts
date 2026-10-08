@@ -1,8 +1,7 @@
 import "dotenv/config";
-import { createHash, randomUUID } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { SignJWT } from "jose";
 import prisma from "../db/prisma.js";
-import { AuthenticationError } from "./errors.js";
 
 export function hashSessionToken(token: string) {
 	return createHash("sha256").update(token).digest("hex");
@@ -16,16 +15,25 @@ export function jwtSecret() {
 }
 
 export async function issueSession(membershipId: number) {
-	const secret = jwtSecret();
 	return prisma.$transaction(async (tx) => {
 		const membership = await tx.tenantApplicationUser.findUniqueOrThrow({
 			where: { id: membershipId },
 			include: { tenantApplication: true },
 		});
-		if (membership.tenantApplication.sessionStrategy !== "JWT")
-			throw new AuthenticationError("Session strategy is not supported yet");
 		const issuedAt = Math.floor(Date.now() / 1000);
 		const expiresAt = new Date((issuedAt + 7200) * 1000);
+		if (membership.tenantApplication.sessionStrategy === "COOKIE") {
+			const session_token = randomBytes(32).toString("base64url");
+			await tx.session.create({
+				data: {
+					tokenHash: hashSessionToken(session_token),
+					tenantApplicationUserId: membershipId,
+					expiresAt,
+					strategy: "COOKIE",
+				},
+			});
+			return { mode: "COOKIE" as const, session_token, expiresAt };
+		}
 		const jwt_token = await new SignJWT({})
 			.setProtectedHeader({ alg: "HS256", typ: "JWT" })
 			.setIssuer("company-auth")
@@ -33,7 +41,7 @@ export async function issueSession(membershipId: number) {
 			.setJti(randomUUID())
 			.setIssuedAt(issuedAt)
 			.setExpirationTime(issuedAt + 7200)
-			.sign(secret);
+			.sign(jwtSecret());
 		await tx.session.create({
 			data: {
 				tokenHash: hashSessionToken(jwt_token),

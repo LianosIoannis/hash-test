@@ -95,6 +95,9 @@ and central session invalidation using an isolated Chromium debugging session.
 `npm run test:browser` builds and runs both paths; HTTP coverage also includes
 the JWT integration suite. See [JWT integration](jwt-integration.md).
 
-Future tickets extend interactive coverage to cookie attributes and delivery,
-CSRF, logout, and mode changes. The original DOM smoke runner remains an admin
-rendering check; the interactive runner verifies actual sign-in and reload.
+Ticket 03 adds cookie attributes and delivery, CSRF, concurrent mutations,
+and reload coverage, including an isolated localhost HTTPS fixture. The suite
+now has 21 HTTP and 4 browser tests. See [cookie integration](cookie-integration.md).
+Future tickets add logout and mode changes. The original DOM smoke runner
+remains an admin rendering check; the interactive runner verifies actual
+sign-in and reload.

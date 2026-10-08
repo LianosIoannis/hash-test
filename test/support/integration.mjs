@@ -78,11 +78,11 @@ export async function createIntegration(t, { afterMigration } = {}) {
 	db.close();
 	({ default: prisma } = await import("../../src/db/prisma.ts"));
 	const { createApp } = await import("../../src/server/app.ts");
-	async function startServer(app) {
+	async function startServer(app, { protocol = "http:" } = {}) {
 		const server = app.listen(0, "127.0.0.1");
 		servers.push(server);
 		await once(server, "listening");
-		return `http://127.0.0.1:${server.address().port}`;
+		return `${protocol}//127.0.0.1:${server.address().port}`;
 	}
 	const origin = await startServer(createApp());
 	async function stopServer(origin) {

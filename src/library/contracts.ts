@@ -11,3 +11,10 @@ export interface JwtSession {
 	jwt_token: string;
 	expiresAt: string;
 }
+
+export type SessionMode = "JWT" | "COOKIE";
+export interface CookieSession {
+	mode: "COOKIE";
+	expiresAt: string;
+}
+export type BrowserSession = JwtSession | CookieSession;

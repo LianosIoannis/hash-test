@@ -1,6 +1,7 @@
 import { json, type RequestHandler, Router } from "express";
 import * as v from "valibot";
-import type { AuthIdentity } from "./contracts.js";
+import type { AuthIdentity, SessionMode } from "./contracts.js";
+import { createCookieProtection } from "./cookie-protection.js";
 
 declare module "express-serve-static-core" {
 	interface Request {
@@ -12,6 +13,9 @@ export interface BackendAuthOptions {
 	centralUrl: string;
 	tenantApplicationKey: string;
 	timeoutMs?: number;
+	sessionMode?: SessionMode;
+	publicOrigin?: string;
+	allowInsecureCookies?: boolean;
 }
 
 const id = v.pipe(v.number(), v.integer(), v.minValue(1));
@@ -19,6 +23,11 @@ const identitySchema = v.object({ userId: id, tenantId: id, tenantApplicationId:
 const sessionSchema = v.object({
 	mode: v.literal("JWT"),
 	jwt_token: v.pipe(v.string(), v.minLength(1)),
+	expiresAt: v.pipe(v.string(), v.isoTimestamp()),
+});
+const cookieSessionSchema = v.object({
+	mode: v.literal("COOKIE"),
+	session_token: v.pipe(v.string(), v.regex(/^[A-Za-z0-9_-]{43}$/)),
 	expiresAt: v.pipe(v.string(), v.isoTimestamp()),
 });
 const signinSchema = v.object({
@@ -34,6 +43,9 @@ export function createBackendAuth(options: BackendAuthOptions) {
 	const timeoutMs = options.timeoutMs ?? 5000;
 	if (!Number.isInteger(timeoutMs) || timeoutMs < 1) throw new Error("timeoutMs must be a positive integer");
 	const tenantApplicationKey = options.tenantApplicationKey;
+	const mode = options.sessionMode ?? "JWT";
+	if (mode !== "JWT" && mode !== "COOKIE") throw new Error("Invalid sessionMode");
+	const cookies = mode === "COOKIE" ? createCookieProtection(options) : undefined;
 	async function central(path: string, body: unknown) {
 		return fetch(new URL(`/api/auth/${path}`, centralUrl), {
 			method: "POST",
@@ -49,6 +61,10 @@ export function createBackendAuth(options: BackendAuthOptions) {
 		response.setHeader("Cache-Control", "no-store");
 		next();
 	});
+	if (cookies) {
+		router.get("/csrf", cookies.bootstrap);
+		router.use(cookies.protect);
+	}
 	router.post("/signin", async (request, response) => {
 		const input = v.safeParse(signinSchema, request.body);
 		if (!input.success) {
@@ -56,14 +72,18 @@ export function createBackendAuth(options: BackendAuthOptions) {
 			return;
 		}
 		try {
-			const upstream = await central("signin", { ...input.output, tenantApplicationKey });
+			const upstream = await central("signin", { ...input.output, tenantApplicationKey, mode });
 			if (!upstream.ok) {
 				response.status(upstream.status === 401 ? 401 : 503).json({ error: "Sign-in failed" });
 				return;
 			}
-			const session = v.safeParse(sessionSchema, await upstream.json());
+			const session = v.safeParse(v.union([sessionSchema, cookieSessionSchema]), await upstream.json());
 			if (!session.success) throw new Error("Invalid central sign-in response");
-			response.json(session.output);
+			if (session.output.mode !== mode) throw new Error("Central session mode mismatch");
+			if (session.output.mode === "COOKIE" && cookies) {
+				cookies.setSession(response, session.output.session_token, session.output.expiresAt);
+				response.json({ mode: "COOKIE", expiresAt: session.output.expiresAt });
+			} else response.json(session.output);
 		} catch {
 			response.status(503).json({ error: "Authentication service unavailable" });
 		}
@@ -72,12 +92,13 @@ export function createBackendAuth(options: BackendAuthOptions) {
 		delete request.auth;
 		response.setHeader("Cache-Control", "no-store");
 		const match = /^Bearer ([^\s]+)$/i.exec(request.headers.authorization ?? "");
-		if (!match?.[1] || match[1].length > 8192) {
+		const token = cookies ? cookies.readSession(request) : match?.[1];
+		if (!token || token.length > 8192) {
 			response.status(401).json({ error: "Invalid session" });
 			return;
 		}
 		try {
-			const upstream = await central("verify", { token: match[1], tenantApplicationKey });
+			const upstream = await central("verify", { token, tenantApplicationKey, mode });
 			if (!upstream.ok) {
 				response
 					.status(upstream.status === 401 || upstream.status === 400 ? 401 : 503)
@@ -93,5 +114,11 @@ export function createBackendAuth(options: BackendAuthOptions) {
 		}
 		next();
 	};
-	return { router, authenticate };
+	const protectedAuthenticate: RequestHandler = cookies
+		? (request, response, next) =>
+				cookies.protect(request, response, () => {
+					void authenticate(request, response, next);
+				})
+		: authenticate;
+	return { router, authenticate: protectedAuthenticate };
 }

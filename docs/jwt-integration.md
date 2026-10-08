@@ -1,8 +1,9 @@
 # JWT sign-in and protected requests
 
 Ticket 02 supplies the first complete authentication journey: email/password
-sign-in, a browser JWT, and centrally verified Express requests. Cookie mode,
-logout, and administrative mode switching are implemented by later tickets.
+sign-in, a browser JWT, and centrally verified Express requests. Ticket 03
+adds [cookie mode](cookie-integration.md); logout and administrative mode
+switching remain later tickets.
 
 ## Local setup
 
@@ -87,8 +88,8 @@ Cross-origin authenticated URLs and redirects are rejected.
 ## Session and migration contract
 
 - Every tenant application gains `sessionStrategy`, defaulted and backfilled
-  to `JWT`. `COOKIE` is reserved for the next ticket; this ticket rejects
-  cookie-mode issuance instead of silently issuing a JWT.
+  to `JWT`. Ticket 03 implements `COOKIE`; backend and browser integrations
+  explicitly select their mode and reject central configuration mismatches.
 - Existing sessions remain stored with a null strategy marker. They are
   visible to administration but cannot pass new request verification. Old
   JWTs also cannot pass the new issuer/audience/session-binding contract.

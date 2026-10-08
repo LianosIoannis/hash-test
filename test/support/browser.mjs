@@ -6,7 +6,7 @@ import { setTimeout as delay } from "node:timers/promises";
 
 // Chromium DevTools Protocol, using Node's built-in WebSocket. Only isolated
 // test profiles are launched; no installed user's browser session is attached.
-export async function launchBrowser(directory, url) {
+export async function launchBrowser(directory, url, { selfSignedCertificate = false } = {}) {
 	const executable = process.env.BROWSER_EXECUTABLE ?? "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe";
 	if (!existsSync(executable)) throw new Error("Set BROWSER_EXECUTABLE to an installed Chromium or Edge executable");
 	const child = spawn(
@@ -17,6 +17,7 @@ export async function launchBrowser(directory, url) {
 			"--no-first-run",
 			"--no-default-browser-check",
 			"--disable-extensions",
+			...(selfSignedCertificate ? ["--ignore-certificate-errors"] : []),
 			"--remote-debugging-port=0",
 			`--user-data-dir=${join(directory, "interactive-browser-profile")}`,
 			"about:blank",
@@ -112,6 +113,9 @@ export async function launchBrowser(directory, url) {
 		}
 		return {
 			evaluate,
+			async cookies() {
+				return (await command("Network.getCookies", { urls: [url] }, sessionId)).cookies;
+			},
 			async waitFor(expression) {
 				const deadline = Date.now() + 15000;
 				while (Date.now() < deadline) {
