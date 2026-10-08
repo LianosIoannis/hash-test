@@ -33,6 +33,14 @@ identityButton.addEventListener("click", () => {
 		result.textContent = "Request failed";
 	});
 });
+document.querySelector("#logout")?.addEventListener("click", async () => {
+	try {
+		await auth.logout();
+		result.textContent = "Signed out";
+	} catch (error) {
+		result.textContent = error instanceof Error ? error.message : "Logout failed";
+	}
+});
 document.querySelector("#mutation")?.addEventListener("click", async () => {
 	const output = document.querySelector("#mutation-result");
 	if (!output) return;

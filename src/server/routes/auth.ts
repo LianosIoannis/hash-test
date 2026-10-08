@@ -1,6 +1,7 @@
 import { Router } from "express";
 import * as v from "valibot";
 import { AuthenticationError } from "../../auth/errors.js";
+import { logoutSession } from "../../auth/logout.js";
 import { signInWithEmail } from "../../auth/signin.js";
 import { verifySession } from "../../auth/verify.js";
 import prisma from "../../db/prisma.js";
@@ -24,4 +25,9 @@ authRouter.post("/signin", async (request, response) => {
 authRouter.post("/verify", async (request, response) => {
 	const { token, tenantApplicationKey, mode } = v.parse(verificationSchema, request.body);
 	response.json(await verifySession(token, tenantApplicationKey, mode));
+});
+authRouter.post("/logout", async (request, response) => {
+	const { token, tenantApplicationKey, mode } = v.parse(verificationSchema, request.body);
+	await logoutSession(token, tenantApplicationKey, mode);
+	response.sendStatus(204);
 });

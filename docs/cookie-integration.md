@@ -65,7 +65,7 @@ Proofs use a server-local random signing key. Bootstrap reuses valid proofs
 to support concurrent requests and obtains new proofs after server restart;
 unexpired authentication sessions remain valid. Deploying multiple consuming
 instances and coordinating their CSRF keys is outside this local v1 setup.
-Logout is ticket 04 and must use the same router protection.
+Ticket 04 adds [logout](logout.md) under the same router protection.
 
 ## Two-tenant local demonstration
 

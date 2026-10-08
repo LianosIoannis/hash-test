@@ -73,5 +73,8 @@ export function createCookieProtection(options: {
 		setSession(response: Response, token: string, expiresAt: string) {
 			response.cookie(sessionName, token, { ...cookieOptions, expires: new Date(expiresAt) });
 		},
+		clearSession(response: Response) {
+			response.clearCookie(sessionName, cookieOptions);
+		},
 	};
 }

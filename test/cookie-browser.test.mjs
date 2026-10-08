@@ -114,6 +114,22 @@ test("browser cookie sign-in survives reload and protects mutations", async (t) 
 			assert.equal(await secureBrowser.evaluate(`document.cookie`), "");
 			await secureBrowser.reload();
 			await secureBrowser.waitFor(`document.querySelector('#result')?.textContent.includes('"membershipId"')`);
+			await secureBrowser.evaluate(`document.querySelector('#logout').click()`);
+			await secureBrowser.waitFor(`document.querySelector('#result')?.textContent === 'Signed out'`);
+			assert.equal(
+				(await secureBrowser.cookies()).some((cookie) => cookie.name === session.name),
+				false,
+			);
+			const replay = await fetch(`${integration.origin}/api/auth/verify`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					token: session.value,
+					tenantApplicationKey: tenant.tenantApplication.key,
+					mode: "COOKIE",
+				}),
+			});
+			assert.equal(replay.status, 401);
 		} finally {
 			await secureBrowser.close();
 		}

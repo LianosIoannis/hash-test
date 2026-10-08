@@ -32,7 +32,7 @@ export function createDemoApp(options: BackendAuthOptions) {
 			.type("html")
 			.send(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Authentication demo</title></head><body>
 <h1>Authentication demo</h1><form id="signin"><label>Email <input name="email" type="email" required></label><label>Password <input name="password" type="password" required></label><button>Sign in</button></form>
-<button id="identity">Check identity</button><button id="mutation">Increment protected counter</button><pre id="mutation-result" aria-live="polite"></pre><pre id="result" aria-live="polite">Loading</pre><script type="module" src="demo.js"></script></body></html>`);
+<button id="identity">Check identity</button><button id="logout">Log out</button><button id="mutation">Increment protected counter</button><pre id="mutation-result" aria-live="polite"></pre><pre id="result" aria-live="polite">Loading</pre><script type="module" src="demo.js"></script></body></html>`);
 	});
 	return app;
 }

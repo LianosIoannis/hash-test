@@ -6,15 +6,25 @@
 
 **Status:** ready-for-agent
 
-- [ ] Implement current-session logout through the browser library, application-server integration, central server, and demo UI for both modes.
-- [ ] Successful JWT logout removes the stored JWT; successful cookie logout clears the authentication cookie through the application server.
-- [ ] Central logout invalidates the current session only; other sessions and tenant applications remain unaffected.
-- [ ] Replaying the former JWT or opaque cookie credential after successful logout is denied with 401, including after browser reload.
-- [ ] Cookie logout enforces CSRF protection; rejected logout requests do not invalidate the session or clear its cookie.
-- [ ] The protected endpoint no longer accepts the logged-out browser; signing in again creates a usable new session.
-- [ ] Integration and browser checks verify local cleanup and actual central invalidation rather than relying solely on the demo's signed-out display.
-- [ ] Preserve both modes' sign-in and expiry behavior; full central-failure logout behavior follows in ticket 06.
+- [x] Implement current-session logout through the browser library, application-server integration, central server, and demo UI for both modes.
+- [x] Successful JWT logout removes the stored JWT; successful cookie logout clears the authentication cookie through the application server.
+- [x] Central logout invalidates the current session only; other sessions and tenant applications remain unaffected.
+- [x] Replaying the former JWT or opaque cookie credential after successful logout is denied with 401, including after browser reload.
+- [x] Cookie logout enforces CSRF protection; rejected logout requests do not invalidate the session or clear its cookie.
+- [x] The protected endpoint no longer accepts the logged-out browser; signing in again creates a usable new session.
+- [x] Integration and browser checks verify local cleanup and actual central invalidation rather than relying solely on the demo's signed-out display.
+- [x] Preserve both modes' sign-in and expiry behavior; full central-failure logout behavior follows in ticket 06.
 
 ## Comments
 
 Approved as part of the seven-ticket v1 breakdown. Implementation remains subject to the repository's approval requirement for big changes.
+
+**Implementation:** Implemented on 2026-10-08; final review pending.
+
+The user explicitly approved ticket 04. Verification passed: 26 HTTP tests,
+7 real-browser tests including Secure-cookie deletion under HTTPS, backend,
+browser-library and admin-client type checks, both builds, scoped Biome checks,
+and the existing Argon2 benchmark. See docs/logout.md. No migration is needed;
+the pre-existing local application database change is excluded from commits.
+
+Review baseline approved by the user: 7dbd17a9bc6ebe6454f52e814ad421eba8529d6c.

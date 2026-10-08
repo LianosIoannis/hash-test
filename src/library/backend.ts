@@ -1,4 +1,4 @@
-import { json, type RequestHandler, Router } from "express";
+import { json, type Request, type RequestHandler, Router } from "express";
 import * as v from "valibot";
 import type { AuthIdentity, SessionMode } from "./contracts.js";
 import { createCookieProtection } from "./cookie-protection.js";
@@ -46,6 +46,12 @@ export function createBackendAuth(options: BackendAuthOptions) {
 	const mode = options.sessionMode ?? "JWT";
 	if (mode !== "JWT" && mode !== "COOKIE") throw new Error("Invalid sessionMode");
 	const cookies = mode === "COOKIE" ? createCookieProtection(options) : undefined;
+	function sessionToken(request: Request) {
+		const token = cookies
+			? cookies.readSession(request)
+			: /^Bearer ([^\s]+)$/i.exec(request.headers.authorization ?? "")?.[1];
+		return token && token.length <= 8192 ? token : undefined;
+	}
 	async function central(path: string, body: unknown) {
 		return fetch(new URL(`/api/auth/${path}`, centralUrl), {
 			method: "POST",
@@ -88,12 +94,32 @@ export function createBackendAuth(options: BackendAuthOptions) {
 			response.status(503).json({ error: "Authentication service unavailable" });
 		}
 	});
+	router.post("/logout", async (request, response) => {
+		const token = sessionToken(request);
+		// CSRF rejection runs before this handler and must preserve the cookie.
+		cookies?.clearSession(response);
+		if (!token) {
+			response.status(401).json({ error: "Invalid session" });
+			return;
+		}
+		try {
+			const upstream = await central("logout", { token, tenantApplicationKey, mode });
+			if (upstream.status === 204) {
+				response.sendStatus(204);
+				return;
+			}
+			response
+				.status(upstream.status === 401 || upstream.status === 400 ? 401 : 503)
+				.json({ error: "Central logout failed" });
+		} catch {
+			response.status(503).json({ error: "Central logout failed" });
+		}
+	});
 	const authenticate: RequestHandler = async (request, response, next) => {
 		delete request.auth;
 		response.setHeader("Cache-Control", "no-store");
-		const match = /^Bearer ([^\s]+)$/i.exec(request.headers.authorization ?? "");
-		const token = cookies ? cookies.readSession(request) : match?.[1];
-		if (!token || token.length > 8192) {
+		const token = sessionToken(request);
+		if (!token) {
 			response.status(401).json({ error: "Invalid session" });
 			return;
 		}

@@ -90,5 +90,14 @@ export function createAuthClient(options: {
 		if (response.status === 401 && mode === "JWT") window.sessionStorage.removeItem(storageKey);
 		return response;
 	}
-	return { signIn, request, getToken };
+	async function logout(): Promise<void> {
+		try {
+			const response = await request(new URL("logout", baseUrl).href, { method: "POST" });
+			if (response.status !== 204)
+				throw new AuthClientError(response.status, "Logout failed; central invalidation was not confirmed");
+		} finally {
+			if (mode === "JWT") window.sessionStorage.removeItem(storageKey);
+		}
+	}
+	return { signIn, request, getToken, logout };
 }
