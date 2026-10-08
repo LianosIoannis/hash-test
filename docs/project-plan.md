@@ -1,7 +1,7 @@
 # Project plan
 
-Status: V1 scope confirmed — implementation not started; later milestones
-remain proposed.
+Status: V1 implementation in progress — baseline and JWT integration complete;
+cookie integration is next. Later milestones remain proposed.
 
 This document describes what the project should achieve, for whom, and how
 we intend to build it. Update it as goals and priorities become clearer.
@@ -134,6 +134,12 @@ sign-in. A tenant application uses only its selected mode.
 
 ## Current state
 
+Implementation progress: tickets 01 and 02 are complete and reviewed. Isolated
+HTTP/browser checks are established, and email/password JWT sign-in works
+through the browser library, demo Express server, and backend middleware.
+See [JWT integration](jwt-integration.md) for setup and legacy-session behavior.
+Cookie integration, logout, and mode administration remain with later tickets.
+
 Based on the initial code survey:
 
 - The domain model defines tenants, applications, tenant applications,
@@ -202,8 +208,8 @@ Proposed:
 
 | Order | Milestone | Completion evidence | Status |
 | --- | --- | --- | --- |
-| 1 | Establish a verified baseline | Existing checks run; supported behavior and important coverage gaps are recorded | Proposed |
-| 2 | Complete the first library integration | Through the browser TypeScript client library, an existing user signs in with email/password and accesses an Express endpoint protected by the backend library; both configurable session modes, expiry, logout, mode-change invalidation, and tenant isolation are verified | Scope agreed; implementation not started |
+| 1 | Establish a verified baseline | Existing checks run; supported behavior and important coverage gaps are recorded | Complete |
+| 2 | Complete the first library integration | Through the browser TypeScript client library, an existing user signs in with email/password and accesses an Express endpoint protected by the backend library; both configurable session modes, expiry, logout, mode-change invalidation, and tenant isolation are verified | JWT journey complete; remaining tickets open |
 | 3 | Define and implement account lifecycle | Agreed registration or invitation, membership assignment, recovery, and verification journeys work end to end | Proposed |
 | 4 | Add Azure client sign-in | Azure client sign-in works end to end through both libraries and supports either configured session mode | Next authentication milestone; details open |
 | 5 | Prepare the agreed deployment | Administrator access, secret handling, migrations, and operational checks meet the agreed deployment requirements | Proposed |

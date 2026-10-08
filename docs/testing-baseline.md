@@ -95,7 +95,6 @@ and central session invalidation using an isolated Chromium debugging session.
 `npm run test:browser` builds and runs both paths; HTTP coverage also includes
 the JWT integration suite. See [JWT integration](jwt-integration.md).
 
-As the demo becomes available, add real-browser coverage for sessionStorage
-reload persistence, cookie attributes and delivery, CSRF, logout, expiry, and
-mode changes. Interactive browser automation may be added when those journeys
-need it; the current DOM smoke runner does not simulate those interactions.
+Future tickets extend interactive coverage to cookie attributes and delivery,
+CSRF, logout, and mode changes. The original DOM smoke runner remains an admin
+rendering check; the interactive runner verifies actual sign-in and reload.

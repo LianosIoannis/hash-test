@@ -18,10 +18,13 @@
 - [x] Tests cover the successful browser journey, reload persistence, two-hour expiry without waiting two hours, rejected sign-ins, same-email tenant isolation, and centrally invalidated JWT denial.
 - [x] Preserve existing username/password behavior and administration invariants where compatible with the declared v1 session contract; relevant checks pass.
 
-**Implementation:** Completed on 2026-10-08; final code review pending.
+**Implementation:** Completed and reviewed on 2026-10-08.
 
 ## Comments
 
 Approved as part of the seven-ticket v1 breakdown. Implementation remains subject to the repository's approval requirement for big changes.
 
 Approved proposal implemented. Final checks: 16 HTTP tests, 2 real-browser tests, backend/browser-library/admin-client type checks, both builds, and the existing Argon2 benchmark passed. Application database migrations were not applied. See docs/jwt-integration.md for public interfaces, setup, and legacy-session compatibility.
+
+Standards review: 0 findings. Spec review: 0 outstanding findings after fixing
+reload synchronization; the 8 affected JWT and browser tests passed again.
