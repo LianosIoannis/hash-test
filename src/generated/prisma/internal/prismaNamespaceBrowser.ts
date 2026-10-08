@@ -101,6 +101,7 @@ export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[key
 export const TenantApplicationScalarFieldEnum = {
   id: 'id',
   key: 'key',
+  sessionStrategy: 'sessionStrategy',
   tenantId: 'tenantId',
   applicationId: 'applicationId',
   createdAt: 'createdAt',
@@ -141,6 +142,7 @@ export type TenantApplicationUserScalarFieldEnum = (typeof TenantApplicationUser
 export const SessionScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
+  strategy: 'strategy',
   tenantApplicationUserId: 'tenantApplicationUserId',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'

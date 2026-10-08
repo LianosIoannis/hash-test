@@ -1,42 +1,47 @@
 import "dotenv/config";
-import { createHash } from "node:crypto";
-import { addHours } from "date-fns";
+import { createHash, randomUUID } from "node:crypto";
 import { SignJWT } from "jose";
-import { nanoid } from "nanoid";
-import { createSession } from "../db/sessions/actions.js";
+import prisma from "../db/prisma.js";
+import { AuthenticationError } from "./errors.js";
 
-function hashSessionToken(token: string) {
+export function hashSessionToken(token: string) {
 	return createHash("sha256").update(token).digest("hex");
 }
 
-async function createJwt(tenantApplicationUserId: number) {
-	const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET);
-
-	return new SignJWT({
-		tenantApplicationUserId,
-	})
-		.setProtectedHeader({
-			alg: "HS256",
-			typ: "JWT",
-		})
-		.setIssuedAt()
-		.setExpirationTime("2h")
-		.sign(jwtSecret);
+export function jwtSecret() {
+	const secret = process.env.JWT_SECRET;
+	if (!secret || new TextEncoder().encode(secret).length < 32)
+		throw new Error("JWT_SECRET must contain at least 32 bytes");
+	return new TextEncoder().encode(secret);
 }
 
-export async function issueSession(tenantApplicationUserId: number) {
-	const session_token = nanoid(32);
-	const tokenHash = hashSessionToken(session_token);
-
-	const expiresAt = addHours(new Date(), 2);
-
-	await createSession(tokenHash, tenantApplicationUserId, expiresAt);
-
-	const jwt_token = await createJwt(tenantApplicationUserId);
-
-	return {
-		session_token,
-		jwt_token,
-		expiresAt,
-	};
+export async function issueSession(membershipId: number) {
+	const secret = jwtSecret();
+	return prisma.$transaction(async (tx) => {
+		const membership = await tx.tenantApplicationUser.findUniqueOrThrow({
+			where: { id: membershipId },
+			include: { tenantApplication: true },
+		});
+		if (membership.tenantApplication.sessionStrategy !== "JWT")
+			throw new AuthenticationError("Session strategy is not supported yet");
+		const issuedAt = Math.floor(Date.now() / 1000);
+		const expiresAt = new Date((issuedAt + 7200) * 1000);
+		const jwt_token = await new SignJWT({})
+			.setProtectedHeader({ alg: "HS256", typ: "JWT" })
+			.setIssuer("company-auth")
+			.setAudience(membership.tenantApplication.key)
+			.setJti(randomUUID())
+			.setIssuedAt(issuedAt)
+			.setExpirationTime(issuedAt + 7200)
+			.sign(secret);
+		await tx.session.create({
+			data: {
+				tokenHash: hashSessionToken(jwt_token),
+				tenantApplicationUserId: membershipId,
+				expiresAt,
+				strategy: "JWT",
+			},
+		});
+		return { mode: "JWT" as const, jwt_token, expiresAt };
+	});
 }

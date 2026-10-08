@@ -12,6 +12,10 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 			}
 			assert.equal(db.prepare("SELECT count(*) AS count FROM TenantApplicationUser").get().count, 1);
 			assert.equal(db.prepare("SELECT count(*) AS count FROM Session").get().count, 1);
+			if (migration === "20261008000000_jwt_sessions") {
+				assert.equal(db.prepare("SELECT strategy FROM Session WHERE id = 1").get().strategy, null);
+				assert.equal(db.prepare("SELECT sessionStrategy FROM TenantApplication WHERE id = 1").get().sessionStrategy, "JWT");
+			}
 		},
 	});
 	async function request(path, method = "GET", body, status = 200) {
@@ -172,11 +176,20 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
 		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: true });
 		const session = await signInWithEmail(emailInput);
-		assert.ok(session.session_token);
+		assert.ok(session.jwt_token);
+		assert.equal("session_token" in session, false);
 		assert.equal(await prisma.session.count(), 2);
 		await assert.rejects(signInWithUsername(usernameInput), /strategy is not enabled/);
 		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: false });
 		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
 		assert.equal(await prisma.session.count(), 2);
+		await request(strategyPath + "USERNAME_PASSWORD", "PUT", { enabled: true });
+		const usernameSession = await signInWithUsername(usernameInput);
+		assert.equal(usernameSession.mode, "JWT");
+		assert.ok(usernameSession.jwt_token);
+		assert.equal("session_token" in usernameSession, false);
+		await request(strategyPath + "USERNAME_PASSWORD", "PUT", { enabled: false });
+		await assert.rejects(signInWithUsername(usernameInput), /strategy is not enabled/);
+		assert.equal(await prisma.session.count(), 3);
 	});
 });

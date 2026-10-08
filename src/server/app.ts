@@ -2,6 +2,7 @@ import express from "express";
 import { getDatabaseOverview } from "../db/overview.js";
 import { errorHandler } from "./errors.js";
 import { applicationsRouter } from "./routes/applications.js";
+import { authRouter } from "./routes/auth.js";
 import { applicationStrategiesRouter, authStrategiesRouter, azureConfigsRouter } from "./routes/auth-strategies.js";
 import { membershipsRouter } from "./routes/memberships.js";
 import { sessionsRouter } from "./routes/sessions.js";
@@ -42,6 +43,7 @@ export function createApp() {
 	});
 
 	app.use("/api/tenants", tenantsRouter);
+	app.use("/api/auth", authRouter);
 	app.use("/api/applications", applicationsRouter);
 	app.use("/api/tenant-applications", tenantApplicationsRouter);
 	app.use("/api/tenant-applications/:id/strategies", applicationStrategiesRouter);

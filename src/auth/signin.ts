@@ -4,6 +4,7 @@ import { isStrategyEnabledForTenantApplication } from "../db/auth-strategies.js"
 import { findTenantApplicationUser } from "../db/memberships/queries.js";
 import { findTenantApplicationByKey } from "../db/tenant-applications/queries.js";
 import { findUserByEmail, findUserByUsername } from "../db/users/queries.js";
+import { AuthenticationError } from "./errors.js";
 import {
 	type AuthenticateWithEmailInput,
 	type AuthenticateWithUsernameInput,
@@ -22,13 +23,13 @@ export async function authenticateWithEmail(authenticateWithEmailInput: Authenti
 	const user = await findUserByEmail(email, tenantId);
 
 	if (!user) {
-		throw new Error("Invalid Credentials");
+		throw new AuthenticationError("Invalid Credentials");
 	}
 
 	const isPasswordValid = await verifyPassword(password, user.passwordHash);
 
 	if (!isPasswordValid) {
-		throw new Error("Invalid Credentials");
+		throw new AuthenticationError("Invalid Credentials");
 	}
 
 	return user;
@@ -40,13 +41,13 @@ export async function authenticateWithUsername(authenticateWithUsernameInput: Au
 	const user = await findUserByUsername(username, tenantId);
 
 	if (!user) {
-		throw new Error("Invalid Credentials");
+		throw new AuthenticationError("Invalid Credentials");
 	}
 
 	const isPasswordValid = await verifyPassword(password, user.passwordHash);
 
 	if (!isPasswordValid) {
-		throw new Error("Invalid Credentials");
+		throw new AuthenticationError("Invalid Credentials");
 	}
 
 	return user;
@@ -60,10 +61,10 @@ async function loginUserToApp(
 	const tenantApplicationUser = await findTenantApplicationUser(userId, tenantApplicationKey);
 
 	if (!tenantApplicationUser) {
-		throw new Error("Application access denied");
+		throw new AuthenticationError("Application access denied");
 	}
 	if (!(await isStrategyEnabledForTenantApplication(tenantApplicationUser.tenantApplicationId, strategy))) {
-		throw new Error("Authentication strategy is not enabled for this application");
+		throw new AuthenticationError("Authentication strategy is not enabled for this application");
 	}
 
 	return issueSession(tenantApplicationUser.id);
@@ -75,7 +76,7 @@ export async function signInWithEmail(signInWithEmailInput: SignInWithEmailInput
 	const tenantApplication = await findTenantApplicationByKey(tenantApplicationKey);
 
 	if (!tenantApplication) {
-		throw new Error("Invalid Credentials");
+		throw new AuthenticationError("Invalid Credentials");
 	}
 
 	const user = await authenticateWithEmail({
@@ -93,7 +94,7 @@ export async function signInWithUsername(signInWithUsernameInput: SignInWithUser
 	const tenantApplication = await findTenantApplicationByKey(tenantApplicationKey);
 
 	if (!tenantApplication) {
-		throw new Error("Invalid Credentials");
+		throw new AuthenticationError("Invalid Credentials");
 	}
 
 	const user = await authenticateWithUsername({

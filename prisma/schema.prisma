@@ -37,6 +37,7 @@ model TenantApplication {
     id Int @id @default(autoincrement())
 
     key String @unique
+    sessionStrategy SessionStrategy @default(JWT)
 
     tenantId Int
     tenant   Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
@@ -106,6 +107,7 @@ model Session {
     id Int @id @default(autoincrement())
 
     tokenHash String @unique
+    strategy SessionStrategy?
 
     tenantApplicationUserId Int
     tenantApplicationUser   TenantApplicationUser @relation(fields: [tenantApplicationUserId], references: [id], onDelete: Cascade)
@@ -115,6 +117,11 @@ model Session {
 
     @@index([tenantApplicationUserId])
     @@index([expiresAt])
+}
+
+enum SessionStrategy {
+    JWT
+    COOKIE
 }
 
 enum AuthenticationStrategy {

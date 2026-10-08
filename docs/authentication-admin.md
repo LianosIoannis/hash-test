@@ -2,6 +2,10 @@
 
 The local admin API supports Azure SSO configuration CRUD and per-tenant-application strategy enablement. It remains local-only and unauthenticated. Email and username password sign-in each require their exact strategy to be enabled for the tenant application. Microsoft login and multi-factor sign-in are not implemented yet.
 
+JWT sign-in and centrally verified application requests are documented in
+[JWT integration](jwt-integration.md). The session migration preserves old
+records but requires users to sign in again for the new verification flow.
+
 ## Setup
 
 1. Generate Prisma types with: npx prisma generate

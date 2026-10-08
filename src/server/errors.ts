@@ -1,5 +1,6 @@
 import type { ErrorRequestHandler } from "express";
 import * as v from "valibot";
+import { AuthenticationError } from "../auth/errors.js";
 import { DatabaseRecordNotFoundError, DatabaseRelationError } from "../db/errors.js";
 
 export class ApiError extends Error {
@@ -36,6 +37,10 @@ function isInvalidJsonError(error: unknown): error is HttpError {
 }
 
 export const errorHandler: ErrorRequestHandler = (error: unknown, _request, response, _next) => {
+	if (error instanceof AuthenticationError) {
+		response.status(401).json({ error: { code: "AUTHENTICATION_FAILED", message: error.message } });
+		return;
+	}
 	if (error instanceof ApiError) {
 		response.status(error.statusCode).json({
 			error: {

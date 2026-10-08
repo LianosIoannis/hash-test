@@ -9,6 +9,14 @@
 * 🟢 You can import this file directly.
 */
 
+export const SessionStrategy = {
+  JWT: 'JWT',
+  COOKIE: 'COOKIE'
+} as const
+
+export type SessionStrategy = (typeof SessionStrategy)[keyof typeof SessionStrategy]
+
+
 export const AuthenticationStrategy = {
   EMAIL_PASSWORD: 'EMAIL_PASSWORD',
   USERNAME_PASSWORD: 'USERNAME_PASSWORD',

@@ -41,6 +41,7 @@ export type TenantApplicationSumAggregateOutputType = {
 export type TenantApplicationMinAggregateOutputType = {
   id: number | null
   key: string | null
+  sessionStrategy: $Enums.SessionStrategy | null
   tenantId: number | null
   applicationId: number | null
   createdAt: Date | null
@@ -50,6 +51,7 @@ export type TenantApplicationMinAggregateOutputType = {
 export type TenantApplicationMaxAggregateOutputType = {
   id: number | null
   key: string | null
+  sessionStrategy: $Enums.SessionStrategy | null
   tenantId: number | null
   applicationId: number | null
   createdAt: Date | null
@@ -59,6 +61,7 @@ export type TenantApplicationMaxAggregateOutputType = {
 export type TenantApplicationCountAggregateOutputType = {
   id: number
   key: number
+  sessionStrategy: number
   tenantId: number
   applicationId: number
   createdAt: number
@@ -82,6 +85,7 @@ export type TenantApplicationSumAggregateInputType = {
 export type TenantApplicationMinAggregateInputType = {
   id?: true
   key?: true
+  sessionStrategy?: true
   tenantId?: true
   applicationId?: true
   createdAt?: true
@@ -91,6 +95,7 @@ export type TenantApplicationMinAggregateInputType = {
 export type TenantApplicationMaxAggregateInputType = {
   id?: true
   key?: true
+  sessionStrategy?: true
   tenantId?: true
   applicationId?: true
   createdAt?: true
@@ -100,6 +105,7 @@ export type TenantApplicationMaxAggregateInputType = {
 export type TenantApplicationCountAggregateInputType = {
   id?: true
   key?: true
+  sessionStrategy?: true
   tenantId?: true
   applicationId?: true
   createdAt?: true
@@ -196,6 +202,7 @@ export type TenantApplicationGroupByArgs<ExtArgs extends runtime.Types.Extension
 export type TenantApplicationGroupByOutputType = {
   id: number
   key: string
+  sessionStrategy: $Enums.SessionStrategy
   tenantId: number
   applicationId: number
   createdAt: Date
@@ -228,6 +235,7 @@ export type TenantApplicationWhereInput = {
   NOT?: Prisma.TenantApplicationWhereInput | Prisma.TenantApplicationWhereInput[]
   id?: Prisma.IntFilter<"TenantApplication"> | number
   key?: Prisma.StringFilter<"TenantApplication"> | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFilter<"TenantApplication"> | $Enums.SessionStrategy
   tenantId?: Prisma.IntFilter<"TenantApplication"> | number
   applicationId?: Prisma.IntFilter<"TenantApplication"> | number
   createdAt?: Prisma.DateTimeFilter<"TenantApplication"> | Date | string
@@ -241,6 +249,7 @@ export type TenantApplicationWhereInput = {
 export type TenantApplicationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  sessionStrategy?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -259,6 +268,7 @@ export type TenantApplicationWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.TenantApplicationWhereInput | Prisma.TenantApplicationWhereInput[]
   OR?: Prisma.TenantApplicationWhereInput[]
   NOT?: Prisma.TenantApplicationWhereInput | Prisma.TenantApplicationWhereInput[]
+  sessionStrategy?: Prisma.EnumSessionStrategyFilter<"TenantApplication"> | $Enums.SessionStrategy
   tenantId?: Prisma.IntFilter<"TenantApplication"> | number
   applicationId?: Prisma.IntFilter<"TenantApplication"> | number
   createdAt?: Prisma.DateTimeFilter<"TenantApplication"> | Date | string
@@ -272,6 +282,7 @@ export type TenantApplicationWhereUniqueInput = Prisma.AtLeast<{
 export type TenantApplicationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  sessionStrategy?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -289,6 +300,7 @@ export type TenantApplicationScalarWhereWithAggregatesInput = {
   NOT?: Prisma.TenantApplicationScalarWhereWithAggregatesInput | Prisma.TenantApplicationScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"TenantApplication"> | number
   key?: Prisma.StringWithAggregatesFilter<"TenantApplication"> | string
+  sessionStrategy?: Prisma.EnumSessionStrategyWithAggregatesFilter<"TenantApplication"> | $Enums.SessionStrategy
   tenantId?: Prisma.IntWithAggregatesFilter<"TenantApplication"> | number
   applicationId?: Prisma.IntWithAggregatesFilter<"TenantApplication"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"TenantApplication"> | Date | string
@@ -297,6 +309,7 @@ export type TenantApplicationScalarWhereWithAggregatesInput = {
 
 export type TenantApplicationCreateInput = {
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
@@ -308,6 +321,7 @@ export type TenantApplicationCreateInput = {
 export type TenantApplicationUncheckedCreateInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   tenantId: number
   applicationId: number
   createdAt?: Date | string
@@ -318,6 +332,7 @@ export type TenantApplicationUncheckedCreateInput = {
 
 export type TenantApplicationUpdateInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
@@ -329,6 +344,7 @@ export type TenantApplicationUpdateInput = {
 export type TenantApplicationUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -340,6 +356,7 @@ export type TenantApplicationUncheckedUpdateInput = {
 export type TenantApplicationCreateManyInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   tenantId: number
   applicationId: number
   createdAt?: Date | string
@@ -348,6 +365,7 @@ export type TenantApplicationCreateManyInput = {
 
 export type TenantApplicationUpdateManyMutationInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -355,6 +373,7 @@ export type TenantApplicationUpdateManyMutationInput = {
 export type TenantApplicationUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -384,6 +403,7 @@ export type TenantApplicationTenantIdApplicationIdCompoundUniqueInput = {
 export type TenantApplicationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  sessionStrategy?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -399,6 +419,7 @@ export type TenantApplicationAvgOrderByAggregateInput = {
 export type TenantApplicationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  sessionStrategy?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -408,6 +429,7 @@ export type TenantApplicationMaxOrderByAggregateInput = {
 export type TenantApplicationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   key?: Prisma.SortOrder
+  sessionStrategy?: Prisma.SortOrder
   tenantId?: Prisma.SortOrder
   applicationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -509,6 +531,10 @@ export type TenantApplicationUncheckedUpdateManyWithoutApplicationNestedInput = 
   deleteMany?: Prisma.TenantApplicationScalarWhereInput | Prisma.TenantApplicationScalarWhereInput[]
 }
 
+export type EnumSessionStrategyFieldUpdateOperationsInput = {
+  set?: $Enums.SessionStrategy
+}
+
 export type TenantApplicationCreateNestedOneWithoutUsersInput = {
   create?: Prisma.XOR<Prisma.TenantApplicationCreateWithoutUsersInput, Prisma.TenantApplicationUncheckedCreateWithoutUsersInput>
   connectOrCreate?: Prisma.TenantApplicationCreateOrConnectWithoutUsersInput
@@ -539,6 +565,7 @@ export type TenantApplicationUpdateOneRequiredWithoutAuthenticationStrategiesNes
 
 export type TenantApplicationCreateWithoutTenantInput = {
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   createdAt?: Date | string
   updatedAt?: Date | string
   application: Prisma.ApplicationCreateNestedOneWithoutTenantApplicationsInput
@@ -549,6 +576,7 @@ export type TenantApplicationCreateWithoutTenantInput = {
 export type TenantApplicationUncheckedCreateWithoutTenantInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   applicationId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -587,6 +615,7 @@ export type TenantApplicationScalarWhereInput = {
   NOT?: Prisma.TenantApplicationScalarWhereInput | Prisma.TenantApplicationScalarWhereInput[]
   id?: Prisma.IntFilter<"TenantApplication"> | number
   key?: Prisma.StringFilter<"TenantApplication"> | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFilter<"TenantApplication"> | $Enums.SessionStrategy
   tenantId?: Prisma.IntFilter<"TenantApplication"> | number
   applicationId?: Prisma.IntFilter<"TenantApplication"> | number
   createdAt?: Prisma.DateTimeFilter<"TenantApplication"> | Date | string
@@ -595,6 +624,7 @@ export type TenantApplicationScalarWhereInput = {
 
 export type TenantApplicationCreateWithoutApplicationInput = {
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
@@ -605,6 +635,7 @@ export type TenantApplicationCreateWithoutApplicationInput = {
 export type TenantApplicationUncheckedCreateWithoutApplicationInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   tenantId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -639,6 +670,7 @@ export type TenantApplicationUpdateManyWithWhereWithoutApplicationInput = {
 
 export type TenantApplicationCreateWithoutUsersInput = {
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
@@ -649,6 +681,7 @@ export type TenantApplicationCreateWithoutUsersInput = {
 export type TenantApplicationUncheckedCreateWithoutUsersInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   tenantId: number
   applicationId: number
   createdAt?: Date | string
@@ -674,6 +707,7 @@ export type TenantApplicationUpdateToOneWithWhereWithoutUsersInput = {
 
 export type TenantApplicationUpdateWithoutUsersInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
@@ -684,6 +718,7 @@ export type TenantApplicationUpdateWithoutUsersInput = {
 export type TenantApplicationUncheckedUpdateWithoutUsersInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -693,6 +728,7 @@ export type TenantApplicationUncheckedUpdateWithoutUsersInput = {
 
 export type TenantApplicationCreateWithoutAuthenticationStrategiesInput = {
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   createdAt?: Date | string
   updatedAt?: Date | string
   tenant: Prisma.TenantCreateNestedOneWithoutTenantApplicationsInput
@@ -703,6 +739,7 @@ export type TenantApplicationCreateWithoutAuthenticationStrategiesInput = {
 export type TenantApplicationUncheckedCreateWithoutAuthenticationStrategiesInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   tenantId: number
   applicationId: number
   createdAt?: Date | string
@@ -728,6 +765,7 @@ export type TenantApplicationUpdateToOneWithWhereWithoutAuthenticationStrategies
 
 export type TenantApplicationUpdateWithoutAuthenticationStrategiesInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
@@ -738,6 +776,7 @@ export type TenantApplicationUpdateWithoutAuthenticationStrategiesInput = {
 export type TenantApplicationUncheckedUpdateWithoutAuthenticationStrategiesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -748,6 +787,7 @@ export type TenantApplicationUncheckedUpdateWithoutAuthenticationStrategiesInput
 export type TenantApplicationCreateManyTenantInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   applicationId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -755,6 +795,7 @@ export type TenantApplicationCreateManyTenantInput = {
 
 export type TenantApplicationUpdateWithoutTenantInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   application?: Prisma.ApplicationUpdateOneRequiredWithoutTenantApplicationsNestedInput
@@ -765,6 +806,7 @@ export type TenantApplicationUpdateWithoutTenantInput = {
 export type TenantApplicationUncheckedUpdateWithoutTenantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -775,6 +817,7 @@ export type TenantApplicationUncheckedUpdateWithoutTenantInput = {
 export type TenantApplicationUncheckedUpdateManyWithoutTenantInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   applicationId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -783,6 +826,7 @@ export type TenantApplicationUncheckedUpdateManyWithoutTenantInput = {
 export type TenantApplicationCreateManyApplicationInput = {
   id?: number
   key: string
+  sessionStrategy?: $Enums.SessionStrategy
   tenantId: number
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -790,6 +834,7 @@ export type TenantApplicationCreateManyApplicationInput = {
 
 export type TenantApplicationUpdateWithoutApplicationInput = {
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenant?: Prisma.TenantUpdateOneRequiredWithoutTenantApplicationsNestedInput
@@ -800,6 +845,7 @@ export type TenantApplicationUpdateWithoutApplicationInput = {
 export type TenantApplicationUncheckedUpdateWithoutApplicationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -810,6 +856,7 @@ export type TenantApplicationUncheckedUpdateWithoutApplicationInput = {
 export type TenantApplicationUncheckedUpdateManyWithoutApplicationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   key?: Prisma.StringFieldUpdateOperationsInput | string
+  sessionStrategy?: Prisma.EnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy
   tenantId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -858,6 +905,7 @@ export type TenantApplicationCountOutputTypeCountAuthenticationStrategiesArgs<Ex
 export type TenantApplicationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   key?: boolean
+  sessionStrategy?: boolean
   tenantId?: boolean
   applicationId?: boolean
   createdAt?: boolean
@@ -872,6 +920,7 @@ export type TenantApplicationSelect<ExtArgs extends runtime.Types.Extensions.Int
 export type TenantApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   key?: boolean
+  sessionStrategy?: boolean
   tenantId?: boolean
   applicationId?: boolean
   createdAt?: boolean
@@ -883,6 +932,7 @@ export type TenantApplicationSelectCreateManyAndReturn<ExtArgs extends runtime.T
 export type TenantApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   key?: boolean
+  sessionStrategy?: boolean
   tenantId?: boolean
   applicationId?: boolean
   createdAt?: boolean
@@ -894,13 +944,14 @@ export type TenantApplicationSelectUpdateManyAndReturn<ExtArgs extends runtime.T
 export type TenantApplicationSelectScalar = {
   id?: boolean
   key?: boolean
+  sessionStrategy?: boolean
   tenantId?: boolean
   applicationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type TenantApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "tenantId" | "applicationId" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantApplication"]>
+export type TenantApplicationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "sessionStrategy" | "tenantId" | "applicationId" | "createdAt" | "updatedAt", ExtArgs["result"]["tenantApplication"]>
 export type TenantApplicationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenant?: boolean | Prisma.TenantDefaultArgs<ExtArgs>
   application?: boolean | Prisma.ApplicationDefaultArgs<ExtArgs>
@@ -928,6 +979,7 @@ export type $TenantApplicationPayload<ExtArgs extends runtime.Types.Extensions.I
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     key: string
+    sessionStrategy: $Enums.SessionStrategy
     tenantId: number
     applicationId: number
     createdAt: Date
@@ -1361,6 +1413,7 @@ export interface Prisma__TenantApplicationClient<T, Null = never, ExtArgs extend
 export interface TenantApplicationFieldRefs {
   readonly id: Prisma.FieldRef<"TenantApplication", 'Int'>
   readonly key: Prisma.FieldRef<"TenantApplication", 'String'>
+  readonly sessionStrategy: Prisma.FieldRef<"TenantApplication", 'SessionStrategy'>
   readonly tenantId: Prisma.FieldRef<"TenantApplication", 'Int'>
   readonly applicationId: Prisma.FieldRef<"TenantApplication", 'Int'>
   readonly createdAt: Prisma.FieldRef<"TenantApplication", 'DateTime'>

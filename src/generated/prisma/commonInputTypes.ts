@@ -133,6 +133,23 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumSessionStrategyFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionStrategy[]
+  notIn?: $Enums.SessionStrategy[]
+  not?: Prisma.NestedEnumSessionStrategyFilter<$PrismaModel> | $Enums.SessionStrategy
+}
+
+export type EnumSessionStrategyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionStrategy[]
+  notIn?: $Enums.SessionStrategy[]
+  not?: Prisma.NestedEnumSessionStrategyWithAggregatesFilter<$PrismaModel> | $Enums.SessionStrategy
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSessionStrategyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSessionStrategyFilter<$PrismaModel>
+}
+
 export type BoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
@@ -144,6 +161,23 @@ export type BoolWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type EnumSessionStrategyNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SessionStrategy[] | null
+  notIn?: $Enums.SessionStrategy[] | null
+  not?: Prisma.NestedEnumSessionStrategyNullableFilter<$PrismaModel> | $Enums.SessionStrategy | null
+}
+
+export type EnumSessionStrategyNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SessionStrategy[] | null
+  notIn?: $Enums.SessionStrategy[] | null
+  not?: Prisma.NestedEnumSessionStrategyNullableWithAggregatesFilter<$PrismaModel> | $Enums.SessionStrategy | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSessionStrategyNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSessionStrategyNullableFilter<$PrismaModel>
 }
 
 export type EnumAuthenticationStrategyFilter<$PrismaModel = never> = {
@@ -326,6 +360,23 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type NestedEnumSessionStrategyFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionStrategy[]
+  notIn?: $Enums.SessionStrategy[]
+  not?: Prisma.NestedEnumSessionStrategyFilter<$PrismaModel> | $Enums.SessionStrategy
+}
+
+export type NestedEnumSessionStrategyWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel>
+  in?: $Enums.SessionStrategy[]
+  notIn?: $Enums.SessionStrategy[]
+  not?: Prisma.NestedEnumSessionStrategyWithAggregatesFilter<$PrismaModel> | $Enums.SessionStrategy
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSessionStrategyFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSessionStrategyFilter<$PrismaModel>
+}
+
 export type NestedBoolFilter<$PrismaModel = never> = {
   equals?: boolean | Prisma.BooleanFieldRefInput<$PrismaModel>
   not?: Prisma.NestedBoolFilter<$PrismaModel> | boolean
@@ -337,6 +388,23 @@ export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedBoolFilter<$PrismaModel>
   _max?: Prisma.NestedBoolFilter<$PrismaModel>
+}
+
+export type NestedEnumSessionStrategyNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SessionStrategy[] | null
+  notIn?: $Enums.SessionStrategy[] | null
+  not?: Prisma.NestedEnumSessionStrategyNullableFilter<$PrismaModel> | $Enums.SessionStrategy | null
+}
+
+export type NestedEnumSessionStrategyNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SessionStrategy | Prisma.EnumSessionStrategyFieldRefInput<$PrismaModel> | null
+  in?: $Enums.SessionStrategy[] | null
+  notIn?: $Enums.SessionStrategy[] | null
+  not?: Prisma.NestedEnumSessionStrategyNullableWithAggregatesFilter<$PrismaModel> | $Enums.SessionStrategy | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSessionStrategyNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSessionStrategyNullableFilter<$PrismaModel>
 }
 
 export type NestedEnumAuthenticationStrategyFilter<$PrismaModel = never> = {

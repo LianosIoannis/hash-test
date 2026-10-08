@@ -89,7 +89,12 @@ the same-origin overview endpoint backed by the real API, and verifies visible
 tenant, application, and membership counts. It uses no normal browser profile
 and adds no npm dependencies.
 
-This is a browser smoke baseline, not proof of the forthcoming sign-in flows.
+The original DOM smoke check is not proof of sign-in flows. Ticket 02 adds
+an interactive browser journey for JWT sign-in, actual reload persistence,
+and central session invalidation using an isolated Chromium debugging session.
+`npm run test:browser` builds and runs both paths; HTTP coverage also includes
+the JWT integration suite. See [JWT integration](jwt-integration.md).
+
 As the demo becomes available, add real-browser coverage for sessionStorage
 reload persistence, cookie attributes and delivery, CSRF, logout, expiry, and
 mode changes. Interactive browser automation may be added when those journeys

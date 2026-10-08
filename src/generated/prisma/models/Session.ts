@@ -39,6 +39,7 @@ export type SessionSumAggregateOutputType = {
 export type SessionMinAggregateOutputType = {
   id: number | null
   tokenHash: string | null
+  strategy: $Enums.SessionStrategy | null
   tenantApplicationUserId: number | null
   createdAt: Date | null
   expiresAt: Date | null
@@ -47,6 +48,7 @@ export type SessionMinAggregateOutputType = {
 export type SessionMaxAggregateOutputType = {
   id: number | null
   tokenHash: string | null
+  strategy: $Enums.SessionStrategy | null
   tenantApplicationUserId: number | null
   createdAt: Date | null
   expiresAt: Date | null
@@ -55,6 +57,7 @@ export type SessionMaxAggregateOutputType = {
 export type SessionCountAggregateOutputType = {
   id: number
   tokenHash: number
+  strategy: number
   tenantApplicationUserId: number
   createdAt: number
   expiresAt: number
@@ -75,6 +78,7 @@ export type SessionSumAggregateInputType = {
 export type SessionMinAggregateInputType = {
   id?: true
   tokenHash?: true
+  strategy?: true
   tenantApplicationUserId?: true
   createdAt?: true
   expiresAt?: true
@@ -83,6 +87,7 @@ export type SessionMinAggregateInputType = {
 export type SessionMaxAggregateInputType = {
   id?: true
   tokenHash?: true
+  strategy?: true
   tenantApplicationUserId?: true
   createdAt?: true
   expiresAt?: true
@@ -91,6 +96,7 @@ export type SessionMaxAggregateInputType = {
 export type SessionCountAggregateInputType = {
   id?: true
   tokenHash?: true
+  strategy?: true
   tenantApplicationUserId?: true
   createdAt?: true
   expiresAt?: true
@@ -186,6 +192,7 @@ export type SessionGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 export type SessionGroupByOutputType = {
   id: number
   tokenHash: string
+  strategy: $Enums.SessionStrategy | null
   tenantApplicationUserId: number
   createdAt: Date
   expiresAt: Date
@@ -217,6 +224,7 @@ export type SessionWhereInput = {
   NOT?: Prisma.SessionWhereInput | Prisma.SessionWhereInput[]
   id?: Prisma.IntFilter<"Session"> | number
   tokenHash?: Prisma.StringFilter<"Session"> | string
+  strategy?: Prisma.EnumSessionStrategyNullableFilter<"Session"> | $Enums.SessionStrategy | null
   tenantApplicationUserId?: Prisma.IntFilter<"Session"> | number
   createdAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   expiresAt?: Prisma.DateTimeFilter<"Session"> | Date | string
@@ -226,6 +234,7 @@ export type SessionWhereInput = {
 export type SessionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
+  strategy?: Prisma.SortOrderInput | Prisma.SortOrder
   tenantApplicationUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -238,6 +247,7 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SessionWhereInput | Prisma.SessionWhereInput[]
   OR?: Prisma.SessionWhereInput[]
   NOT?: Prisma.SessionWhereInput | Prisma.SessionWhereInput[]
+  strategy?: Prisma.EnumSessionStrategyNullableFilter<"Session"> | $Enums.SessionStrategy | null
   tenantApplicationUserId?: Prisma.IntFilter<"Session"> | number
   createdAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   expiresAt?: Prisma.DateTimeFilter<"Session"> | Date | string
@@ -247,6 +257,7 @@ export type SessionWhereUniqueInput = Prisma.AtLeast<{
 export type SessionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
+  strategy?: Prisma.SortOrderInput | Prisma.SortOrder
   tenantApplicationUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -263,6 +274,7 @@ export type SessionScalarWhereWithAggregatesInput = {
   NOT?: Prisma.SessionScalarWhereWithAggregatesInput | Prisma.SessionScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Session"> | number
   tokenHash?: Prisma.StringWithAggregatesFilter<"Session"> | string
+  strategy?: Prisma.EnumSessionStrategyNullableWithAggregatesFilter<"Session"> | $Enums.SessionStrategy | null
   tenantApplicationUserId?: Prisma.IntWithAggregatesFilter<"Session"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Session"> | Date | string
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"Session"> | Date | string
@@ -270,6 +282,7 @@ export type SessionScalarWhereWithAggregatesInput = {
 
 export type SessionCreateInput = {
   tokenHash: string
+  strategy?: $Enums.SessionStrategy | null
   createdAt?: Date | string
   expiresAt: Date | string
   tenantApplicationUser: Prisma.TenantApplicationUserCreateNestedOneWithoutSessionsInput
@@ -278,6 +291,7 @@ export type SessionCreateInput = {
 export type SessionUncheckedCreateInput = {
   id?: number
   tokenHash: string
+  strategy?: $Enums.SessionStrategy | null
   tenantApplicationUserId: number
   createdAt?: Date | string
   expiresAt: Date | string
@@ -285,6 +299,7 @@ export type SessionUncheckedCreateInput = {
 
 export type SessionUpdateInput = {
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tenantApplicationUser?: Prisma.TenantApplicationUserUpdateOneRequiredWithoutSessionsNestedInput
@@ -293,6 +308,7 @@ export type SessionUpdateInput = {
 export type SessionUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   tenantApplicationUserId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -301,6 +317,7 @@ export type SessionUncheckedUpdateInput = {
 export type SessionCreateManyInput = {
   id?: number
   tokenHash: string
+  strategy?: $Enums.SessionStrategy | null
   tenantApplicationUserId: number
   createdAt?: Date | string
   expiresAt: Date | string
@@ -308,6 +325,7 @@ export type SessionCreateManyInput = {
 
 export type SessionUpdateManyMutationInput = {
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -315,6 +333,7 @@ export type SessionUpdateManyMutationInput = {
 export type SessionUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   tenantApplicationUserId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -333,6 +352,7 @@ export type SessionOrderByRelationAggregateInput = {
 export type SessionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
+  strategy?: Prisma.SortOrder
   tenantApplicationUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -346,6 +366,7 @@ export type SessionAvgOrderByAggregateInput = {
 export type SessionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
+  strategy?: Prisma.SortOrder
   tenantApplicationUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -354,6 +375,7 @@ export type SessionMaxOrderByAggregateInput = {
 export type SessionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
+  strategy?: Prisma.SortOrder
   tenantApplicationUserId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -406,8 +428,13 @@ export type SessionUncheckedUpdateManyWithoutTenantApplicationUserNestedInput = 
   deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
 }
 
+export type NullableEnumSessionStrategyFieldUpdateOperationsInput = {
+  set?: $Enums.SessionStrategy | null
+}
+
 export type SessionCreateWithoutTenantApplicationUserInput = {
   tokenHash: string
+  strategy?: $Enums.SessionStrategy | null
   createdAt?: Date | string
   expiresAt: Date | string
 }
@@ -415,6 +442,7 @@ export type SessionCreateWithoutTenantApplicationUserInput = {
 export type SessionUncheckedCreateWithoutTenantApplicationUserInput = {
   id?: number
   tokenHash: string
+  strategy?: $Enums.SessionStrategy | null
   createdAt?: Date | string
   expiresAt: Date | string
 }
@@ -450,6 +478,7 @@ export type SessionScalarWhereInput = {
   NOT?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
   id?: Prisma.IntFilter<"Session"> | number
   tokenHash?: Prisma.StringFilter<"Session"> | string
+  strategy?: Prisma.EnumSessionStrategyNullableFilter<"Session"> | $Enums.SessionStrategy | null
   tenantApplicationUserId?: Prisma.IntFilter<"Session"> | number
   createdAt?: Prisma.DateTimeFilter<"Session"> | Date | string
   expiresAt?: Prisma.DateTimeFilter<"Session"> | Date | string
@@ -458,12 +487,14 @@ export type SessionScalarWhereInput = {
 export type SessionCreateManyTenantApplicationUserInput = {
   id?: number
   tokenHash: string
+  strategy?: $Enums.SessionStrategy | null
   createdAt?: Date | string
   expiresAt: Date | string
 }
 
 export type SessionUpdateWithoutTenantApplicationUserInput = {
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -471,6 +502,7 @@ export type SessionUpdateWithoutTenantApplicationUserInput = {
 export type SessionUncheckedUpdateWithoutTenantApplicationUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -478,6 +510,7 @@ export type SessionUncheckedUpdateWithoutTenantApplicationUserInput = {
 export type SessionUncheckedUpdateManyWithoutTenantApplicationUserInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tokenHash?: Prisma.StringFieldUpdateOperationsInput | string
+  strategy?: Prisma.NullableEnumSessionStrategyFieldUpdateOperationsInput | $Enums.SessionStrategy | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -487,6 +520,7 @@ export type SessionUncheckedUpdateManyWithoutTenantApplicationUserInput = {
 export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tokenHash?: boolean
+  strategy?: boolean
   tenantApplicationUserId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
@@ -496,6 +530,7 @@ export type SessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 export type SessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tokenHash?: boolean
+  strategy?: boolean
   tenantApplicationUserId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
@@ -505,6 +540,7 @@ export type SessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type SessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tokenHash?: boolean
+  strategy?: boolean
   tenantApplicationUserId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
@@ -514,12 +550,13 @@ export type SessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 export type SessionSelectScalar = {
   id?: boolean
   tokenHash?: boolean
+  strategy?: boolean
   tenantApplicationUserId?: boolean
   createdAt?: boolean
   expiresAt?: boolean
 }
 
-export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tokenHash" | "tenantApplicationUserId" | "createdAt" | "expiresAt", ExtArgs["result"]["session"]>
+export type SessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tokenHash" | "strategy" | "tenantApplicationUserId" | "createdAt" | "expiresAt", ExtArgs["result"]["session"]>
 export type SessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tenantApplicationUser?: boolean | Prisma.TenantApplicationUserDefaultArgs<ExtArgs>
 }
@@ -538,6 +575,7 @@ export type $SessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     tokenHash: string
+    strategy: $Enums.SessionStrategy | null
     tenantApplicationUserId: number
     createdAt: Date
     expiresAt: Date
@@ -967,6 +1005,7 @@ export interface Prisma__SessionClient<T, Null = never, ExtArgs extends runtime.
 export interface SessionFieldRefs {
   readonly id: Prisma.FieldRef<"Session", 'Int'>
   readonly tokenHash: Prisma.FieldRef<"Session", 'String'>
+  readonly strategy: Prisma.FieldRef<"Session", 'SessionStrategy'>
   readonly tenantApplicationUserId: Prisma.FieldRef<"Session", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Session", 'DateTime'>
   readonly expiresAt: Prisma.FieldRef<"Session", 'DateTime'>

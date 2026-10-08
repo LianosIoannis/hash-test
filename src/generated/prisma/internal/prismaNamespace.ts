@@ -1153,6 +1153,7 @@ export type ApplicationScalarFieldEnum = (typeof ApplicationScalarFieldEnum)[key
 export const TenantApplicationScalarFieldEnum = {
   id: 'id',
   key: 'key',
+  sessionStrategy: 'sessionStrategy',
   tenantId: 'tenantId',
   applicationId: 'applicationId',
   createdAt: 'createdAt',
@@ -1193,6 +1194,7 @@ export type TenantApplicationUserScalarFieldEnum = (typeof TenantApplicationUser
 export const SessionScalarFieldEnum = {
   id: 'id',
   tokenHash: 'tokenHash',
+  strategy: 'strategy',
   tenantApplicationUserId: 'tenantApplicationUserId',
   createdAt: 'createdAt',
   expiresAt: 'expiresAt'
@@ -1284,6 +1286,13 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'SessionStrategy'
+ */
+export type EnumSessionStrategyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SessionStrategy'>
     
 
 

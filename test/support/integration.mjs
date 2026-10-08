@@ -29,6 +29,7 @@ export async function createIntegration(t, { afterMigration } = {}) {
 	t.after(async () => {
 		const errors = [];
 		for (const server of servers.toReversed()) {
+			if (!server.listening) continue;
 			try {
 				await new Promise((resolveClose, reject) => {
 					server.close((error) => (error ? reject(error) : resolveClose()));
@@ -84,7 +85,16 @@ export async function createIntegration(t, { afterMigration } = {}) {
 		return `http://127.0.0.1:${server.address().port}`;
 	}
 	const origin = await startServer(createApp());
-	return { base: `${origin}/api`, origin, directory, prisma, startServer };
+	async function stopServer(origin) {
+		const port = Number(new URL(origin).port);
+		const server = servers.find((candidate) => candidate.listening && candidate.address().port === port);
+		if (!server) throw new Error("No fixture server matches this origin");
+		await new Promise((resolveClose, reject) => {
+			server.close((error) => (error ? reject(error) : resolveClose()));
+			server.closeAllConnections();
+		});
+	}
+	return { base: `${origin}/api`, origin, directory, prisma, startServer, stopServer };
 }
 
 export async function seedTenantFixtures(base) {
