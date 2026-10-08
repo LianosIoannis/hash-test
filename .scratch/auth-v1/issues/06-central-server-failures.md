@@ -20,7 +20,7 @@
 
 Approved as part of the seven-ticket v1 breakdown. Implementation remains subject to the repository's approval requirement for big changes.
 
-**Implementation:** Implemented on 2026-10-08; final review pending.
+**Implementation:** Implemented and reviewed on 2026-10-08.
 
 The user approved .scratch/auth-v1/ticket-06-proposal.md and review baseline
 a53ae93b9bd8654a2cd8f73cb14d966ba9cc70c0. The first HTTP and browser tests
@@ -39,3 +39,8 @@ Windows profile lock after the isolated browser exited.
 
 No migration or customer-data change was performed. The pre-existing local
 data/auth.db modification remains separate.
+
+The existing Argon2 benchmark also passed (100 hashes and 100 successful
+verifications). Independent Standards and Spec reviews against the approved
+baseline each reported zero findings. Implementation commit: fea4f74.
+Ticket 06 is complete; ticket 07 is now unblocked.
