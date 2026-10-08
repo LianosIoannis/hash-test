@@ -1,8 +1,8 @@
 # Project plan
 
-Status: V1 authentication behavior is complete and reviewed through ticket 06.
-Ticket 07's runnable example and documentation are in final verification.
-Later milestones remain proposed.
+Status: V1 is implemented and reviewed. All seven tickets are complete,
+including the runnable two-tenant example and documentation. Later milestones
+remain proposed.
 
 This document describes what the project should achieve, for whom, and how
 we intend to build it. Update it as goals and priorities become clearer.
@@ -138,8 +138,9 @@ sign-in. A tenant application uses only its selected mode.
 
 ## Current state
 
-Implementation progress: tickets 01–06 are complete and reviewed. Ticket 07
-documents the complete runnable two-tenant example. The verified behavior is:
+Implementation progress: tickets 01–07 are complete and reviewed. The
+[setup guide](local-demo.md) documents the complete runnable two-tenant
+example. The verified behavior is:
 
 - The domain model defines tenants, applications, tenant applications,
   users, memberships, sessions, and authentication strategies.
@@ -211,7 +212,7 @@ Proposed:
 | Order | Milestone | Completion evidence | Status |
 | --- | --- | --- | --- |
 | 1 | Establish a verified baseline | Existing checks run; supported behavior and important coverage gaps are recorded | Complete |
-| 2 | Complete the first library integration | Through the browser TypeScript client library, an existing user signs in with email/password and accesses an Express endpoint protected by the backend library; both configurable session modes, expiry, logout, mode-change invalidation, and tenant isolation are verified | Behavior complete; ticket 07 documentation/example verification in progress |
+| 2 | Complete the first library integration | Through the browser TypeScript client library, an existing user signs in with email/password and accesses an Express endpoint protected by the backend library; both configurable session modes, expiry, logout, mode-change invalidation, and tenant isolation are verified | Complete; all seven v1 tickets implemented and reviewed |
 | 3 | Define and implement account lifecycle | Agreed registration or invitation, membership assignment, recovery, and verification journeys work end to end | Proposed |
 | 4 | Add Azure client sign-in | Azure client sign-in works end to end through both libraries and supports either configured session mode | Next authentication milestone; details open |
 | 5 | Prepare the agreed deployment | Administrator access, secret handling, migrations, and operational checks meet the agreed deployment requirements | Proposed |

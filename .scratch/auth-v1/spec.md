@@ -2,6 +2,13 @@
 
 Status: ready-for-agent
 
+Implementation: All seven v1 tickets completed and independently reviewed on
+2026-10-08. Final verification passed 34 HTTP tests, 12 real-browser tests,
+type checks, builds, formatting, and the existing Argon2 benchmark. See
+[the local setup guide](../../docs/local-demo.md) and
+[library reference](../../docs/library-reference.md). Administration and
+deployment remain local; deferred features below remain outside this release.
+
 ## Problem Statement
 
 The company serves multiple customer tenants through multiple applications.
