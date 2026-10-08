@@ -14,7 +14,10 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 			assert.equal(db.prepare("SELECT count(*) AS count FROM Session").get().count, 1);
 			if (migration === "20261008000000_jwt_sessions") {
 				assert.equal(db.prepare("SELECT strategy FROM Session WHERE id = 1").get().strategy, null);
-				assert.equal(db.prepare("SELECT sessionStrategy FROM TenantApplication WHERE id = 1").get().sessionStrategy, "JWT");
+				assert.equal(
+					db.prepare("SELECT sessionStrategy FROM TenantApplication WHERE id = 1").get().sessionStrategy,
+					"JWT",
+				);
 			}
 		},
 	});
@@ -40,17 +43,17 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 	const strategyPath = "/tenant-applications/1/strategies/";
 	await t.test("invalid enablement and wrong config kind roll back", async () => {
 		assert.equal((await request("/authentication-strategies")).length, 10);
-		await request(strategyPath + "AZURE_SSO_SERVER", "PUT", { enabled: true }, 400);
-		await request(strategyPath + "AZURE_SSO_SERVER", "PUT", { enabled: true, azureSsoConfig: config }, 400);
-		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: true, azureSsoConfig: config }, 400);
-		await request(strategyPath + "UNKNOWN", "PUT", { enabled: true }, 400);
+		await request(`${strategyPath}AZURE_SSO_SERVER`, "PUT", { enabled: true }, 400);
+		await request(`${strategyPath}AZURE_SSO_SERVER`, "PUT", { enabled: true, azureSsoConfig: config }, 400);
+		await request(`${strategyPath}EMAIL_PASSWORD`, "PUT", { enabled: true, azureSsoConfig: config }, 400);
+		await request(`${strategyPath}UNKNOWN`, "PUT", { enabled: true }, 400);
 		assert.equal(await prisma.tenantApplicationAuthenticationStrategy.count(), 0);
 		await request("/tenant-applications/999/strategies", "GET", undefined, 404);
 	});
 	let saved;
 	let storedSecret;
 	await t.test("create+enable stores the secret as entered and sanitizes every response", async () => {
-		saved = await request(strategyPath + "AZURE_SSO_SERVER", "PUT", {
+		saved = await request(`${strategyPath}AZURE_SSO_SERVER`, "PUT", {
 			enabled: true,
 			azureSsoConfig: { ...config, clientSecret: "test-client-secret" },
 		});
@@ -61,7 +64,7 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 		assert.equal(storedSecret, "test-client-secret");
 		for (const path of [
 			"/azure-sso-configs",
-			"/azure-sso-configs/" + saved.azureSsoConfig.id,
+			`/azure-sso-configs/${saved.azureSsoConfig.id}`,
 			"/tenant-applications/1/strategies",
 			"/tenant-applications",
 		]) {
@@ -70,14 +73,14 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 		}
 	});
 	await t.test("editing preserves omitted secrets and rejects invalid/duplicate changes", async () => {
-		await request("/azure-sso-configs/" + saved.azureSsoConfig.id, "PATCH", { ...config, name: "Renamed" });
+		await request(`/azure-sso-configs/${saved.azureSsoConfig.id}`, "PATCH", { ...config, name: "Renamed" });
 		assert.equal(
 			(await prisma.azureSsoConfig.findUnique({ where: { id: saved.azureSsoConfig.id } })).clientSecret,
 			storedSecret,
 		);
-		await request("/azure-sso-configs/" + saved.azureSsoConfig.id, "PATCH", { ...config, clientSecret: null }, 400);
+		await request(`/azure-sso-configs/${saved.azureSsoConfig.id}`, "PATCH", { ...config, clientSecret: null }, 400);
 		await request(
-			"/azure-sso-configs/" + saved.azureSsoConfig.id,
+			`/azure-sso-configs/${saved.azureSsoConfig.id}`,
 			"PATCH",
 			{ ...config, redirectUri: "javascript:alert(1)" },
 			400,
@@ -88,7 +91,7 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 			{ ...config, tenantApplicationId: 1, strategy: "AZURE_SSO_SERVER", clientSecret: "test-client-secret" },
 			400,
 		);
-		await request("/azure-sso-configs/" + saved.azureSsoConfig.id, "PATCH", {
+		await request(`/azure-sso-configs/${saved.azureSsoConfig.id}`, "PATCH", {
 			...config,
 			name: "Renamed",
 			clientSecret: "replacement",
@@ -113,16 +116,16 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 			201,
 		);
 		assert.equal(spa.hasClientSecret, false);
-		await request("/azure-sso-configs/" + spa.id, "PATCH", { ...config, name: "SPA", clientSecret: "temporary" });
-		await request("/azure-sso-configs/" + spa.id, "PATCH", { ...config, name: "SPA", clientSecret: null });
-		assert.equal((await request("/azure-sso-configs/" + spa.id)).hasClientSecret, false);
+		await request(`/azure-sso-configs/${spa.id}`, "PATCH", { ...config, name: "SPA", clientSecret: "temporary" });
+		await request(`/azure-sso-configs/${spa.id}`, "PATCH", { ...config, name: "SPA", clientSecret: null });
+		assert.equal((await request(`/azure-sso-configs/${spa.id}`)).hasClientSecret, false);
 	});
 	await t.test("deletion disables and preserves the strategy; recreation reuses it", async () => {
-		await request("/azure-sso-configs/" + saved.azureSsoConfig.id, "DELETE", undefined, 204);
+		await request(`/azure-sso-configs/${saved.azureSsoConfig.id}`, "DELETE", undefined, 204);
 		const retained = await prisma.tenantApplicationAuthenticationStrategy.findUnique({ where: { id: saved.id } });
 		assert.equal(retained.enabled, false);
-		await request(strategyPath + "AZURE_SSO_SERVER", "PUT", { enabled: true }, 400);
-		const recreated = await request(strategyPath + "AZURE_SSO_SERVER", "PUT", {
+		await request(`${strategyPath}AZURE_SSO_SERVER`, "PUT", { enabled: true }, 400);
+		const recreated = await request(`${strategyPath}AZURE_SSO_SERVER`, "PUT", {
 			enabled: true,
 			azureSsoConfig: { ...config, clientSecret: "test-client-secret" },
 		});
@@ -158,8 +161,8 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 			where: { id: 1 },
 			data: { passwordHash: await hashPassword("TestPassword123!") },
 		});
-		await request(strategyPath + "AZURE_SSO_SERVER", "PUT", { enabled: false });
-		await request(strategyPath + "AZURE_SSO_CLIENT", "PUT", { enabled: false });
+		await request(`${strategyPath}AZURE_SSO_SERVER`, "PUT", { enabled: false });
+		await request(`${strategyPath}AZURE_SSO_CLIENT`, "PUT", { enabled: false });
 		const emailInput = {
 			email: "new@example.test",
 			password: "TestPassword123!",
@@ -172,23 +175,23 @@ test("admin API preserves strategy/config invariants and hides credentials", asy
 		};
 		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
 		assert.equal(await prisma.session.count(), 1);
-		await request(strategyPath + "EMAIL_PASSWORD_EMAIL_OTP", "PUT", { enabled: true });
+		await request(`${strategyPath}EMAIL_PASSWORD_EMAIL_OTP`, "PUT", { enabled: true });
 		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
-		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: true });
+		await request(`${strategyPath}EMAIL_PASSWORD`, "PUT", { enabled: true });
 		const session = await signInWithEmail(emailInput);
 		assert.ok(session.jwt_token);
 		assert.equal("session_token" in session, false);
 		assert.equal(await prisma.session.count(), 2);
 		await assert.rejects(signInWithUsername(usernameInput), /strategy is not enabled/);
-		await request(strategyPath + "EMAIL_PASSWORD", "PUT", { enabled: false });
+		await request(`${strategyPath}EMAIL_PASSWORD`, "PUT", { enabled: false });
 		await assert.rejects(signInWithEmail(emailInput), /strategy is not enabled/);
 		assert.equal(await prisma.session.count(), 2);
-		await request(strategyPath + "USERNAME_PASSWORD", "PUT", { enabled: true });
+		await request(`${strategyPath}USERNAME_PASSWORD`, "PUT", { enabled: true });
 		const usernameSession = await signInWithUsername(usernameInput);
 		assert.equal(usernameSession.mode, "JWT");
 		assert.ok(usernameSession.jwt_token);
 		assert.equal("session_token" in usernameSession, false);
-		await request(strategyPath + "USERNAME_PASSWORD", "PUT", { enabled: false });
+		await request(`${strategyPath}USERNAME_PASSWORD`, "PUT", { enabled: false });
 		await assert.rejects(signInWithUsername(usernameInput), /strategy is not enabled/);
 		assert.equal(await prisma.session.count(), 3);
 	});

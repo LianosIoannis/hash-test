@@ -5,7 +5,7 @@ import type { TenantApplication } from "./types.js";
 function message(error: unknown) {
 	if (error instanceof ApiError && error.issues[0]) {
 		const issue = error.issues[0];
-		return (issue.path ? issue.path + ": " : "") + issue.message;
+		return (issue.path ? `${issue.path}: ` : "") + issue.message;
 	}
 	return error instanceof Error ? error.message : "Unable to save";
 }
@@ -106,7 +106,7 @@ function configFields(container: HTMLElement, strategy: string, config?: AzureCo
 		container,
 		config?.hasClientSecret
 			? "Client secret — leave blank to keep existing"
-			: "Client secret" + (server ? " (required)" : " (optional)"),
+			: `Client secret${server ? " (required)" : " (optional)"}`,
 		"",
 		server && !config?.hasClientSecret,
 		"password",
@@ -147,7 +147,7 @@ export async function openAzureForm(config: AzureConfig | undefined, onSaved: ()
 			{ value: "", label: "Select a tenant application" },
 			...apps.map((item) => ({
 				value: String(item.id),
-				label: (item.tenant?.name ?? item.tenantId) + " / " + (item.application?.name ?? item.applicationId),
+				label: `${item.tenant?.name ?? item.tenantId} / ${item.application?.name ?? item.applicationId}`,
 			})),
 		]);
 		strategy = select(ui.body, "Azure strategy", [
@@ -180,7 +180,7 @@ export async function openAzureForm(config: AzureConfig | undefined, onSaved: ()
 			read = configFields(fields, strategy?.value ?? "AZURE_SSO_SERVER");
 		};
 	ui.save(async () => {
-		if (config) return patch("/azure-sso-configs/" + config.id, read());
+		if (config) return patch(`/azure-sso-configs/${config.id}`, read());
 		return post("/azure-sso-configs", {
 			...read(),
 			tenantApplicationId: Number(app?.value),
@@ -193,12 +193,10 @@ export async function openAzureForm(config: AzureConfig | undefined, onSaved: ()
 export async function openStrategies(app: TenantApplication, onSaved: () => Promise<void>) {
 	const [codes, records] = await Promise.all([
 		get<string[]>("/authentication-strategies"),
-		get<AppStrategy[]>("/tenant-applications/" + app.id + "/strategies"),
+		get<AppStrategy[]>(`/tenant-applications/${app.id}/strategies`),
 	]);
 	const ui = modal("Authentication strategies", onSaved);
-	ui.body.append(
-		element("p", (app.tenant?.name ?? app.tenantId) + " / " + (app.application?.name ?? app.applicationId)),
-	);
+	ui.body.append(element("p", `${app.tenant?.name ?? app.tenantId} / ${app.application?.name ?? app.applicationId}`));
 	const info = element(
 		"p",
 		"Configure allowed login methods. Selecting a method changes which strategy you are editing.",
@@ -236,7 +234,7 @@ export async function openStrategies(app: TenantApplication, onSaved: () => Prom
 	enabled.checked = records.find((item) => item.strategy === strategy.value)?.enabled ?? false;
 	render();
 	ui.save(() =>
-		put("/tenant-applications/" + app.id + "/strategies/" + strategy.value, {
+		put(`/tenant-applications/${app.id}/strategies/${strategy.value}`, {
 			enabled: enabled.checked,
 			...(read ? { azureSsoConfig: read() } : {}),
 		}),
