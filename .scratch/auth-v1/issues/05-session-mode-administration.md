@@ -19,7 +19,7 @@
 
 Approved as part of the seven-ticket v1 breakdown. Implementation remains subject to the repository's approval requirement for big changes.
 
-**Implementation:** Implemented on 2026-10-08; final review pending.
+**Implementation:** Implemented and reviewed on 2026-10-08.
 
 The user approved .scratch/auth-v1/ticket-05-proposal.md and the review baseline
 716c7456354545f810c4eb9adc0e2e5e18240263. Checks passed: 30 HTTP tests,
@@ -32,3 +32,9 @@ The concurrent HTTP test reproduced wrong-mode issuance after password
 verification; requested-mode validation now occurs inside issuance's
 serializable transaction. No schema migration or customer-mode updates were
 performed. The existing local data/auth.db modification remains separate.
+
+Final independent reviews against the approved baseline found no outstanding
+Standards or Spec findings. The standards review's test-setup duplication
+suggestion was addressed by a shared editor helper, then the affected
+real-browser test and Biome check passed again. Implementation commit:
+05a94de; review cleanup: ff3ab3d. Ticket 05 is complete; ticket 06 is next.
