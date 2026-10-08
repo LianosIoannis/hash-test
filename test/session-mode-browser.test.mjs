@@ -58,15 +58,21 @@ test("local admin UI displays and changes the selected session mode", async (t) 
 	const origin = await integration.startServer(app);
 	const browser = await launchBrowser(integration.directory, origin);
 	try {
-		await browser.waitFor(`document.body.textContent.includes('API connected')`);
-		await browser.evaluate(`document.querySelector('[data-view="tenant-applications"]').click()`);
-		await browser.waitFor(
-			`document.querySelector('tbody')?.textContent.includes(${JSON.stringify(tenant.tenantApplication.key)})`,
-		);
-		await browser.evaluate(
-			`Array.from(document.querySelectorAll('tbody tr')).find(row => row.textContent.includes(${JSON.stringify(tenant.tenantApplication.key)})).querySelector('[aria-label="Edit"]').click()`,
-		);
-		await browser.waitFor(`document.querySelector('dialog[open] [name=key]') !== null`);
+		async function openTenantApplicationEditor() {
+			await browser.navigate(origin);
+			await browser.waitFor(
+				`location.origin === ${JSON.stringify(origin)} && document.body.textContent.includes('API connected')`,
+			);
+			await browser.evaluate(`document.querySelector('[data-view="tenant-applications"]').click()`);
+			await browser.waitFor(
+				`document.querySelector('tbody')?.textContent.includes(${JSON.stringify(tenant.tenantApplication.key)})`,
+			);
+			await browser.evaluate(
+				`Array.from(document.querySelectorAll('tbody tr')).find(row => row.textContent.includes(${JSON.stringify(tenant.tenantApplication.key)})).querySelector('[aria-label="Edit"]').click()`,
+			);
+			await browser.waitFor(`document.querySelector('dialog[open] [name=sessionStrategy]') !== null`);
+		}
+		await openTenantApplicationEditor();
 		assert.equal(await browser.evaluate(`document.querySelector('dialog[open] [name=sessionStrategy]')?.value`), "JWT");
 		async function goDemo(target) {
 			await browser.navigate(target);
@@ -82,18 +88,7 @@ test("local admin UI displays and changes the selected session mode", async (t) 
 			return JSON.parse(await browser.evaluate(`document.querySelector('#result').textContent`));
 		}
 		async function setMode(mode) {
-			await browser.navigate(origin);
-			await browser.waitFor(
-				`location.origin === ${JSON.stringify(origin)} && document.body.textContent.includes('API connected')`,
-			);
-			await browser.evaluate(`document.querySelector('[data-view="tenant-applications"]').click()`);
-			await browser.waitFor(
-				`document.querySelector('tbody')?.textContent.includes(${JSON.stringify(tenant.tenantApplication.key)})`,
-			);
-			await browser.evaluate(
-				`Array.from(document.querySelectorAll('tbody tr')).find(row => row.textContent.includes(${JSON.stringify(tenant.tenantApplication.key)})).querySelector('[aria-label="Edit"]').click()`,
-			);
-			await browser.waitFor(`document.querySelector('dialog[open] [name=sessionStrategy]') !== null`);
+			await openTenantApplicationEditor();
 			assert.equal(
 				await browser.evaluate(`document.querySelector('dialog[open]').textContent.includes('signs out all users')`),
 				true,
