@@ -6,8 +6,8 @@
 	"scripts": {
 		"test": "tsx src/argon2/test/bench.ts",
 		"test:admin": "node --import tsx --test test/admin.test.mjs",
-		"test:integration": "node --import tsx --test test/admin.test.mjs test/baseline.test.mjs test/jwt.test.mjs test/cookie.test.mjs test/logout.test.mjs test/session-mode.test.mjs",
-		"test:browser": "npm run build && npm run client:build && node --import tsx --test --test-concurrency=1 test/browser.test.mjs test/jwt-browser.test.mjs test/cookie-browser.test.mjs test/logout-browser.test.mjs test/session-mode-browser.test.mjs",
+		"test:integration": "node --import tsx --test test/admin.test.mjs test/baseline.test.mjs test/jwt.test.mjs test/cookie.test.mjs test/logout.test.mjs test/session-mode.test.mjs test/central-failures.test.mjs",
+		"test:browser": "npm run build && npm run client:build && node --import tsx --test --test-concurrency=1 test/browser.test.mjs test/jwt-browser.test.mjs test/cookie-browser.test.mjs test/logout-browser.test.mjs test/session-mode-browser.test.mjs test/central-failures-browser.test.mjs",
 		"build": "tsc",
 		"typecheck:browser-library": "tsc --noEmit -p tsconfig.browser-library.json",
 		"dev": "tsx watch src/server/server.ts",

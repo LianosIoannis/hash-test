@@ -60,7 +60,11 @@ export function createAuthClient(options: {
 			credentials: "same-origin",
 			redirect: "error",
 		});
-		if (!response.ok) throw new AuthClientError(response.status, "Sign-in failed");
+		if (!response.ok)
+			throw new AuthClientError(
+				response.status,
+				response.status === 503 ? "Authentication service temporarily unavailable; try again later" : "Sign-in failed",
+			);
 		const session: unknown = await response.json();
 		if (
 			typeof session !== "object" ||
@@ -94,7 +98,12 @@ export function createAuthClient(options: {
 		try {
 			const response = await request(new URL("logout", baseUrl).href, { method: "POST" });
 			if (response.status !== 204)
-				throw new AuthClientError(response.status, "Logout failed; central invalidation was not confirmed");
+				throw new AuthClientError(
+					response.status,
+					response.status === 503
+						? "Local credential cleared; central invalidation was not confirmed. The session may remain valid until expiry or successful logout."
+						: "Logout failed; central invalidation was not confirmed",
+				);
 		} finally {
 			if (mode === "JWT") window.sessionStorage.removeItem(storageKey);
 		}

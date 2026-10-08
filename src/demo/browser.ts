@@ -14,9 +14,11 @@ async function showIdentity(initial = false) {
 	if (result)
 		result.textContent = response.ok
 			? JSON.stringify(await response.json(), null, 2)
-			: initial && response.status === 401
-				? "Sign in to access your identity"
-				: `Request failed (${response.status})`;
+			: response.status === 503
+				? "Authentication service temporarily unavailable; try again later"
+				: initial && response.status === 401
+					? "Sign in to access your identity"
+					: `Request failed (${response.status})`;
 }
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
@@ -46,7 +48,11 @@ document.querySelector("#mutation")?.addEventListener("click", async () => {
 	if (!output) return;
 	try {
 		const response = await auth.request(`${config.applicationPath}/mutation`, { method: "POST" });
-		output.textContent = response.ok ? JSON.stringify(await response.json()) : `Request failed (${response.status})`;
+		output.textContent = response.ok
+			? JSON.stringify(await response.json())
+			: response.status === 503
+				? "Authentication service temporarily unavailable; try again later"
+				: `Request failed (${response.status})`;
 	} catch {
 		output.textContent = "Request failed";
 	}

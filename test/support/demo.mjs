@@ -1,6 +1,6 @@
 import express from "express";
 
-export async function startDemoFixture(integration, tenant, mode) {
+export async function startDemoFixture(integration, tenant, mode, options = {}) {
 	const selectedMode = await fetch(`${integration.base}/tenant-applications/${tenant.tenantApplication.id}`, {
 		method: "PATCH",
 		headers: { "Content-Type": "application/json" },
@@ -23,6 +23,7 @@ export async function startDemoFixture(integration, tenant, mode) {
 	host.use(
 		createDemoApp({
 			centralUrl: integration.origin,
+			...options,
 			tenantApplicationKey: tenant.tenantApplication.key,
 			sessionMode: mode,
 			publicOrigin: origin,

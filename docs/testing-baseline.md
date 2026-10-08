@@ -108,6 +108,9 @@ admin-to-demo browser journey. The suite now has 30 HTTP and 8 browser tests.
 See [session modes](session-modes.md). Browser files run sequentially to avoid
 concurrent Edge startup timeouts; isolated browser shutdown is bounded, with
 termination limited to the launched test process tree when graceful exit stalls.
-Future tickets add complete failure handling. The original DOM smoke runner
+Ticket 06 adds connection failures, central 503 responses, stalled headers
+and bodies, blocked mutations, failed logout cleanup, recovery, and visible
+browser failure messages. The suite now has 33 HTTP and 11 browser tests.
+See [central failures](central-failures.md). The original DOM smoke runner
 remains an admin rendering check; the interactive runner verifies actual
 sign-in, reload, logout, and mode changes.

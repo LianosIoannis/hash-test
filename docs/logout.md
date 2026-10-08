@@ -42,8 +42,9 @@ the browser rejects instead of claiming central invalidation succeeded. A
 failed central invalidation can leave the former credential valid until
 expiry or a successful retry. If cookie CSRF bootstrap fails or a request
 cannot reach the consuming server, browser JavaScript cannot clear the
-HttpOnly cookie; the client reports the failure. Full outage, timeout, and
-failure UX verification is ticket 06.
+HttpOnly cookie; the client reports the failure. See
+[central failures](central-failures.md) for the timeout and recovery contract
+and ticket 06's HTTP and browser verification.
 
 ## Verification
 

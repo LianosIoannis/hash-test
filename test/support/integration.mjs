@@ -58,7 +58,7 @@ export async function createIntegration(t, { afterMigration } = {}) {
 			if (dirname(target) !== tempRoot || !target.startsWith(join(tempRoot, "hash-test-integration-"))) {
 				throw new Error("Unexpected integration cleanup path");
 			}
-			rmSync(target, { recursive: true, force: true });
+			rmSync(target, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 		} catch (error) {
 			errors.push(error);
 		}

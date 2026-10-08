@@ -80,7 +80,9 @@ export function createBackendAuth(options: BackendAuthOptions) {
 		try {
 			const upstream = await central("signin", { ...input.output, tenantApplicationKey, mode });
 			if (!upstream.ok) {
-				response.status(upstream.status === 401 ? 401 : 503).json({ error: "Sign-in failed" });
+				response.status(upstream.status === 401 ? 401 : 503).json({
+					error: upstream.status === 401 ? "Invalid sign-in credentials" : "Authentication service unavailable",
+				});
 				return;
 			}
 			const session = v.safeParse(v.union([sessionSchema, cookieSessionSchema]), await upstream.json());
@@ -126,9 +128,10 @@ export function createBackendAuth(options: BackendAuthOptions) {
 		try {
 			const upstream = await central("verify", { token, tenantApplicationKey, mode });
 			if (!upstream.ok) {
+				const invalid = upstream.status === 401 || upstream.status === 400;
 				response
-					.status(upstream.status === 401 || upstream.status === 400 ? 401 : 503)
-					.json({ error: "Session verification failed" });
+					.status(invalid ? 401 : 503)
+					.json({ error: invalid ? "Invalid session" : "Authentication service unavailable" });
 				return;
 			}
 			const identity = v.safeParse(identitySchema, await upstream.json());
