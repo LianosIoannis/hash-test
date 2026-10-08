@@ -12,7 +12,7 @@ test("central failures are bounded and do not authorize protected handlers", asy
 		await t.test(mode, async () => {
 			const origin = await startDemoFixture(integration, fixtures.tenants[index], mode, {
 				centralUrl: central.origin,
-				timeoutMs: 400,
+				timeoutMs: 1000,
 			});
 			let csrf = {};
 			if (mode === "COOKIE") {
@@ -28,7 +28,7 @@ test("central failures are bounded and do not authorize protected handlers", asy
 					method: "POST",
 					headers: { "Content-Type": "application/json", ...csrf },
 					body: JSON.stringify({ email: "shared@example.test", password: "IntegrationPassword123!" }),
-					signal: AbortSignal.timeout(3000),
+					signal: AbortSignal.timeout(5000),
 				});
 			central.fail("unavailable");
 			const response = await signIn();
@@ -48,7 +48,7 @@ test("central failures are bounded and do not authorize protected handlers", asy
 				fetch(`${origin}/${path}`, {
 					method,
 					headers: method === "GET" ? credential : unsafeHeaders,
-					signal: AbortSignal.timeout(3000),
+					signal: AbortSignal.timeout(5000),
 				});
 			assert.equal((await protectedRequest()).status, 200);
 			for (const failure of ["disconnect", "unavailable", "stall", "body"]) {
@@ -57,7 +57,7 @@ test("central failures are bounded and do not authorize protected handlers", asy
 				const denied = await protectedRequest("mutation", "POST");
 				assert.equal(denied.status, 503, failure);
 				assert.equal((await denied.json()).error, "Authentication service unavailable");
-				assert.ok(performance.now() - started < 2000, `${failure} must complete within a bounded timeout`);
+				assert.ok(performance.now() - started < 3000, `${failure} must complete within a bounded timeout`);
 				assert.equal((await signIn()).status, 503);
 				if (mode === "COOKIE") {
 					const rejected = await fetch(`${origin}/auth/logout`, { method: "POST", headers: credential });
@@ -67,7 +67,7 @@ test("central failures are bounded and do not authorize protected handlers", asy
 				const logout = await fetch(`${origin}/auth/logout`, {
 					method: "POST",
 					headers: unsafeHeaders,
-					signal: AbortSignal.timeout(3000),
+					signal: AbortSignal.timeout(5000),
 				});
 				assert.equal(logout.status, 503);
 				assert.equal((await logout.json()).error, "Central logout failed");

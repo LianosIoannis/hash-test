@@ -1,6 +1,6 @@
 import express from "express";
 
-export async function startDemoFixture(integration, tenant, mode, options = {}) {
+export async function configureDemoTenantApplication(integration, tenant, mode) {
 	const selectedMode = await fetch(`${integration.base}/tenant-applications/${tenant.tenantApplication.id}`, {
 		method: "PATCH",
 		headers: { "Content-Type": "application/json" },
@@ -16,6 +16,10 @@ export async function startDemoFixture(integration, tenant, mode, options = {}) 
 		},
 	);
 	if (!strategy.ok) throw new Error("Demo fixture strategy setup failed");
+}
+
+export async function startDemoFixture(integration, tenant, mode, options = {}) {
+	await configureDemoTenantApplication(integration, tenant, mode);
 	// Import application modules only after the temporary database is configured.
 	const { createDemoApp } = await import("../../src/demo/app.ts");
 	const host = express();

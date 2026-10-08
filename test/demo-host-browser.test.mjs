@@ -2,33 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import express from "express";
 import { launchBrowser } from "./support/browser.mjs";
+import { configureDemoTenantApplication } from "./support/demo.mjs";
 import { createIntegration, seedTenantFixtures } from "./support/integration.mjs";
 
 test("one demo browser navigates both tenants through sign-in, reload and logout", async (t) => {
 	const integration = await createIntegration(t);
 	const { tenants } = await seedTenantFixtures(integration.base);
 	for (const [index, mode] of ["JWT", "COOKIE"].entries()) {
-		const id = tenants[index].tenantApplication.id;
-		assert.equal(
-			(
-				await fetch(`${integration.base}/tenant-applications/${id}`, {
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ sessionStrategy: mode }),
-				})
-			).status,
-			200,
-		);
-		assert.equal(
-			(
-				await fetch(`${integration.base}/tenant-applications/${id}/strategies/EMAIL_PASSWORD`, {
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ enabled: true }),
-				})
-			).status,
-			200,
-		);
+		await configureDemoTenantApplication(integration, tenants[index], mode);
 	}
 	const { createDemoHost } = await import("../src/demo/host.ts");
 	const app = express();

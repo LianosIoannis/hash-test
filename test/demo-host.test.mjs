@@ -4,33 +4,14 @@ import { once } from "node:events";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import express from "express";
+import { configureDemoTenantApplication } from "./support/demo.mjs";
 import { createIntegration, seedTenantFixtures } from "./support/integration.mjs";
 
 test("two-tenant demo mounts public library integrations on one server", async (t) => {
 	const integration = await createIntegration(t);
 	const { tenants } = await seedTenantFixtures(integration.base);
 	for (const [index, mode] of ["JWT", "COOKIE"].entries()) {
-		const id = tenants[index].tenantApplication.id;
-		assert.equal(
-			(
-				await fetch(`${integration.base}/tenant-applications/${id}`, {
-					method: "PATCH",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ sessionStrategy: mode }),
-				})
-			).status,
-			200,
-		);
-		assert.equal(
-			(
-				await fetch(`${integration.base}/tenant-applications/${id}/strategies/EMAIL_PASSWORD`, {
-					method: "PUT",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ enabled: true }),
-				})
-			).status,
-			200,
-		);
+		await configureDemoTenantApplication(integration, tenants[index], mode);
 	}
 	const origin = await integration.startServer(express());
 	await integration.stopServer(origin);
